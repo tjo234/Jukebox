@@ -1,0 +1,26 @@
+{% extends "_master.html" %}
+
+{% block content %}
+<div class="container-fluid p-5">
+	<div class="row">
+		<div class="col-md-6 md-offset-6">
+			<h2>Config Settings</h2>
+			<small>Only update these if you know what you're doing.
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				{% for s in settings %}
+				<tr>
+					<td><input id="setting-id" value="{{ s[0] }}"></td>
+					<td><input id="setting-value" value="{{ s[1] }}"></td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+{% endblock %}

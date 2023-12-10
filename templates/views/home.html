@@ -1,0 +1,16 @@
+<div id="now-playing" class="container-fluid pt-5">
+	<div class="row">
+		{% for t in home %}
+		<div class="col-md-3 mb-4">
+			<div class="card">
+				<img src="{{ t.cover }}" class="card-img-top" alt="{{ t.album }}" />
+				<!-- <div class="card-body">
+					<h5 class="card-title">{{ t.album }}</h5>
+					<p class="card-text">{{ t.artist }}</p>
+				</div> -->
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
