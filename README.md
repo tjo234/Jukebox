@@ -1,8 +1,6 @@
 # Jukebox
 Jukebox is a free and open source Hi-Fi music player.
 
-Take an inexpensive, silent and low-consumption mini-PC and turn it into a music server/player.
-
 Your music plays from the Jukebox device while you control playlist and volume from your phone/tablet.  
  
 ## Why Jukebox?
