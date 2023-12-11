@@ -1,1 +1,15 @@
-<h1>Radio</h1>
+<div class="px-3">
+	{% for g in genres %}
+	<div class="card genre mb-2 card-bg-{{loop.index}}">
+		<div class="card-body">
+			<h5 class="card-title">{{ g.name }}</h5>
+			<a href="/#radio/{{ g.name }}" class="btn btn-primary btn-sm">
+				<i class="bi bi-broadcast-pin me-1"></i> Start Radio
+			</a>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+<br /><br /><br />
+<br /><br /><br />
+<br /><br /><br />

@@ -1,6 +1,38 @@
 #!/usr/bin/env
-from flask import Flask, render_template, send_from_directory, request, jsonify
+from flask import Flask, render_template, send_from_directory, send_file, request, jsonify
 from jukebox import Database, Config, Track, Library
+
+
+GENRES = [
+    {
+        "name": "Grateful Dead",
+        "image": "dead.png"
+    },
+    {
+        "name": "Hip-Hop/Rap",
+        "image": "hiphop.png"
+    },
+     {
+        "name": "Electronica",
+        "image": "electronica.png"
+    },
+    {
+        "name": "Rock & Roll",
+        "image": "rock.png"
+    },
+    {
+        "name": "R&B/Soul",
+        "image": "soul.png"
+    },
+    {
+        "name": "Blues",
+        "image": "blues.png"
+    },
+    {
+        "name": "Folk/Acoustic",
+        "image": "folk.png"
+    },
+]
 
 def get_template_values():
     tracks = Track.get_tracks()
@@ -14,9 +46,10 @@ def get_template_values():
     return {
         "settings": Config.fetch(),
         "tracks": tracks,
+        "currentTrack": tracks[0],
         "artists": Track.get_artists(),
         "albums": albums,
-        "genres": Track.get_genres(),
+        "genres": GENRES,
         "home": arrHome
     }
 
@@ -55,11 +88,16 @@ def api_scan_library():
     return jsonify(resp)
 
 @app.route("/api/tracks")
-def api_get_files():
+def api_get_tracks():
     resp = Track.get_tracks()
     return jsonify(resp)
 
-if __name__ == "__main__":
+@app.route("/file/<track_id>")
+def api_get_file(track_id):
+    filename = Track.get_track_by_id(track_id)['filename']
+    return send_file(filename)
+    # return send_from_directory(LIBRARY_PATH, filename)
 
-    # Run the web server
+ # Start the web server
+if __name__ == "__main__":
     app.run(host="127.0.0.1", port=9999, debug=True)

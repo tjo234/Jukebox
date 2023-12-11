@@ -44,7 +44,7 @@ class Library():
                     size_bytes += os.path.getsize(filename)
 
                     # Check for existing DB record
-                    track = Track.get_track(filename)
+                    track = Track.get_track_by_path(filename)
                     if not track:
                         obj = get_track_object(filename)
                         if obj:

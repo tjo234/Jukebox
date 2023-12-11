@@ -1,0 +1,28 @@
+<!-- MINI PLAYER -->
+<input type="hidden" id="player-id" value="{{ currentTrack.id }}" />
+<audio id="player-audio" src="/file/{{ currentTrack.id }}"></audio>	
+<div id="player" class="p-0">
+	<div class="row">
+		<div class="col-2">
+			<button id="player-btn" class="btn btn-lg" onclick="playerPlayToggle()" style="font-size:28px;">
+				<i class="bi bi-play-circle-fill player-btn-play"></i>
+				<i class="bi bi-pause-circle-fill player-btn-pause" style="display: none;"></i>
+			</button>
+		</div>
+		<div class="col">
+			<a class="marquee" href="javascript:;" data-bs-toggle="modal" data-bs-target="#player-full">
+				{{ currentTrack.track }} - {{ currentTrack.artist }}
+			</a>
+		</div>
+		<div class="col-2">
+			<button class="btn btn-lg" onclick="playerMuteToggle()" style="font-size:18px;">
+				<i class="bi bi-volume-up-fill player-btn-volume"></i>
+				<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>
+			</button>
+		</div>
+	</div>
+</div>
+
+
+
+

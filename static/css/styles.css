@@ -5,13 +5,29 @@ body {
 }
 body {
 	background: black;
-	padding-top: 50px;
 }
 
 
 
 .offcanvas h5 {
 	color: white;
+}
+
+/* Genre Cards */
+.card-bg-1 { background: #023047; }
+.card-bg-2 { background: #8ECAE6; }
+.card-bg-3 { background: #FB8500; }
+.card-bg-4 { background: #219EBC; }
+.card-bg-5 { background: #FFB703; }
+.card-bg-6 { background: #023047; }
+.card-bg-7 { background: #FB8500; }
+.card-bg-8 { background: #8ECAE6; }
+.card-bg-9 { background: #023047; }
+
+.card.genre h5 {
+	color: white;
+	font-size: 20px;
+	filter: drop-shadow(1px 2px 3px #000000);
 }
 
 /* Main Nav */
@@ -80,4 +96,52 @@ body {
 	width: 100%; 
 	background: rgb(0,0,0);
 	background: linear-gradient(180deg, rgba(5,5,5,1) 0%, rgba(10,10,10,1) 100%);
+}
+
+.player {
+	height:60px;
+	width: 100%;
+}
+
+.player .btn {
+	color: #ccc;
+	height: 60px;
+	height: 60px;
+}
+.player .btn:hover {
+	color: #eee;
+}
+.player .marquee {
+	color: #999;
+	height: 60px;
+    line-height: 60px;
+}
+
+
+#player-full .btn-close {
+	color: white !important;	
+}
+#player-full .modal-header {
+	background: #444;
+}
+#player-full .modal-dialog {
+	margin: 0;
+	height: 100%;
+}
+#player-full .modal-content {
+	background: black;
+	border-radius: 0;
+	border: none;
+	color: white;
+	height: 100%;
+}
+
+#player-full .btn-xxl > i {
+	font-size: 50px;
+	line-height: 60px;
+	height: 60px;
+}
+#player-full .btn-xl > i {
+	font-size: 36px;
+	line-height: 60px;
 }

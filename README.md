@@ -30,7 +30,7 @@ Jukebox gives you the same experience as Spotify or iTunes without all the overh
 # Set up a development environment
 
 1. Clone the repo
-2. Run `python -m venv env` to create a python virtual environment
+2. Run `python3 -m venv env` to create a python virtual environment
 3. Activate the virtual environment by `source env/bin/activate`
 4. Run `pip install -r requirements.txt` to install required packages (into the virtual environment)
 

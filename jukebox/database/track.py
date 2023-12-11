@@ -3,17 +3,24 @@ from ._db import Database
 
 class Track():
     @staticmethod
-    def get_track(filename):
+    def get_track_by_path(filename):
         sql = '''
-            SELECT * FROM tracks 
+            SELECT ROWID, * FROM tracks 
             WHERE filename = "%s";
         ''' % filename
-        t = Database.get(sql)
-        return to_dict(t)
+        return to_dict(Database.get(sql))
+
+    @staticmethod
+    def get_track_by_id(track_id):
+        sql = '''
+            SELECT ROWID, * FROM tracks 
+            WHERE ROWID = %s;
+        ''' % track_id
+        return to_dict(Database.get(sql))
 
     @staticmethod
     def get_tracks():
-        sql = "SELECT * FROM tracks ORDER BY filename;"
+        sql = "SELECT ROWID, * FROM tracks ORDER BY artist, album, track;"
         return [to_dict(t) for t in Database.fetch(sql)]
 
     @staticmethod
@@ -63,15 +70,16 @@ def to_dict(track):
     if not track:
         return None
     return {
-        "filename": track[0],
-        "track": track[1],
-        "artist": track[2],
-        "albumartist": track[3],
-        "album": track[4],
-        "genre": track[5],
-        "year": track[6],
-        "tracknumber": track[7],
-        "discnumber": track[8],
-        "added_on": track[9],
-        "updated_on": track[10]
+        "id": track[0],
+        "filename": track[1],
+        "track": track[2],
+        "artist": track[3],
+        "albumartist": track[4],
+        "album": track[5],
+        "genre": track[6],
+        "year": track[7],
+        "tracknumber": track[8],
+        "discnumber": track[9],
+        "added_on": track[10],
+        "updated_on": track[11]
     }
