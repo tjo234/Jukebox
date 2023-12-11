@@ -1,27 +1,15 @@
 # Jukebox
 Jukebox is a free and open source Hi-Fi music player.
 
-Your music plays from the Jukebox device while you control playlist and volume from your phone/tablet.  
- 
-## Why Jukebox?
-I wanted a portable device that I could store my music on. Many music servers exist, but they usually run on a laptop or full-sized PC. With storage becoming so cheap, I wanted something that I could plug in and start listerning without all the hassle of connect to WiFi or logging into an account. 
-
-## What is it? 
-It's basically an iPod that plays FLAC (hi-res audio) files. 
-
-If you goto a party and the host doesn't have internet, just plug this bad boy into TV/speakers and everyone can add music to the playlist.
-
-## Why not just listen to Spotify?
-How will you listen to music when the zombie apocalyse hits?
-
-## What is Jukebox
-Jukebox gives you the same experience as Spotify or iTunes without all the overhead.
+## What is Jukebox? 
+Jukebox is a media server for hi-res audio.
 
 ## How does it work?
-1. Turn on Jukebox and connec to WiFi
-2. Connect it to your speakers or TV
-3. Upload your music (ideally in FLAC format)
-4. Start grooving!
+1. Install Jukebox on a Wi-Fi enabled RaspberryPi (or any computer)
+2. Upload your music (properly ID3 tagged in high-resolution FLAC format)
+3. Connect your Jukebox server into your TV or stereo system 
+4. Open the Jukebox Remote app on your phone or web browser
+5. Listen to the music play!
 
 ------
 
