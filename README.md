@@ -41,5 +41,5 @@ Development Server:
 cd /var/www/
 sudo mkdir Jukebox
 sudo git clone https://github.com/tjo234/Jukebox.git
-sudo sh scripts/install.sh
+sudo sh Jukebox/install.sh
 ```
