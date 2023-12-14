@@ -4,3 +4,4 @@
 *.db
 .sublime-workspace
 __pycache__
+*.sublime-workspace
