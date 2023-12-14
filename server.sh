@@ -9,7 +9,8 @@ You should be able to run it over and over again without any issues.
 # Update Apache Config
 apt install apache2
 
-# Download latest project
+# Replace project code
+sudo rm -R /var/www/Jukebox
 sudo mkdir /var/www/Jukebox
 sudo git clone https://github.com/tjo234/Jukebox.git
 

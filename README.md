@@ -31,15 +31,5 @@ Development Server:
 
 -------
 
-# Install Jukebox
-
-## Install Apache Server (if not installed)
-`sudo apt install apache2`
-
-## Install Jukebox from Github
-```
-cd /var/www/
-sudo mkdir Jukebox
-sudo git clone https://github.com/tjo234/Jukebox.git
-sudo sh Jukebox/install.sh
-```
+# Install Jukebox Server
+`wget -O - https://raw.githubusercontent.com/tjo234/Jukebox/main/server.sh | bash`
