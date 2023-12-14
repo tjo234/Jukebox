@@ -10,9 +10,8 @@ source .env/bin/activate
 # Install dependencies
 sudo pip install -r requirements.txt
 
-
 # Create database/fix ownership
-mkdir sql
-touch sql/library.db
-sudo chown -R www-data:www-data sql
-sudo chmod -R u+w sql
+mkdir /var/database
+touch /var/database/jukebox.db
+sudo chown -R www-data:www-data /var/database
+sudo chmod -R u+w /var/database

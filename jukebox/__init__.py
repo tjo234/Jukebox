@@ -61,7 +61,6 @@ def create_app():
     # Create Flask App
     app = Flask(__name__)
     app.config.from_prefixed_env()
-    print(app.config)
 
     # Setup tables if they don't exist
     with app.app_context():
