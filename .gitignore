@@ -1,5 +1,6 @@
 .DS_Store
 *.pyc
-env/*
+.env/*
 *.db
 .sublime-workspace
+__pycache__
