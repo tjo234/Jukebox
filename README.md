@@ -40,6 +40,6 @@ Development Server:
 ```
 cd /var/www/
 sudo mkdir Jukebox
-git clone https://github.com/tjo234/Jukebox.git
-sh scripts/install.sh
+sudo git clone https://github.com/tjo234/Jukebox.git
+sudo sh scripts/install.sh
 ```

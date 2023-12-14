@@ -62,7 +62,6 @@ def create_app():
     # Create Flask App
     app = Flask(__name__)
     app.config.from_prefixed_env()
-    app.config["SECRET_KEY"] = "5f352379324c22463451387a0aec5d2f"
     print(app.config)
 
     # Setup tables if they don't exist

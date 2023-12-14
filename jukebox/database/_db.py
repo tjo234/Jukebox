@@ -3,15 +3,16 @@ import os
 import sqlite3
 from flask import g, current_app
 
-FLASK_DATABASE = 'DATABASE'
 class JukeboxLibraryNotFound(Exception):
     pass
 
 def get_db_connection():
-    if not FLASK_DATABASE in current_app.config:
-        raise JukeboxLibraryNotFound("Environment varable does does exist: %s" % FLASK_DATABASE)
-
-    DATABASE = current_app.config[FLASK_DATABASE]
+    if not 'DATABASE' in current_app.config:
+        raise JukeboxConfigMissing("""
+            The app.config['DATABASE'] is empty. \nRun `echo $FLASK_DATABASE` to make sure the environment variable exists or `exports FLASK_DATABASE` to set it.
+        """)
+    
+    DATABASE = current_app.config['DATABASE']
     db = getattr(g, '_database', None)
     if db:
         print("Cached SQL connection:", DATABASE)
