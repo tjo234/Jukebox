@@ -28,3 +28,18 @@ Development Server:
 # Testing
 
 1. Run unittests `python3 -m unittest discover -v`
+
+-------
+
+# Install Jukebox
+
+## Install Apache Server (if not installed)
+`sudo apt install apache2`
+
+## Install Jukebox from Github
+```
+cd /var/www/
+sudo mkdir Jukebox
+git clone https://github.com/tjo234/Jukebox.git
+sh scripts/install.sh
+```
