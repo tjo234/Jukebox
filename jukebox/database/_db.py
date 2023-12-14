@@ -40,7 +40,6 @@ class Database():
         cursor =  db.executemany(sql, data)  
         ret = cursor.rowcount
         db.commit()
-        db.close()
         return ret
 
     @staticmethod
@@ -49,19 +48,16 @@ class Database():
         cursor = db.execute(sql)
         ret = cursor.rowcount
         db.commit()
-        db.close()
         return ret
 
     @staticmethod
     def fetch(sql):
         db = get_db_connection()
         ret = db.execute(sql).fetchall()
-        db.close()
         return ret
 
     @staticmethod
     def get(sql):
         db = get_db_connection()
         ret = db.execute(sql).fetchone()
-        db.close()
         return ret

@@ -1,6 +1,5 @@
 #!/usr/bin/env
 from flask import Flask, render_template, send_from_directory, send_file, request, jsonify, g
-
 from .database import Config, Database, Track
 from .library import Library
 
@@ -37,9 +36,9 @@ GENRES = [
 
 def get_template_values():
 
-    tracks = [] #Track.get_tracks()
-    albums = [] #Track.get_albums()
-    artists = [] #Track.get_artists()
+    tracks = Track.get_tracks()
+    albums = Track.get_albums()
+    artists = Track.get_artists()
     arrHome = []
     currentTrack = None
 
@@ -104,7 +103,6 @@ def create_app():
     def api_get_file(track_id):
         filename = Track.get_track_by_id(track_id)['filename']
         return send_file(filename)
-        # return send_from_directory(LIBRARY_PATH, filename)
 
     @app.teardown_appcontext
     def close_connection(exception):
@@ -113,5 +111,4 @@ def create_app():
             print('Closed SQL connection.')
             db.close()
             
-
     return app

@@ -1,5 +1,6 @@
 <div id="now-playing" class="container-fluid">
 	<div class="row">
+		{% if home %}
 		{% for t in home %}
 		<div class="col-sm-2 mb-4">
 			<img src="{{ t.cover }}" class="img-thumbnail img-fluid" style="height:100%; width: 100%;" />
@@ -9,6 +10,9 @@
 				</div> -->
 		</div>
 		{% endfor %}
+		{% else %}
+		<img src="/static/img/logo_tall.png" class="img-fluid" />
+		{% endif %}
 	</div>
 </div>
 
