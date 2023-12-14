@@ -12,7 +12,8 @@ class JukeboxConfigNotFound(Exception):
 def get_db_connection():
     if not 'DATABASE' in current_app.config:
         raise JukeboxConfigNotFound("""
-            The app.config['DATABASE'] is empty. \nRun `echo $FLASK_DATABASE` to make sure the environment variable exists or `exports FLASK_DATABASE` to set it.
+            The app.config['DATABASE'] is empty.
+            Run `echo $FLASK_DATABASE` to make sure the environment variable exists or `exports FLASK_DATABASE` to set it.
         """)
     
     DATABASE = current_app.config['DATABASE']

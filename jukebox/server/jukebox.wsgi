@@ -4,7 +4,7 @@ import logging
 
 sys.path.insert(0, '/var/www/Jukebox')
 
-os.environ['FLASK_DATABASE'] = 'sql/library.db'
+os.environ['FLASK_DATABASE'] = '/var/database/jukebox.db'
 
 # Set up logging
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)

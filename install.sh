@@ -1,5 +1,5 @@
-# Install Apache Config
-sudo cp config/jukebox.conf /etc/apache2/sites-available/jukebox.conf
+# Update Apache Config
+sudo cp jukebox/server/jukebox.conf /etc/apache2/sites-available/jukebox.conf
 sudo a2ensite jukebox
 sudo systemctl reload apache2
 
