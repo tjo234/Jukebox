@@ -8,4 +8,11 @@ sudo python3 -m venv .env
 source .env/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+sudo pip install -r requirements.txt
+
+
+# Create database/fix ownership
+mkdir sql
+touch sql/library.db
+sudo chown -R www-data:www-data sql
+sudo chmod -R u+w sql

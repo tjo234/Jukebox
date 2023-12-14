@@ -6,9 +6,12 @@ from flask import g, current_app
 class JukeboxLibraryNotFound(Exception):
     pass
 
+class JukeboxConfigNotFound(Exception):
+    pass
+
 def get_db_connection():
     if not 'DATABASE' in current_app.config:
-        raise JukeboxConfigMissing("""
+        raise JukeboxConfigNotFound("""
             The app.config['DATABASE'] is empty. \nRun `echo $FLASK_DATABASE` to make sure the environment variable exists or `exports FLASK_DATABASE` to set it.
         """)
     
