@@ -15,7 +15,7 @@ def get_music_daemon():
 def get_album_art(uri):
     print(uri)
     mpd = get_music_daemon()
-    cover = mpd.albumart("/var/lib/mpd/music/" + uri)
+    cover = mpd.albumart("'/var/lib/mpd/music/" + uri + "'")
     # try:
         
     # except:
