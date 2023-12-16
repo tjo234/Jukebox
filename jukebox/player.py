@@ -2,6 +2,8 @@
 from mpd import MPDClient, CommandError
 from flask import g
 
+from .library import get_album_art
+
 class JukeboxPlayerException(Exception):
     pass
 
@@ -12,10 +14,10 @@ def get_music_daemon():
         mpd.connect("jukebox.local", 6600)
     return mpd
   
-def get_album_art(uri):
-    print(uri)
-    mpd = get_music_daemon()
-    cover = mpd.albumart("'/var/lib/mpd/music/" + uri + "'")
+def get_album(uri):
+    file = "/var/lib/mpd/music/" + uri
+    print(file)
+    return get_album_art(file)
     # try:
         
     # except:
@@ -33,7 +35,7 @@ class JukeboxPlayer():
     def status():
         mpd = get_music_daemon()   
         song = mpd.currentsong()  
-        cover = get_album_art(song['file'])
+        cover = get_album(song['file'])
 
         return {
             "version": mpd.mpd_version,
@@ -126,4 +128,13 @@ class JukeboxPlayer():
     @staticmethod
     def status_only():
         return get_music_daemon().status()
+
+    @staticmethod
+    def playlist_reset():
+        db = get_music_daemon()
+        db.clear()
+        db.findall("album", "Dick's Picks 14")
+        db.play()
+
+        
 

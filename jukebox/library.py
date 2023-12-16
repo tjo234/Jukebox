@@ -12,6 +12,15 @@ from .utils import convert_size
 
 EXTENSIONS = [".mp3", ".flac", ".wav"]
 
+def get_album_art(filename):
+    try:
+        tags = mutagen.File(filename)
+        img_base64 = base64.b64encode(tags.get("APIC:").data).decode("utf-8")
+        img_mime = tags.get("APIC:").mime
+        return "data:%s;base64,%s" % (img_mime, img_base64)
+    except:
+        return "/static/img/album.png"
+
 class Library():
     @staticmethod
     def scan_library(Library_path):
@@ -56,17 +65,7 @@ class Library():
             "size": convert_size(size_bytes),
             "rows_inserted": rows_inserted,
             "rows_deleted": rows_deleted,
-        }
-    
-    @staticmethod
-    def get_album_art(filename):
-        try:
-            tags = mutagen.File(filename)
-            img_base64 = base64.b64encode(tags.get("APIC:").data).decode("utf-8")
-            img_mime = tags.get("APIC:").mime
-            return "data:%s;base64,%s" % (img_mime, img_base64)
-        except:
-            return "/static/img/album.png"
+        } 
                 
 def get_track_object(filename):
     id3 = EasyID3(filename)

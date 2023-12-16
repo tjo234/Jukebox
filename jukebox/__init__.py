@@ -147,6 +147,11 @@ def create_app():
         resp = JukeboxPlayer.idle()
         return jsonify(resp)
 
+    @app.route("/playlist/reset")
+    def playlist_playlist_reset():
+        resp = JukeboxPlayer.playlist_reset()
+        return jsonify(resp)
+
     @app.route("/api/scan_library")
     def api_scan_library():
         resp = Library.scan_library(app.config['LIBRARY_PATH'])
