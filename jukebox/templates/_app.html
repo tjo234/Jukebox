@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
+	{% block navbar %}
 	<nav id="header" class="navbar navbar-dark bg-dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="/">
@@ -28,10 +29,14 @@
 			</a>
 		</div>
 	</nav>
+	{% endblock %}
+
 	{% block content %}
 	{% endblock %}
 	<script type="text/javascript" src="/static/scripts/jquery.min.js"></script>
 	<script type="text/javascript" src="/static/scripts/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript" src="/static/js/app.js"></script>
+	{% block script %}
+	
+	{% endblock %}
 </body>
 </html>

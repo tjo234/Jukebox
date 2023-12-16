@@ -18,5 +18,5 @@ CREATE TABLE IF NOT EXISTS config (
 );
 
 INSERT INTO config(id,val)
-VALUES('LIBRARY_PATH', '/Users/tj/Music/Jukebox')
+VALUES('VERSION', '1.0')
 ON CONFLICT DO NOTHING

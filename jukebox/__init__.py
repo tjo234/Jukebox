@@ -49,18 +49,17 @@ def create_app():
     
     # Load Configuration
     if app.testing:
-        print('TestingConfig')
         app.config.from_object(TestingConfig())
     if app.debug:
-        print('DevelopmentConfig')
         app.config.from_object(DevelopmentConfig())
     else:
-        print('ProductionConfig')
         app.config.from_object(ProductionConfig())
 
-    # Setup tables if they don't exist
-    with app.app_context():
-        Database.initialize()
+    # @app.before_first_request
+    # def initialize_db():
+    #     # Setup tables if they don't exist
+    #     with app.app_context():
+    #         Database.initialize()
 
     # Root Static Handler (favicon)
     @app.route('/favicon.ico')
@@ -109,12 +108,12 @@ def create_app():
         resp = JukeboxPlayer.library()
         return jsonify(resp)
 
-    @app.route("/player/library/albums")
+    @app.route("/player/albums")
     def player_library_albums():
         resp = JukeboxPlayer.albums()
         return jsonify(resp)
 
-    @app.route("/player/library/artists")
+    @app.route("/player/artists")
     def player_library_artists():
         resp = JukeboxPlayer.artists()
         return jsonify(resp)

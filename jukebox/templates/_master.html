@@ -23,6 +23,11 @@
 <body>
 	{% block content %}
 	{% endblock %}
+	{% if player.status.error %}
+	<div class="error">
+		{{ player.status.error }}
+	</div>
+	{% endif %}
 	<nav id="footer" class="navbar fixed-bottom">
 		<div class="container-fluid p-0">
 

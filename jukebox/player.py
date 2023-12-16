@@ -1,5 +1,5 @@
 #!/usr/bin/env
-from mpd import MPDClient
+from mpd import MPDClient, CommandError
 from flask import g
 
 class JukeboxPlayerException(Exception):
@@ -33,20 +33,14 @@ class JukeboxPlayer():
 
     @staticmethod
     def status():
-        mpd = get_music_daemon() 
-        currentsong = mpd.currentsong()
-        try:
-            cover = mpd.albumart(currentsong['file'])
-        except:
-            cover = "/static/img/album.png"
-        
+        mpd = get_music_daemon()   
         return {
             "version": mpd.mpd_version,
             "status": mpd.status(),
             "stats": mpd.stats(),
-            "currentsong": currentsong,
+            "currentsong": mpd.currentsong(),
             "playlist": mpd.playlist(),
-            "cover": cover,
+            "cover": mpd.readpicture(mpd.currentsong()['file']),
             "outputs": mpd.outputs()
         }
 
