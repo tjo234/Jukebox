@@ -3,28 +3,27 @@ import os
 import sqlite3
 from flask import g, current_app
 
-class JukeboxLibraryNotFound(Exception):
-    pass
-
-class JukeboxConfigNotFound(Exception):
+class JukeboxDatabaseException(Exception):
     pass
 
 def get_db_connection():
+    # Check config value exists
     if not 'DATABASE' in current_app.config:
-        raise JukeboxConfigNotFound("""
-            The app.config['DATABASE'] is empty.
-            Run `echo $FLASK_DATABASE` to make sure the environment variable exists or `exports FLASK_DATABASE` to set it.
-        """)
-    
+        raise JukeboxDatabaseException("The app.config['DATABASE'] is empty.")
+
+    # Check that database exists
     DATABASE = current_app.config['DATABASE']
+    if not os.path.exists(DATABASE):
+            raise JukeboxDatabaseException("Path does does exist: %s" % DATABASE)
+    
+    # Load cached database connection
     db = getattr(g, '_database', None)
-    if db:
-        print("Cached SQL connection:", DATABASE)
-    else:
-        if not os.path.exists(DATABASE):
-            raise JukeboxLibraryNotFound("Path does does exist: %s" % DATABASE)
+
+    # Open new database connection
+    if not db:
+        print(current_app.config)
+        print('Opening SQL connection...')
         db = g._database = sqlite3.connect(DATABASE)     
-        print("Opened SQL connection:", DATABASE)
     return db
 
 class Database():
@@ -33,7 +32,12 @@ class Database():
         db = get_db_connection()
         with current_app.open_resource('database/schema.sql') as f:
             db.executescript(f.read().decode('utf8'))
-
+    
+    @staticmethod
+    def close():
+        print('Closing SQL connection...')
+        get_db_connection().close()
+        
     @staticmethod
     def executemany(sql, data):
         db = get_db_connection()

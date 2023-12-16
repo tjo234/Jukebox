@@ -21,81 +21,14 @@
 	<link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
-	<!-- <nav id="header" class="navbar navbar-dark bg-dark fixed-top">
-		<div class="container-fluid">
-
-		
-			<a class="navbar-brand" href="/">
-				<img src="/static/img/logo.png" alt="Jukebox" height="50" />
-			</a>
-
-			<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="offcanvas offcanvas-end bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-				<div class="offcanvas-header">
-					<h5 class="offcanvas-title" id="offcanvasNavbarLabel">JUKEBOX</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-				</div>
-				<div class="offcanvas-body">
-					<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-						<li class="nav-item">
-							<a class="nav-link" href="/">
-								<i class="bi bi-house-fill"></i> Home
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/">
-								<i class="bi bi-search"></i> Search
-							</a>
-						</li>
-						<li class="nav-item">
-							<h5>Library</h5>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/#artists">
-								<i class="bi bi-person"></i>
-								Artists
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/#albums">
-								<i class="bi bi-disc"></i>
-								Albums
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/#tracks">
-								<i class="bi bi-music-note"></i>
-								Songs
-							</a>
-						</li>
-						<li class="nav-item">
-							<h5>Settings</h5>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/config">
-								<i class="bi bi-gear-fill"></i> Configure
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="javascript:;" onclick="scanLibrary()">
-								<i class="bi bi-arrow-clockwise"></i> Scan Library
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</nav> -->
 	{% block content %}
 	{% endblock %}
 	<nav id="footer" class="navbar fixed-bottom">
 		<div class="container-fluid p-0">
+
 			<!-- MINI PLAYER -->
-			<input type="hidden" id="player-id" value="{{ currentTrack.id }}" />
-			<audio id="player-audio" src="/file/{{ currentTrack.id }}"></audio>	
 			<div id="player" class="player p-0">
+				<input id="trackid" type="hidden" />
 				<div class="row">
 					<div class="col-2">
 						<button id="player-btn" class="btn btn-lg" onclick="playerPlayToggle()" style="font-size:28px;">
@@ -105,17 +38,20 @@
 					</div>
 					<div class="col">
 						<a class="marquee" href="javascript:;" data-bs-toggle="modal" data-bs-target="#player-full">
-							{{ currentTrack.track }} - {{ currentTrack.artist }}
+							<span class="player-title"></span>
+							<span class="player-artist"></span>
 						</a>
 					</div>
 					<div class="col-2">
-						<button class="btn btn-lg" onclick="playerMuteToggle()" style="font-size:18px;">
-							<i class="bi bi-volume-up-fill player-btn-volume"></i>
-							<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>
+						<button class="btn btn-lg" data-bs-toggle="modal" data-bs-target="#player-cast-full">
+							<i class="bi-speaker-fill"></i>
 						</button>
+						
 					</div>
 				</div>
 			</div>
+
+			<!-- FOOTER NAV -->
 			<ul class="nav nav-pills nav-justified" style="width: 100%;">
 				<li class="nav-item">
 					<a class="nav-link {{ 'active' if route == 'index' else ''}}" href="/#home">
@@ -136,41 +72,95 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {{ 'active' if route == 'library' else ''}}" href="/#library">
+					<a class="nav-link {{ 'active' if route == 'queue' else ''}}" href="/#queue">
 						<i class="bi bi-collection-play-fill"></i>
-						<span>Library</span>
+						<span>Queue</span>
 					</a>
 				</li>
 			</ul>
+
 		</div>
 	</nav>
-	<!-- FULL SCREEN POPUP -->
-	<div id="player-full" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+	<!-- FULL SCREEN CAST -->
+	<div id="player-cast-full" class="modal modal-full fade" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
-					<div class="text-start pe-3">
-						<button type="button" class="btn me-1" data-bs-dismiss="modal" aria-label="Close">
-							<i class="bi bi-chevron-down" style="font-size: 28px;"></i>
+					<div class="modal-header">
+						<button type="button" class="btn btn-xl me-1" data-bs-dismiss="modal" aria-label="Close">
+							<i class="bi bi-chevron-down"></i>
 						</button>
-						<span style="line-height: 32px" class="text-secondary">{{ currentTrack.album }}</span>
+						<h5 class="text-secondary">
+							<i class="bi bi-speaker-fill me-2"></i>
+							Playback Settings
+						</h5>
 					</div>
+					<div id="cast" class="pt-5">
+
+						<h4 class="text-secondary">Audio Outputs</h4>
+						{% for o in player.outputs %}
+						<div class="row my-4">
+							<div class="col">
+								<label class="switch">
+								  <input type="checkbox" checked="{{ o.outputenabled }}">
+								  <span class="slider round"></span>
+								</label>
+							</div>
+							<div class="col-9">
+								<h4 class="text-light switch-label">{{ o.outputname }} {{ o.outputenabled }}</h4>
+							</div>
+						</div>
+						{% endfor %}
+						<!-- <h4 class="text-secondary">Volume</h4>
+						<button class="btn btn-lg" onclick="playerMuteToggle()" style="font-size:18px;">
+							<i class="bi bi-volume-up-fill player-btn-volume"></i>
+							<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>
+							<i class="bi bi-volume-mute-fill player-btn-fixed" style="display: none;"></i>
+						</button> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- FULL SCREEN PLAYER -->
+	<div id="player-full" class="modal modal-full fade" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="modal-header">
+						<button type="button" class="btn btn-xl me-1 btn-back" data-bs-dismiss="modal" aria-label="Close">
+							<i class="bi bi-chevron-down"></i>
+						</button>
+						<h5>
+							<i class="bi bi-disc-fill me-2"></i>
+							<span class="text-secondary player-album"></span>
+						</h5>
+					</div>
+					<img src="{{ player.cover }}" 
+						class="img-thumbnail my-5"
+						style="min-width: 350px; min-height: 350px;" />
 					<div class="text-center">
-						<img src="{{ currentTrack.cover }}" class="img-thumbnail my-4" style="min-width: 350px;" />
-						<br /><br />
-						<h3>{{ currentTrack.track }}</h3>
-						<h6 class="text-secondary">{{ currentTrack.artist }}</h6>
-						<br /><br />
+						<h2 class="player-title"></h2>
+						<h4 class="text-secondary player-artist mb-4"></h4>
 						<div class="player">
-							<button class="btn btn-xl" onclick="playerPrevTrack()">
+							<button class="btn btn-lg" onclick="playerRepeat()">
+								<i class="bi bi-repeat player-btn-repeat"></i>
+								<i class="bi bi-repeat-1 player-btn-repeat-1" style="display: none;"></i>
+							</button>
+							<button class="btn btn-xl px-3" onclick="playerPrevTrack()">
 								<i class="bi bi-skip-start-fill"></i>
 							</button>
-							<button class="btn btn-xxl" onclick="playerPlayToggle()" style="font-size:28px;">
+							<button class="btn btn-xxl px-3" onclick="playerPlayToggle()" style="font-size:28px;">
 								<i class="bi bi-play-circle-fill player-btn-play"></i>
 								<i class="bi bi-pause-circle-fill player-btn-pause" style="display: none;"></i>
 							</button>
-							<button class="btn btn-xl" onclick="playerNextTrack()">
+							<button class="btn btn-xl px-3" onclick="playerNextTrack()">
 								<i class="bi bi-skip-end-fill"></i>
+							</button>
+							<button class="btn btn-lg" onclick="playerShuffle()">
+								<i class="bi bi-shuffle player-btn-shuffle"></i>
 							</button>
 						</div>
 					</div>
@@ -178,6 +168,7 @@
 			</div>
 		</div>
 	</div>
+
 	<script type="text/javascript" src="/static/scripts/jquery.min.js"></script>
 	<script type="text/javascript" src="/static/scripts/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript" src="/static/js/app.js"></script>
