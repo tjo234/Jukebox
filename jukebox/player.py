@@ -34,8 +34,11 @@ class JukeboxPlayer():
     @staticmethod
     def status():
         mpd = get_music_daemon()   
-        song = mpd.currentsong()  
-        cover = get_album(song['file'])
+        song = mpd.currentsong() 
+        try: 
+            cover = get_album(song['file'])
+        except:
+            cover = "/static/img/album.png"
 
         return {
             "version": mpd.mpd_version,
@@ -133,7 +136,7 @@ class JukeboxPlayer():
     def playlist_reset():
         db = get_music_daemon()
         db.clear()
-        db.findall("album", "Dick's Picks 14")
+        db.findadd("any", "A Tribe Called Quest")
         db.play()
 
         

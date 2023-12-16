@@ -46,11 +46,11 @@
 			<table class="table table-dark">
 				<tr>
 					<td><i class="bi bi-speaker-fill me-2"></i> Sample Rate</td>
-					<td>{{ player.status.audio|audio }}</td>
+					<td>{{ player.status.audio|audio if player.status.audio else "N/A" }}</td>
 				</tr>
 				<tr>
 					<td><i class="bi bi-speaker-fill me-2"></i> Bitrate</td>
-					<td>{{ player.status.bitrate }} kpbs</td>
+					<td>{{ player.status.bitrate if player.status.audio else "0" }} kpbs</td>
 				</tr>
 			</table>
 		</div>

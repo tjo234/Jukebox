@@ -14,7 +14,6 @@ apt install mpd
 
 # Delete/replace application folder
 sudo rm -R /var/www/Jukebox
-sudo mkdir /var/www/Jukebox
 
 # Download latest application code
 sudo git clone https://github.com/tjo234/Jukebox.git
