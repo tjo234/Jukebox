@@ -2,8 +2,29 @@
 
 {% block content %}
 <div id="status" class="container-fluid text-center">
-	<textarea style="width: 100%; height: 600px;">
-		{{ player }}
-	</textarea>
+	<div class="row">
+		<div class="col">
+			<table class="table">
+				<tr><td colspan="2">Stats</td></tr>
+				{% for k in player.stats %}
+				<tr>
+					<td><input id="setting-id" value="{{ k }}"></td>
+					<td><input id="setting-value" value="{{ player.stats[k] }}"></td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div class="col">
+			<table class="table">
+				<tr><td colspan="2">Status</td></tr>
+				{% for v in player.status %}
+				<tr>
+					<td><input id="setting-id" value="{{ v }}"></td>
+					<td><input id="setting-value" value="{{ player.status[v] }}"></td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
 </div>
 {% endblock %}
