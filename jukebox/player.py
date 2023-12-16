@@ -12,35 +12,36 @@ def get_music_daemon():
         mpd.connect("jukebox.local", 6600)
     return mpd
   
-
-def get_album_art(filename):
-        print(filename)
-        mpd = get_music_daemon()
-        return mpd.readpicture(filename)
+def get_album_art(uri):
+    print(uri)
+    mpd = get_music_daemon()
+    cover = mpd.albumart("/var/lib/mpd/music/" + uri)
+    # try:
+        
+    # except:
+    #     cover = "/static/img/album.png"
 
 class JukeboxPlayer():
 
     @staticmethod
     def initialize():
         mpd = get_music_daemon()
-
-        if len(mpd.playlist()) == 0:
-            print("Updating playlist...")
-            ret = mpd.findadd("artist", "Grateful Dead")
-
         mpd.play()   
-        return mpd.status()     
+        return mpd.status()   
 
     @staticmethod
     def status():
         mpd = get_music_daemon()   
+        song = mpd.currentsong()  
+        cover = get_album_art(song['file'])
+
         return {
             "version": mpd.mpd_version,
             "status": mpd.status(),
             "stats": mpd.stats(),
-            "currentsong": mpd.currentsong(),
+            "currentsong": song,
             "playlist": mpd.playlist(),
-            "cover": mpd.readpicture(mpd.currentsong()['file']),
+            "cover": cover,
             "outputs": mpd.outputs()
         }
 
@@ -121,4 +122,8 @@ class JukeboxPlayer():
     @staticmethod
     def outputs():
         return get_music_daemon().outputs()
+
+    @staticmethod
+    def status_only():
+        return get_music_daemon().status()
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env
+from datetime import datetime, timedelta
 from flask import Flask, render_template, send_from_directory, send_file, request, jsonify, g
 
 from .database import Database, Track
@@ -80,16 +81,6 @@ def create_app():
         obj = get_template_values()
         return render_template('views/%s.html' % route, **obj)   
 
-    # API Handlers
-    @app.route("/api/status")
-    def api_status():
-        resp = {"status": "OK"}
-        return jsonify(resp)
-
-    @app.route("/player/ping")
-    def player_ping():
-        return jsonify(JukeboxPlayer.ping())
-
     @app.route("/player/status")
     def player_status():
         return jsonify(JukeboxPlayer.status())
@@ -124,7 +115,7 @@ def create_app():
         return jsonify(resp)
 
     @app.route("/player/control/volume/<volume>")
-    def player_volume():
+    def player_volume(volume):
         resp = JukeboxPlayer.volume(volume)
         return jsonify(resp)
 
@@ -161,6 +152,11 @@ def create_app():
         resp = Library.scan_library(app.config['LIBRARY_PATH'])
         return jsonify(resp)
 
+    @app.route("/api/status")
+    def api_player_status():
+        resp = JukeboxPlayer.status_only()
+        return jsonify(resp)
+
     # @app.route("/api/tracks")
     # def api_get_tracks():
     #     resp = Track.get_tracks()
@@ -174,5 +170,20 @@ def create_app():
     @app.teardown_appcontext
     def close_connection(exception):
         Database.close()
+
+    @app.template_filter('dt')
+    def filter_time_to_date(s):
+        return datetime.fromtimestamp(int(s)).strftime('%b %d, %Y %I:%M %p')
+
+    @app.template_filter('seconds')
+    def filter_seconds_timedelta(s):
+        return timedelta(seconds=int(s))
+
+    @app.template_filter('audio')
+    def filter_mpd_audio_str(s):
+        audio = s.split(':')
+        hz = str(int(audio[0])/1000)
+        return hz + ' kHz / ' + audio[1] + ' bit'
+        return timedelta(seconds=int(s))
             
     return app

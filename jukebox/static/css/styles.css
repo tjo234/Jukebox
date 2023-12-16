@@ -145,7 +145,10 @@ body {
 	font-size: 11px;
 	color: #999;
 }
-
+#player-full .modal-header .player-album {
+	font-size: 14px;
+	line-height: 60px;
+}
 /* FULL SCREEN MODALS */
 .modal-full .btn-close {
 	color: white !important;	

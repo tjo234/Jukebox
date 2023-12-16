@@ -97,7 +97,6 @@
 							<i class="bi bi-chevron-down"></i>
 						</button>
 						<h5 class="text-secondary">
-							<i class="bi bi-speaker-fill me-2"></i>
 							Playback Settings
 						</h5>
 					</div>
@@ -108,21 +107,25 @@
 						<div class="row my-4">
 							<div class="col">
 								<label class="switch">
-								  <input type="checkbox" checked="{{ o.outputenabled }}">
-								  <span class="slider round"></span>
+									<input type="checkbox" checked="{{ o.outputenabled }}">
+									<span class="slider round"></span>
 								</label>
 							</div>
 							<div class="col-9">
-								<h4 class="text-light switch-label">{{ o.outputname }} {{ o.outputenabled }}</h4>
+								<h4 class="text-light switch-label">{{ o.outputname }}</h4>
 							</div>
 						</div>
 						{% endfor %}
-						<!-- <h4 class="text-secondary">Volume</h4>
+						<h4 class="text-secondary">Volume</h4>
+						{% if player.status.volume %}
 						<button class="btn btn-lg" onclick="playerMuteToggle()" style="font-size:18px;">
 							<i class="bi bi-volume-up-fill player-btn-volume"></i>
 							<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>
 							<i class="bi bi-volume-mute-fill player-btn-fixed" style="display: none;"></i>
-						</button> -->
+						</button>
+						{% else %}
+						Volume is controlled by the AV receiver.
+						{% endif %}
 					</div>
 				</div>
 			</div>
@@ -133,19 +136,17 @@
 	<div id="player-full" class="modal modal-full fade" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="btn btn-xl me-1 btn-back" data-bs-dismiss="modal" aria-label="Close">
+						<i class="bi bi-chevron-down"></i>
+					</button>
+					<h5 class="text-secondary text-nowrap player-album">
+					</h5>
+				</div>
 				<div class="modal-body">
-					<div class="modal-header">
-						<button type="button" class="btn btn-xl me-1 btn-back" data-bs-dismiss="modal" aria-label="Close">
-							<i class="bi bi-chevron-down"></i>
-						</button>
-						<h5>
-							<i class="bi bi-disc-fill me-2"></i>
-							<span class="text-secondary player-album"></span>
-						</h5>
-					</div>
 					<img src="{{ player.cover }}" 
-						class="img-thumbnail my-5"
-						style="min-width: 350px; min-height: 350px;" />
+					class="img-thumbnail my-5"
+					style="min-width: 350px; min-height: 350px;" />
 					<div class="text-center">
 						<h2 class="player-title"></h2>
 						<h4 class="text-secondary player-artist mb-4"></h4>
