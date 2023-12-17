@@ -26,28 +26,35 @@ class JukeboxPlayer():
     def status():
         mpd = get_music_daemon()
         song = mpd.currentsong()
-        uri = "/var/lib/mpd/music/" + song['file']
-
+        uri = None
         albumart = None
-        try:
-            albumart = mpd.albumart(uri)
-        except Exception as ex:
-            print(ex)
-            None
-        
         embedded = None
+        cover = None
+
         try:
-            embedded = mpd.readpicture(uri)
+            uri = "/var/lib/mpd/music/" + song['file']
         except Exception as ex:
             print(ex)
             None
 
-        cover = None
-        try:
-            cover = get_album_art(uri)
-        except Exception as ex:
-            print(ex)
-            None
+        if uri:
+            try:
+                albumart = mpd.albumart(uri)
+            except Exception as ex:
+                print(ex)
+                None
+            
+            try:
+                embedded = mpd.readpicture(uri)
+            except Exception as ex:
+                print(ex)
+                None
+
+            try:
+                cover = get_album_art(uri)
+            except Exception as ex:
+                print(ex)
+                None
         
         return {
             "version": mpd.mpd_version,
@@ -68,8 +75,8 @@ class JukeboxPlayer():
         return get_music_daemon().playlistinfo()
 
     @staticmethod
-    def playlistid():
-        return get_music_daemon().playlistid()
+    def listplaylist(pid):
+        return get_music_daemon().listplaylist(pid)
 
     @staticmethod
     def update():

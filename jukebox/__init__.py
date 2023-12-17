@@ -154,17 +154,16 @@ def create_app():
         return jsonify(resp)
 
     # Playlist Handlers
+    @app.route("/playlist/<playlist_id>")
+    def playlist_playlist_by_id(playlist_id):
+        resp = JukeboxPlayer.listplaylist(playlist_id)
+        return jsonify(resp)
+
     @app.route('/playlist')
     def playlist_default():
         resp = JukeboxPlayer.playlist()
-        return jsonify(resp)
+        return jsonify(resp)   
 
-    @app.route("/playlist/<playlist_id>")
-    def playlist_playlist_by_id(playlist_id):
-        resp = JukeboxPlayer.playlistid(playlist_id)
-        return jsonify(resp)
-
-    # Playlist Handlers
     @app.route("/playlist/reset")
     def playlist_playlist_reset():
         resp = JukeboxPlayer.playlist_reset()

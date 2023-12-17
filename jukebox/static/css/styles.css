@@ -7,6 +7,14 @@ body {
 	background: black;
 }
 
+.hidden {
+	display: none;
+}
+.on {
+	color:#04A9C1 !important;
+}
+
+
 /* BUTTONS */
 .btn-xxl > i {
 	font-size: 60px;

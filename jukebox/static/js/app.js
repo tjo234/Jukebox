@@ -20,9 +20,9 @@ function loadView(route){
 
 // Music Player
 $(function() {
-    initMusicPlayer();
+    initPlayer();
 });
-function initMusicPlayer(){
+function initPlayer(){
     $.getJSON('/player/initialize', function(){
         refreshPlayerStatus();
         playerWaitForChange();
@@ -35,28 +35,38 @@ function updateLibrary(){
 }
 function playerPlayToggle() {
     $.getJSON('/player/control/pause', function(){
-        refreshPlayerStatus()
+        //refreshPlayerStatus()
     });
 }
 function playerMuteToggle() {
     $.getJSON('/player/control/mute', function(){
-        refreshPlayerStatus()
+        //refreshPlayerStatus()
     });
 }
 function playerNextTrack() {
     $.getJSON('/player/control/next', function(){
-        refreshPlayerStatus()
+        //refreshPlayerStatus()
     });
 }
 function playerPrevTrack() {
     $.getJSON('/player/control/previous', function(){
-        refreshPlayerStatus()
+        //refreshPlayerStatus()
+    });
+}
+function playerRepeat() {
+    $.getJSON('/player/control/repeat', function(){
+        //refreshPlayerStatus()
+    });
+}
+function playerShuffle() {
+    $.getJSON('/player/control/random', function(){
+        //refreshPlayerStatus()
     });
 }
 function playerWaitForChange() {
     $.getJSON('/player/idle', function(data){
         console.log('Change received: ' + data)
-        // refreshPlayerStatus()
+        refreshPlayerStatus()
         playerWaitForChange();
     });
 }
@@ -70,28 +80,56 @@ function refreshPlayerUI(){
     console.log('refreshPlayerUI')
 
     // Play/Pause Toggle
-    if (JUKEBOX.status.state == 'pause') {
-        $('.player-btn-play').show();
-        $('.player-btn-pause').hide();
+    if (JUKEBOX.status.state == 'play') {
+        console.log('Playing');
+        $('.player-btn-play').addClass('hidden');
+        $('.player-btn-pause').removeClass('hidden');
     }
     else {
-        $('.player-btn-play').hide();
-        $('.player-btn-pause').show();
+        console.log('Not Playing')
+        $('.player-btn-play').removeClass('hidden');
+        $('.player-btn-pause').addClass('hidden');
     }
 
     // Volume Toggle
-    if (!JUKEBOX.status.volume) {
+
+    if (!("volume" in JUKEBOX.status)) {
         $('.player-btn-volume').hide();
         $('.player-btn-mute').hide();
         $('.player-btn-fixed').show();
-    } else if (JUKEBOX.status.volume == 0) {
-        $('.player-btn-volume').hide();
-        $('.player-btn-mute').show();
-        $('.player-btn-fixed').hide();
+    } else { 
+        if (JUKEBOX.status.volume == 0) {
+            $('.player-btn-volume').hide();
+            $('.player-btn-mute').show();
+            $('.player-btn-fixed').hide();
+        } else {
+            $('.player-btn-volume').show();
+            $('.player-btn-mute').hide();
+            $('.player-btn-fixed').hide();
+        }
+    }
+
+    // Random Button (OFF / REPEAT / REPEAT ONE)
+    if (Number(JUKEBOX.status.repeat) == 0 && Number(JUKEBOX.status.single) == 0) {
+        $('#btn-player-repeat').removeClass('on');
+        $('#btn-player-repeat').removeClass('hidden');
+        $('#btn-player-repeat-1').addClass('hidden');
+    } else if (Number(JUKEBOX.status.repeat) == 1 && Number(JUKEBOX.status.single) == 0) {
+        $('#btn-player-repeat').addClass('on');
+        $('#btn-player-repeat').removeClass('hidden');
+        $('#btn-player-repeat-1').addClass('hidden');
+    } else if (Number(JUKEBOX.status.repeat) == 1 && Number(JUKEBOX.status.single) == 1) {
+        $('#btn-player-repeat').addClass('hidden');
+        $('#btn-player-repeat-1').addClass('on');
+        $('#btn-player-repeat-1').removeClass('hidden');
+    }
+       
+
+    // Shuffle Button
+    if (Number(JUKEBOX.status.random) == 1) {
+        $('#btn-player-shuffle').addClass('on');
     } else {
-        $('.player-btn-volume').show();
-        $('.player-btn-mute').hide();
-        $('.player-btn-fixed').hide();
+        $('#btn-player-shuffle').removeClass('on');
     }
     
     // Track Info
@@ -104,9 +142,11 @@ function refreshPlayerUI(){
 
     // Playlist Info
     var playlistHtml = '';
-    JUKEBOX.playlist.forEach(function(val){
-        playlistHtml += "<li>" + val + "</li>";
-    });
+    if(JUKEBOX.playlist) {
+        JUKEBOX.playlist.forEach(function(val){
+            playlistHtml += "<li>" + val + "</li>";
+        });
+    }
     $('#queue').html("<ul class='playlist'>" + playlistHtml + '</ul>');
 
 }

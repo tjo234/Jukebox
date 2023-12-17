@@ -37,14 +37,14 @@
 				<div class="row">
 					<div class="col-2">
 						<button id="player-btn" class="btn btn-lg" onclick="playerPlayToggle()" style="font-size:28px;">
-							<i class="bi bi-play-circle-fill player-btn-play"></i>
-							<i class="bi bi-pause-circle-fill player-btn-pause" style="display: none;"></i>
+							<i class="bi bi-play-circle-fill player-btn-play {{ 'hidden' if player.status.state == 'play' else '' }}"></i>
+							<i class="bi bi-pause-circle-fill player-btn-pause {{ 'hidden' if player.status.state != 'play' else '' }}"></i>
 						</button>
 					</div>
 					<div class="col">
 						<a class="marquee" href="javascript:;" data-bs-toggle="modal" data-bs-target="#player-full">
-							<span class="player-title"></span>
-							<span class="player-artist"></span>
+							<span class="player-title">{{ player.currentsong.title }}</span>
+							<span class="player-artist">{{ player.currentsong.artist }}</span>
 						</a>
 					</div>
 					<div class="col-2">
@@ -141,31 +141,36 @@
 						<i class="bi bi-chevron-down"></i>
 					</button>
 					<h5 class="text-secondary text-nowrap player-album">
+						{{ player.currentsong.album }}
 					</h5>
 				</div>
 				<div class="modal-body">
-					<img src="{{ player.cover }}" 
+					<img src="{{ player.cover.albumart or player.cover.default }}" 
 					class="img-thumbnail my-5"
 					style="min-width: 350px; min-height: 350px;" />
 					<div class="text-center">
-						<h2 class="player-title"></h2>
-						<h4 class="text-secondary player-artist mb-4"></h4>
+						<h2 class="player-title">
+							{{ player.currentsong.title }}
+						</h2>
+						<h4 class="text-secondary player-artist mb-4">
+							{{ player.currentsong.artist }}
+						</h4>
 						<div class="player">
 							<button class="btn btn-lg" onclick="playerRepeat()">
-								<i class="bi bi-repeat player-btn-repeat"></i>
-								<i class="bi bi-repeat-1 player-btn-repeat-1" style="display: none;"></i>
+								<i id="btn-player-repeat"class="bi bi-repeat player-btn-repeat"></i>
+								<i id="btn-player-repeat-1" class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
 							</button>
 							<button class="btn btn-xl px-3" onclick="playerPrevTrack()">
 								<i class="bi bi-skip-start-fill"></i>
 							</button>
 							<button class="btn btn-xxl px-3" onclick="playerPlayToggle()" style="font-size:28px;">
-								<i class="bi bi-play-circle-fill player-btn-play"></i>
-								<i class="bi bi-pause-circle-fill player-btn-pause" style="display: none;"></i>
+								<i class="bi bi-play-circle-fill player-btn-play {{ 'hidden' if player.status.state == 'play' else '' }}"></i>
+								<i class="bi bi-pause-circle-fill player-btn-pause {{ 'hidden' if player.status.state != 'play' else '' }}"></i>
 							</button>
 							<button class="btn btn-xl px-3" onclick="playerNextTrack()">
 								<i class="bi bi-skip-end-fill"></i>
 							</button>
-							<button class="btn btn-lg" onclick="playerShuffle()">
+							<button id="btn-player-shuffle" class="btn btn-lg {{ 'on' if player.status.random|int == 1 else '' }}" onclick="playerShuffle()">
 								<i class="bi bi-shuffle player-btn-shuffle"></i>
 							</button>
 						</div>
