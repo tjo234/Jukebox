@@ -62,6 +62,11 @@ def create_app():
     #     with app.app_context():
     #         Database.initialize()
 
+    @app.teardown_appcontext
+    def close_connection(exception):
+        Database.close()
+
+
     # Root Static Handler (favicon)
     @app.route('/favicon.ico')
     def static_from_root():
@@ -81,6 +86,7 @@ def create_app():
         obj = get_template_values()
         return render_template('views/%s.html' % route, **obj)   
 
+    # Player API
     @app.route("/player/status")
     def player_status():
         return jsonify(JukeboxPlayer.status())
@@ -104,14 +110,14 @@ def create_app():
         resp = JukeboxPlayer.albums()
         return jsonify(resp)
 
+    @app.route("/player/cover")
+    def player_library_cover():
+        resp = JukeboxPlayer.cover()
+        return jsonify(resp)
+
     @app.route("/player/artists")
     def player_library_artists():
         resp = JukeboxPlayer.artists()
-        return jsonify(resp)
-
-    @app.route("/player/control/mute")
-    def player_mute():
-        resp = JukeboxPlayer.mute()
         return jsonify(resp)
 
     @app.route("/player/control/volume/<volume>")
@@ -121,7 +127,7 @@ def create_app():
 
     @app.route("/player/control/<control>")
     def player_control(control):
-        CONTROLS = ["play", "pause", "stop", "next", "previous"]
+        CONTROLS = ["play", "pause", "stop", "next", "previous", "mute", "random", "repeat"]
         if not control in CONTROLS:
             raise Exception('Control not valid')
         resp = exec("JukeboxPlayer.%s()" % control)
@@ -147,11 +153,24 @@ def create_app():
         resp = JukeboxPlayer.idle()
         return jsonify(resp)
 
+    # Playlist Handlers
+    @app.route('/playlist')
+    def playlist_default():
+        resp = JukeboxPlayer.playlist()
+        return jsonify(resp)
+
+    @app.route("/playlist/<playlist_id>")
+    def playlist_playlist_by_id(playlist_id):
+        resp = JukeboxPlayer.playlistid(playlist_id)
+        return jsonify(resp)
+
+    # Playlist Handlers
     @app.route("/playlist/reset")
     def playlist_playlist_reset():
         resp = JukeboxPlayer.playlist_reset()
         return jsonify(resp)
 
+    # API Handlers (Database)
     @app.route("/api/scan_library")
     def api_scan_library():
         resp = Library.scan_library(app.config['LIBRARY_PATH'])
@@ -172,10 +191,8 @@ def create_app():
     #     filename = Track.get_track_by_id(track_id)['filename']
     #     return send_file(filename)
 
-    @app.teardown_appcontext
-    def close_connection(exception):
-        Database.close()
-
+   
+    # JINJA Template Filters
     @app.template_filter('dt')
     def filter_time_to_date(s):
         return datetime.fromtimestamp(int(s)).strftime('%b %d, %Y %I:%M %p')

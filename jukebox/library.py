@@ -13,14 +13,11 @@ from .utils import convert_size
 EXTENSIONS = [".mp3", ".flac", ".wav"]
 
 def get_album_art(filename):
-    try:
-        tags = mutagen.File(filename)
-        img_base64 = base64.b64encode(tags.get("APIC:").data).decode("utf-8")
-        img_mime = tags.get("APIC:").mime
-        return "data:%s;base64,%s" % (img_mime, img_base64)
-    except:
-        return "/static/img/album.png"
-
+    tags = mutagen.File(filename)
+    img_base64 = base64.b64encode(tags.get("APIC:").data).decode("utf-8")
+    img_mime = tags.get("APIC:").mime
+    return "data:%s;base64,%s" % (img_mime, img_base64)
+    
 class Library():
     @staticmethod
     def scan_library(Library_path):
