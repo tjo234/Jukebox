@@ -50,3 +50,11 @@ WantedBy=graphical.target
 ```
 `sudo systemctl enable kiosk.service`
 `sudo systemctl start kiosk.service`
+
+
+
+# Mounting Harddrive
+sudo fdisk -l
+sudo mount /dev/sda2 /mnt
+sudo chmod 775 /mnt
+sudo nano /etc/fstab

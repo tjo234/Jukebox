@@ -7,7 +7,7 @@ from .library import get_album_art
 class JukeboxPlayerException(Exception):
     pass
 
-def get_music_daemon():
+def get_mpd():
     mpd = getattr(g, '_mpd', None)
     if not mpd:
         mpd = g._mpd = MPDClient()
@@ -18,13 +18,13 @@ class JukeboxPlayer():
 
     @staticmethod
     def initialize():
-        mpd = get_music_daemon()
+        mpd = get_mpd()
         mpd.play()   
         return mpd.status()   
 
     @staticmethod
     def status():
-        mpd = get_music_daemon()
+        mpd = get_mpd()
         song = mpd.currentsong()
         uri = None
         albumart = None
@@ -72,53 +72,29 @@ class JukeboxPlayer():
 
     @staticmethod
     def playlist():
-        return get_music_daemon().playlistinfo()
+        return get_mpd().playlistinfo()
 
     @staticmethod
     def listplaylist(pid):
-        return get_music_daemon().listplaylist(pid)
+        return get_mpd().listplaylist(pid)
 
     @staticmethod
     def update():
-        mpd = get_music_daemon() 
+        mpd = get_mpd() 
         ret = mpd.update()
         return mpd.status()
 
     @staticmethod
     def artists():
-        return get_music_daemon().list('artist')
+        return get_mpd().list('artist')
 
     @staticmethod
     def albums():
-        return get_music_daemon().list('album')
-
-    @staticmethod
-    def library():
-        return get_music_daemon().listall()
-
-    @staticmethod
-    def play():
-        return get_music_daemon().play()
-
-    @staticmethod
-    def pause():
-        return get_music_daemon().pause()
-
-    @staticmethod
-    def stop():
-        return get_music_daemon().stop()
-
-    @staticmethod
-    def next():
-        return get_music_daemon().next()
-
-    @staticmethod
-    def previous():
-        return get_music_daemon().previous()
+        return get_mpd().list('album')
 
     @staticmethod
     def random():
-        mdb = get_music_daemon()
+        mdb = get_mpd()
         random = int(mdb.status()['random'])
         print('random: %s' % random)
         if random == 0: 
@@ -128,7 +104,7 @@ class JukeboxPlayer():
 
     @staticmethod
     def repeat():
-        mdb = get_music_daemon()
+        mdb = get_mpd()
         repeat = int(mdb.status()['repeat'])
         single = int(mdb.status()['single'])
 
@@ -147,7 +123,7 @@ class JukeboxPlayer():
 
     @staticmethod
     def mute():
-        mdb = get_music_daemon()
+        mdb = get_mpd()
         is_muted = (int(mdb.status()['volume']) == 0)
         if is_muted:
             return mdb.setvol(100)
@@ -156,35 +132,59 @@ class JukeboxPlayer():
 
     @staticmethod
     def volume(vol):
-        return get_music_daemon().setvol(vol)
+        return get_mpd().setvol(vol)
+
+    @staticmethod
+    def library():
+        return get_mpd().listall()
+
+    @staticmethod
+    def play():
+        return get_mpd().play()
+
+    @staticmethod
+    def pause():
+        return get_mpd().pause()
+
+    @staticmethod
+    def stop():
+        return get_mpd().stop()
+
+    @staticmethod
+    def next():
+        return get_mpd().next()
+
+    @staticmethod
+    def previous():
+        return get_mpd().previous()
 
     @staticmethod
     def listneighbors():
-        return get_music_daemon().listneighbors()
+        return get_mpd().listneighbors()
 
     @staticmethod
     def listmounts():
-        return get_music_daemon().listmounts()
+        return get_mpd().listmounts()
 
     @staticmethod
     def ping():
-        return get_music_daemon().ping()
+        return get_mpd().ping()
 
     @staticmethod
     def idle():
-        return get_music_daemon().idle()
+        return get_mpd().idle()
 
     @staticmethod
     def outputs():
-        return get_music_daemon().outputs()
+        return get_mpd().outputs()
 
     @staticmethod
     def status_only():
-        return get_music_daemon().status()
+        return get_mpd().status()
 
     @staticmethod
     def playlist_reset():
-        db = get_music_daemon()
+        db = get_mpd()
         db.clear()
         db.findadd("any", "A Tribe Called Quest")
         db.play()
