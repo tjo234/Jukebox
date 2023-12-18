@@ -1,4 +1,5 @@
 #!/usr/bin/env
+import io
 from datetime import datetime, timedelta
 from flask import Flask, render_template, send_from_directory, send_file, request, jsonify, g
 
@@ -112,15 +113,22 @@ def create_app():
 
     @app.route("/player/cover")
     def player_library_cover():
-        resp = JukeboxPlayer.cover()
-        return jsonify(resp)
+        cover = JukeboxPlayer.cover()
+        if cover:
+            return send_file(
+                io.BytesIO(cover),
+                mimetype='image/jpeg',
+                as_attachment=True,
+                download_name='%s.jpg' % pid)
+        else:
+            return "No image found"
 
     @app.route("/player/artists")
     def player_library_artists():
         resp = JukeboxPlayer.artists()
         return jsonify(resp)
 
-    @app.route("/player/control/volume/<volume>")
+    @app.route("/player/volume/<volume>")
     def player_volume(volume):
         resp = JukeboxPlayer.volume(volume)
         return jsonify(resp)

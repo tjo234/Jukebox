@@ -28,50 +28,21 @@ class JukeboxPlayer():
     @staticmethod
     def status():
         mpd = get_mpd()
-        song = mpd.currentsong()
-        uri = None
-        albumart = None
-        embedded = None
-        cover = None
-
-        try:
-            uri = song['file']
-        except Exception as ex:
-            print(ex)
-            None
-
-        if uri:
-            try:
-                albumart = mpd.albumart(uri)
-            except Exception as ex:
-                print(ex)
-                None
-            
-            try:
-                embedded = mpd.readpicture(uri)
-            except Exception as ex:
-                print(ex)
-                None
-
-            try:
-                cover = get_album_art("/var/lib/mpd/music/" + uri)
-            except Exception as ex:
-                print(ex)
-                None
-        
         return {
             "version": mpd.mpd_version,
             "status": mpd.status(),
             "stats": mpd.stats(),
-            "currentsong": song,
-            "outputs": mpd.outputs(),
-            "cover": {
-                "albumart": albumart,
-                "embedded": embedded,
-                "mutagen": cover,
-                "default": "/static/img/album.png"
-            }
+            "currentsong": mpd.currentsong(),
+            "outputs": mpd.outputs()
         }
+  
+    @staticmethod
+    def cover():
+        mpd = get_mpd()
+        try:
+            return mpd.readpicture(mpd.currentsong()['file'])
+        except Exception as ex:
+            return None
 
     @staticmethod
     def playlist():
