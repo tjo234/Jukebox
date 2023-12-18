@@ -40,7 +40,6 @@ class JukeboxPlayer():
         if objStatus['state'] == "play":
             objStatus['str_duration'] = duration_to_time(objStatus['duration'])
             objStatus['str_elapsed'] = duration_to_time(objStatus['elapsed'])
-            objStatus['percent_elapsed'] = int(float(objStatus['elapsed']) / float(objStatus['duration']) * 100)
 
         return {
             "version": mpd.mpd_version,
@@ -123,6 +122,10 @@ class JukeboxPlayer():
     @staticmethod
     def volume(vol):
         return get_mpd().setvol(vol)
+
+    @staticmethod
+    def toggleoutput(oid):
+        return get_mpd().toggleoutput(oid)
 
     @staticmethod
     def seek(s):

@@ -156,7 +156,7 @@ body {
 	font-size: 11px;
 	color: #999;
 }
-	
+
 /* FULL SCREEN MODALS */
 .modal-full .btn-close {
 	color: white !important;	
@@ -209,13 +209,9 @@ body {
   height: 0;
 }
 
-.switch-label {
-	padding:5px ;
-	display: inline-block;
-}
-
 /* The slider */
 .slider {
+	position: absolute;
   cursor: pointer;
   top: 0;
   left: 0;
@@ -227,6 +223,7 @@ body {
 }
 
 .slider:before {
+	position: absolute;
   content: "";
   height: 26px;
   width: 26px;

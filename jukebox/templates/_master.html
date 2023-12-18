@@ -105,14 +105,17 @@
 						<h4 class="text-secondary">Audio Outputs</h4>
 						{% for o in player.outputs %}
 						<div class="row my-4">
-							<div class="col">
+							<div class="col pt-2">
 								<label class="switch">
-									<input type="checkbox" checked="{{ o.outputenabled }}">
+									<input type="checkbox" id="output-{{ o.outputid }}" 
+										{% if o.outputenabled|int == 1 %}checked{% endif %}
+										onchange="toggleOutput({{ o.outputid }})" />
 									<span class="slider round"></span>
 								</label>
 							</div>
 							<div class="col-9">
-								<h4 class="text-light switch-label">{{ o.outputname }}</h4>
+								<h5 class="text-light switch-label">{{ o.outputname }}</h6>
+								<small>{{ o.plugin|upper }}</small>
 							</div>
 						</div>
 						{% endfor %}
