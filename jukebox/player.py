@@ -40,7 +40,9 @@ class JukeboxPlayer():
     def cover():
         mpd = get_mpd()
         try:
-            return mpd.readpicture(mpd.currentsong()['file'])
+            cover = mpd.readpicture(mpd.currentsong()['file'])
+            print(cover)
+            return cover
         except Exception as ex:
             return None
 
