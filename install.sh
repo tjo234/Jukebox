@@ -20,14 +20,14 @@ echo "JUKEBOX - Update APT installer to latest version..."
 sudo apt update
 
 echo "JUKEBOX - Upgrade any outdated packages..."
-sudo apt upgrade
+sudo apt -y upgrade
 
 echo "JUKEBOX - Remove any unused packages..."
-sudo apt autoremove
+sudo apt -y autoremove
 
 # Install Apache Web Server
 echo "JUKEBOX - Install Apache2 Web Server..."
-sudo apt install apache2
+sudo apt -y install apache2
 
 # Replace Apache Config file
 sudo cp /var/www/Jukebox/jukebox/server/jukebox.conf /etc/apache2/sites-available/jukebox.conf
@@ -82,7 +82,7 @@ exit
 
 # Install Music Player Daemon as normal user
 echo "JUKEBOX - Installing MPD..."
-sudo apt install mpd
+sudo apt -y install mpd
 
 # Update MPD config file
 echo "JUKEBOX - Update config file..."
