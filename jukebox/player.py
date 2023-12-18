@@ -19,6 +19,9 @@ class JukeboxPlayer():
     @staticmethod
     def initialize():
         mpd = get_mpd()
+        mpd.update()
+        if int(mpd.status()['playlistlength']) == 0:
+            mpd.findadd("any", "Grateful Dead")
         mpd.play()   
         return mpd.status()   
 
@@ -184,10 +187,7 @@ class JukeboxPlayer():
 
     @staticmethod
     def playlist_reset():
-        db = get_mpd()
-        db.clear()
-        db.findadd("any", "A Tribe Called Quest")
-        db.play()
+        return get_mpd().clear()
 
         
 
