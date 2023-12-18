@@ -35,7 +35,7 @@ class JukeboxPlayer():
         cover = None
 
         try:
-            uri = "/var/lib/mpd/music/" + song['file']
+            uri = song['file']
         except Exception as ex:
             print(ex)
             None
@@ -54,7 +54,7 @@ class JukeboxPlayer():
                 None
 
             try:
-                cover = get_album_art(uri)
+                cover = get_album_art("/var/lib/mpd/music/" + uri)
             except Exception as ex:
                 print(ex)
                 None

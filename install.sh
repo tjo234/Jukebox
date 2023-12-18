@@ -76,12 +76,15 @@ echo -e "deb [signed-by=/usr/share/keyrings/deb.kaliko.me.gpg] \
   https://deb.kaliko.me/${distribution}-backports/ ${release}-backports main" \
   > /etc/apt/sources.list.d/deb.kaliko.me.list
 
+# Refresh packages
+apt update
+
 # Exit SuperUser Mode
 exit
 
 # Install Music Player Daemon as normal user
 echo -e "\n\n***************\n\nJUKEBOX - Installing MPD...\n\n"
-sudo apt -y install mpd
+sudo apt -y install mpd/bullseye-backports
 
 # Back to SuperUse
 sudo -i
