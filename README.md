@@ -32,6 +32,6 @@ Development Server:
 -------
 
 # Install Jukebox Server
-`wget -O - https://raw.githubusercontent.com/tjo234/Jukebox/main/server.sh | bash`
+`wget -O - https://raw.githubusercontent.com/tjo234/Jukebox/main/install.sh | sh`
 
 
