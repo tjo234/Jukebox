@@ -15,7 +15,7 @@ echo "JUKEBOX - Remove any unused packages..."
 sudo apt autoremove
 # Install Apache Web Server
 echo "JUKEBOX - Install Apache2 Web Server..."
-apt install apache2
+sudo apt install apache2
 # Replace Apache Config file
 sudo cp /var/www/Jukebox/jukebox/server/jukebox.conf /etc/apache2/sites-available/jukebox.conf
 sudo a2ensite jukebox
