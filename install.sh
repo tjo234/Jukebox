@@ -30,7 +30,7 @@ echo "JUKEBOX - Install Apache2 Web Server..."
 sudo apt -y install apache2
 
 # Replace Apache Config file
-sudo cp /var/www/Jukebox/jukebox/server/jukebox.conf /etc/apache2/sites-available/jukebox.conf
+sudo cp /var/www/Jukebox/jukebox/config/jukebox.conf /etc/apache2/sites-available/jukebox.conf
 sudo a2ensite jukebox
 
 # Delete/replace application folder
