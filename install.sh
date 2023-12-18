@@ -75,7 +75,12 @@ print('JUKEBOX - Installing MPD...')
 apt install mpd
 
 # Update MPD config file
-sudo cp /var/www/Jukebox/jukebox/mpd/mpd.conf /etc/mpd/mpd.conf
+print('JUKEBOX - Update config file...')
+sudo cp /var/www/Jukebox/jukebox/config/mpd.conf /etc/mpd.conf
+
+# Copy test file into library
+sudo cp /var/www/Jukebox/jukebox/audio/test.flac /var/lib/mpd/music/
 
 # Update MPD config file
+print('JUKEBOX - Reload Music Player Daemon...')
 sudo systemctl reload apache2
