@@ -34,9 +34,16 @@ function updateLibrary(){
     });
 }
 function playerPlayToggle() {
-    $.getJSON('/player/control/pause', function(){
+    if (JUKEBOX.status.state == 'play') {
+        $.getJSON('/player/control/pause', function(){
         //refreshPlayerStatus()
-    });
+        });
+    } else {
+      $.getJSON('/player/control/play', function(){
+        //refreshPlayerStatus()
+      });
+
+  }
 }
 function playerMuteToggle() {
     $.getJSON('/player/control/mute', function(){
@@ -77,7 +84,14 @@ function refreshPlayerStatus(){
     });
 }
 function refreshPlayerUI(){
-    console.log('refreshPlayerUI')
+    console.log('refreshPlayerUI');
+
+    // Album Cover 
+    if (JUKEBOX.cover) {
+        $('#img-album').attr('src', 'player/cover');
+    } else {
+        $('#img-album').attr('src', '/static/img/album.png');
+    }
 
     // Play/Pause Toggle
     if (JUKEBOX.status.state == 'play') {
@@ -92,7 +106,6 @@ function refreshPlayerUI(){
     }
 
     // Volume Toggle
-
     if (!("volume" in JUKEBOX.status)) {
         $('.player-btn-volume').hide();
         $('.player-btn-mute').hide();
@@ -133,7 +146,14 @@ function refreshPlayerUI(){
     }
     
     // Track Info
-    if ($('#trackid').val() != JUKEBOX.currentsong.id){
+    console.log(JUKEBOX.currentsong)
+    if (!JUKEBOX.currentsong.id) {
+        $('#trackid').val('');
+        $('.player-artist').html('&nbsp;');
+        $('.player-album').html('&nbsp;');
+        $('.player-title').html('&nbsp;');
+    }
+    else if ($('#trackid').val() != JUKEBOX.currentsong.id){
         $('#trackid').val(JUKEBOX.currentsong.id);
         $('.player-artist').html(JUKEBOX.currentsong.artist);
         $('.player-album').html(JUKEBOX.currentsong.album);

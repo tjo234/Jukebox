@@ -114,12 +114,12 @@ def create_app():
     @app.route("/player/cover")
     def player_library_cover():
         cover = JukeboxPlayer.cover()
-        if cover:
+        if cover and 'binary' in cover:
             return send_file(
-                io.BytesIO(cover),
-                mimetype='image/jpeg',
-                as_attachment=True,
-                download_name='%s.jpg' % pid)
+                io.BytesIO(cover['binary']),
+                mimetype=cover['type'],
+                as_attachment=False,
+                download_name='album.jpg')
         else:
             return "No image found"
 

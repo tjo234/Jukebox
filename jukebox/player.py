@@ -28,12 +28,19 @@ class JukeboxPlayer():
     @staticmethod
     def status():
         mpd = get_mpd()
+        cover = None
+        try:
+            cover = mpd.readpicture(mpd.currentsong()['file'])['type']
+        except Exception as ex:
+            pass
+
         return {
             "version": mpd.mpd_version,
             "status": mpd.status(),
             "stats": mpd.stats(),
             "currentsong": mpd.currentsong(),
-            "outputs": mpd.outputs()
+            "outputs": mpd.outputs(),
+            "cover": cover
         }
   
     @staticmethod
@@ -41,7 +48,6 @@ class JukeboxPlayer():
         mpd = get_mpd()
         try:
             cover = mpd.readpicture(mpd.currentsong()['file'])
-            print(cover)
             return cover
         except Exception as ex:
             return None

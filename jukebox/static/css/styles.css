@@ -13,7 +13,10 @@ body {
 .on {
 	color:#04A9C1 !important;
 }
-
+.img-thumbnail {
+    background-color: black;
+    border: solid 1px black;
+}
 
 /* BUTTONS */
 .btn-xxl > i {
@@ -153,10 +156,7 @@ body {
 	font-size: 11px;
 	color: #999;
 }
-#player-full .modal-header .player-album {
-	font-size: 14px;
-	line-height: 60px;
-}
+
 /* FULL SCREEN MODALS */
 .modal-full .btn-close {
 	color: white !important;	
