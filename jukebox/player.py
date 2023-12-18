@@ -2,7 +2,7 @@
 from mpd import MPDClient, CommandError
 from flask import g
 
-from .library import get_album_art
+from .utils import duration_to_time
 
 class JukeboxPlayerException(Exception):
     pass
@@ -13,7 +13,8 @@ def get_mpd():
         mpd = g._mpd = MPDClient()
         mpd.connect("jukebox.local", 6600)
     return mpd
-   
+
+
 class JukeboxPlayer():
 
     @staticmethod
@@ -34,9 +35,16 @@ class JukeboxPlayer():
         except Exception as ex:
             pass
 
+        # Format duration/elapsed here for UI consistency
+        objStatus = mpd.status()
+        if objStatus['state'] == "play":
+            objStatus['str_duration'] = duration_to_time(objStatus['duration'])
+            objStatus['str_elapsed'] = duration_to_time(objStatus['elapsed'])
+            objStatus['percent_elapsed'] = int(float(objStatus['elapsed']) / float(objStatus['duration']) * 100)
+
         return {
             "version": mpd.mpd_version,
-            "status": mpd.status(),
+            "status": objStatus,
             "stats": mpd.stats(),
             "currentsong": mpd.currentsong(),
             "outputs": mpd.outputs(),
@@ -115,6 +123,10 @@ class JukeboxPlayer():
     @staticmethod
     def volume(vol):
         return get_mpd().setvol(vol)
+
+    @staticmethod
+    def seek(s):
+        return get_mpd().seekcur(s)
 
     @staticmethod
     def library():

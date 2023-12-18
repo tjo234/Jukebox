@@ -18,9 +18,13 @@ function loadView(route){
     });
 }
 
+var intervalPlayerTick;
 // Music Player
 $(function() {
     initPlayer();
+    intervalPlayerTick = setInterval(function(){
+        playerTick()
+    }, 1000);
 });
 function initPlayer(){
     $.getJSON('/player/initialize', function(){
@@ -83,8 +87,26 @@ function refreshPlayerStatus(){
         refreshPlayerUI();
     });
 }
+function playerSeek(){
+    var s = $('#player-seek').val();
+    $.getJSON('/player/seek/' + s, function(data){
+        //refreshPlayerStatus()
+    });
+}
+function playerTick(){
+    $.getJSON('/player/status', function(data){
+        $('#player-elapsed').html(data.status.str_elapsed);
+        $('#player-seek').attr('min', 0);
+        $('#player-seek').attr('max', data.status.duration);
+        $('#player-seek').val(data.status.elapsed);
+    });
+}
 function refreshPlayerUI(){
     console.log('refreshPlayerUI');
+
+    // Update Timer
+    $('#player-duration').html(JUKEBOX.status.str_duration);
+    $('#player-elapsed').html(JUKEBOX.status.str_elapsed);
 
     // Album Cover 
     if (JUKEBOX.cover) {

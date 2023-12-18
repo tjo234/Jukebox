@@ -133,6 +133,11 @@ def create_app():
         resp = JukeboxPlayer.volume(volume)
         return jsonify(resp)
 
+    @app.route("/player/seek/<seek>")
+    def player_seek(seek):
+        resp = JukeboxPlayer.seek(seek)
+        return jsonify(resp)
+
     @app.route("/player/control/<control>")
     def player_control(control):
         CONTROLS = ["play", "pause", "stop", "next", "previous", "mute", "random", "repeat"]
