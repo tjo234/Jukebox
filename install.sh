@@ -91,11 +91,11 @@ echo "\n\n***************\n\nJUKEBOX - Update config file...\n\n"
 sudo cp /var/www/Jukebox/jukebox/config/mpd.conf ~/.config/mpd/mpd.conf
 
 # Copy test file into library
-cp /var/www/Jukebox/jukebox/audio/test.flac ~/jukebox
+cp /var/www/Jukebox/jukebox/audio/test.flac /var/lib/mpd/music
 
 # Update MPD config file
 echo "\n\n***************\n\nJUKEBOX - Reload Music Player Daemon...\n\n"
-sudo systemctl reload apache2
+sudo systemctl restart mpd
 
 # Exit SuperUser Mode
 exit
