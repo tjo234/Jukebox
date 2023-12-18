@@ -12,6 +12,9 @@ You should be able to run it multiple times without any issue.
 
 '''
 
+# Exit on error
+set -e
+
 # Change to root
 sudo -i
 
