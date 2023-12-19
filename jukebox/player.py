@@ -20,20 +20,38 @@ class JukeboxPlayer():
     @staticmethod
     def initialize():
         mpd = get_mpd()
-        mpd.update()
-        if int(mpd.status()['playlistlength']) == 0:
-            mpd.findadd("any", "Grateful Dead")
+
+        # Update Library
+        mpd.rescan()
+
+        # Start playing
         mpd.play()   
+
         return mpd.status()   
 
     @staticmethod
     def status():
         mpd = get_mpd()
-        cover = None
+
+        # Check for cover.jpg in album folder 
+        has_folder_cover = False
         try:
-            cover = mpd.readpicture(mpd.currentsong()['file'])['type']
+            has_folder_cover = ('binary' in mpd.albumart(mpd.currentsong()['file']))
         except Exception as ex:
             pass
+
+        # Check for embedded id3 cover
+        has_embedded_cover = False
+        try:
+            has_embedded_cover = ('binary' in mpd.readpicture(mpd.currentsong()['file']))
+        except Exception as ex:
+            pass
+
+        cover = "/static/img/album.png"
+        if has_folder_cover:
+            cover = "/player/albumart"
+        elif has_embedded_cover:
+            cover = "/player/cover"
 
         # Format duration/elapsed here for UI consistency
         objStatus = mpd.status()
@@ -47,17 +65,18 @@ class JukeboxPlayer():
             "stats": mpd.stats(),
             "currentsong": mpd.currentsong(),
             "outputs": mpd.outputs(),
-            "cover": cover
+            "cover": cover,
         }
   
     @staticmethod
     def cover():
         mpd = get_mpd()
-        try:
-            cover = mpd.readpicture(mpd.currentsong()['file'])
-            return cover
-        except Exception as ex:
-            return None
+        return mpd.readpicture(mpd.currentsong()['file'])
+        
+    @staticmethod
+    def albumart():
+        mpd = get_mpd()
+        return mpd.albumart(mpd.currentsong()['file'])
 
     @staticmethod
     def playlist():
@@ -70,7 +89,7 @@ class JukeboxPlayer():
     @staticmethod
     def update():
         mpd = get_mpd() 
-        ret = mpd.update()
+        ret = mpd.rescan()
         return mpd.status()
 
     @staticmethod
@@ -181,7 +200,9 @@ class JukeboxPlayer():
 
     @staticmethod
     def playlist_reset():
-        return get_mpd().clear()
+        mpd = get_mpd()
+        mpd.clear()
+        mpd.findadd("any", "Neil Young")
 
         
 

@@ -154,8 +154,7 @@
 				</div>
 				<div class="modal-body px-4">
 					<div class="now-playing">
-						<img id="img-album" src="{{ '/player/cover' if player['cover'] != None else '/static/img/album.png' }}" 
-						class="img-thumbnail my-5" />
+						<img id="img-album" src="{{ player.cover }}" class="img-thumbnail my-5" />
 						<h2 class="player-title">
 							{{ player.currentsong.title }}
 						</h2>

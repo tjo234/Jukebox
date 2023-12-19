@@ -2,6 +2,8 @@
 import io
 from datetime import datetime, timedelta
 from flask import Flask, render_template, send_from_directory, send_file, request, jsonify, g
+from werkzeug.middleware.profiler import ProfilerMiddleware
+
 
 from .database import Database, Track
 from .library import Library
@@ -41,14 +43,21 @@ GENRES = [
 
 def get_template_values():
     return {
-        "genres": GENRES,
-        "player": JukeboxPlayer.status()
+        "genres": GENRES
     }
     
 def create_app():
     # Create Flask App
     app = Flask(__name__)
-    
+
+    from werkzeug.middleware.profiler import ProfilerMiddleware
+
+    app.config["PROFILE"] = True
+    app.wsgi_app = ProfilerMiddleware(
+        app.wsgi_app,
+        filename_format="{method}-{path}-{time:.0f}-{elapsed:.0f}ms.prof",
+    )
+
     # Load Configuration
     if app.testing:
         app.config.from_object(TestingConfig())
@@ -57,16 +66,9 @@ def create_app():
     else:
         app.config.from_object(ProductionConfig())
 
-    # @app.before_first_request
-    # def initialize_db():
-    #     # Setup tables if they don't exist
-    #     with app.app_context():
-    #         Database.initialize()
-
     @app.teardown_appcontext
     def close_connection(exception):
         Database.close()
-
 
     # Root Static Handler (favicon)
     @app.route('/favicon.ico')
@@ -78,6 +80,7 @@ def create_app():
     @app.route('/<route>')
     def render_page(route):
         obj = get_template_values()
+        obj['player'] = JukeboxPlayer.status()
         obj['route'] = route
         return render_template('%s.html' % route, **obj) 
 
@@ -99,6 +102,8 @@ def create_app():
 
     @app.route("/player/initialize")
     def player_initialize():
+        # with app.app_context():
+        #     Database.initialize()
         return jsonify(JukeboxPlayer.initialize())
 
     @app.route("/player/library")
@@ -113,15 +118,19 @@ def create_app():
 
     @app.route("/player/cover")
     def player_library_cover():
-        cover = JukeboxPlayer.cover()
-        if cover and 'binary' in cover:
-            return send_file(
-                io.BytesIO(cover['binary']),
-                mimetype=cover['type'],
-                as_attachment=False,
-                download_name='album.jpg')
-        else:
-            return "No image found"
+        try:
+            cover = JukeboxPlayer.cover()
+            return send_file(io.BytesIO(cover['binary']), mimetype=cover['type'])
+        except Exception as ex:
+            return str(ex)
+
+    @app.route("/player/albumart")
+    def player_library_albumart():
+        try:
+            albumart = JukeboxPlayer.albumart()
+            return send_file(io.BytesIO(albumart['binary']), download_name="album.jpg")
+        except Exception as ex:
+            return str(ex)      
 
     @app.route("/player/artists")
     def player_library_artists():
@@ -144,16 +153,6 @@ def create_app():
         if not control in CONTROLS:
             raise Exception('Control not valid')
         resp = exec("JukeboxPlayer.%s()" % control)
-        return jsonify(resp)
-
-    @app.route("/player/listmounts")
-    def player_listmounts():
-        resp = JukeboxPlayer.listmounts()
-        return jsonify(resp)
-
-    @app.route("/player/listneighbors")
-    def player_listneighbors():
-        resp = JukeboxPlayer.listneighbors()
         return jsonify(resp)
 
     @app.route("/player/outputs")
@@ -197,17 +196,6 @@ def create_app():
     def api_player_status():
         resp = JukeboxPlayer.status_only()
         return jsonify(resp)
-
-    # @app.route("/api/tracks")
-    # def api_get_tracks():
-    #     resp = Track.get_tracks()
-    #     return jsonify(resp)
-
-    # @app.route("/file/<track_id>")
-    # def api_get_file(track_id):
-    #     filename = Track.get_track_by_id(track_id)['filename']
-    #     return send_file(filename)
-
    
     # JINJA Template Filters
     @app.template_filter('dt')
@@ -227,3 +215,23 @@ def create_app():
         return timedelta(seconds=int(s))
         
     return app
+
+# @app.route("/api/tracks")
+# def api_get_tracks():
+#     resp = Track.get_tracks()
+#     return jsonify(resp)
+
+# @app.route("/file/<track_id>")
+# def api_get_file(track_id):
+#     filename = Track.get_track_by_id(track_id)['filename']
+#     return send_file(filename)
+
+# @app.route("/player/listmounts")
+# def player_listmounts():
+#     resp = JukeboxPlayer.listmounts()
+#     return jsonify(resp)
+
+# @app.route("/player/listneighbors")
+# def player_listneighbors():
+#     resp = JukeboxPlayer.listneighbors()
+#     return jsonify(resp)

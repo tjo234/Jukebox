@@ -20,6 +20,7 @@ addEventListener("hashchange", (event) => {
 });
 function loadView(route){
     console.log(route)
+    $('#view-container').html('');
     $.get('/view/'+route, function(data){
         $('#view-container').html(data);
     });
@@ -38,10 +39,8 @@ $(function() {
     initPlayer();
 });
 function initPlayer(){
-    $.getJSON('/player/initialize', function(){
-        refreshPlayerStatus();
-        playerWaitForChange();
-    });
+    playerWaitForChange()
+    $.getJSON('/player/initialize', function(){});
 }
 function playerWaitForChange() {
     $.getJSON('/player/idle', function(data){
@@ -57,7 +56,7 @@ function seekUpdate(){
         $('#player-seek').attr('min', 0);
         $('#player-seek').attr('max', JUKEBOX.status.duration);
         $('#player-seek').val(JUKEBOX.status.elapsed);
-    } else {
+    } else if (JUKEBOX.status.state == 'stop') {
         $('#player-duration').html("0:00");
         $('#player-elapsed').html("0:00");
         $('#player-seek').attr('min', 0);
@@ -88,11 +87,7 @@ function refreshPlayerUI(){
     }, 1000);
 
     // Album Cover 
-    if (JUKEBOX.cover) {
-        $('#img-album').attr('src', 'player/cover');
-    } else {
-        $('#img-album').attr('src', '/static/img/album.png');
-    }
+    $('#img-album').attr('src', JUKEBOX.cover);
 
     // Play/Pause Toggle
     if (JUKEBOX.status.state == 'play') {
