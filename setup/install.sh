@@ -83,9 +83,6 @@ sudo -i
 echo -e "\n\n***************\n\nJUKEBOX - Update config file...\n\n"
 sudo cp /var/www/Jukebox/setup/mpd.conf ~/.config/mpd/mpd.conf
 
-# Copy test file into library
-cp /var/www/Jukebox/jukebox/audio/test.flac /var/lib/mpd/music
-
 # Update MPD config file
 echo -e "\n\n***************\n\nJUKEBOX - Reload Music Player Daemon...\n\n"
 sudo systemctl restart mpd
@@ -107,7 +104,9 @@ mkdir /jukebox/music
 chmod 777 /jukebox/music
 
 # Add test file
-cp /var/www/Jukebox/setup/test.flac /jukebox/music/
+cp /var/www/Jukebox/setup/test.mp3 /jukebox/music/
+
+# Add desktop symlink
 ln -s /jukebox/music/ /home/pi/Desktop/Music
 
 # Add Video Startup
