@@ -6,7 +6,6 @@ from werkzeug.middleware.profiler import ProfilerMiddleware
 
 
 from .database import Database, Track
-from .library import Library
 from .player import JukeboxPlayer
 from. config import ProductionConfig, DevelopmentConfig, TestingConfig
 
@@ -182,11 +181,11 @@ def create_app():
         resp = JukeboxPlayer.playlist_reset()
         return jsonify(resp)
 
-    # API Handlers (Database)
-    @app.route("/api/scan_library")
-    def api_scan_library():
-        resp = Library.scan_library(app.config['LIBRARY_PATH'])
-        return jsonify(resp)
+    # # API Handlers (Database)
+    # @app.route("/api/scan_library")
+    # def api_scan_library():
+    #     resp = Library.scan_library(app.config['LIBRARY_PATH'])
+    #     return jsonify(resp)
 
     @app.route("/api/status")
     def api_player_status():
