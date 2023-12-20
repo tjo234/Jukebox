@@ -202,7 +202,7 @@ class JukeboxPlayer():
     def playlist_reset():
         mpd = get_mpd()
         mpd.clear()
-        mpd.findadd("any", "Neil Young")
+        mpd.findadd("any", "Grateful Dead")
 
         
 

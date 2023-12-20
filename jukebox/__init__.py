@@ -5,7 +5,7 @@ from flask import Flask, render_template, send_from_directory, send_file, reques
 from werkzeug.middleware.profiler import ProfilerMiddleware
 
 
-from .database import Database, Track
+#from .database import Database, Track
 from .player import JukeboxPlayer
 from. config import ProductionConfig, DevelopmentConfig, TestingConfig
 
@@ -62,9 +62,9 @@ def create_app():
     else:
         app.config.from_object(ProductionConfig())
 
-    @app.teardown_appcontext
-    def close_connection(exception):
-        Database.close()
+    # @app.teardown_appcontext
+    # def close_connection(exception):
+    #     Database.close()
 
     # Root Static Handler (favicon)
     @app.route('/favicon.ico')
