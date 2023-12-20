@@ -51,6 +51,9 @@ pip install -r requirements.txt
 cp /var/www/Jukebox/setup/jukebox.conf /etc/apache2/sites-available/jukebox.conf
 a2ensite jukebox
 
+# Remove default config
+rm /etc/apache2/sites-available/000-default.conf
+
 # Restart Apache Server
 echo -e "\n\n***************\n\nJUKEBOX - Restart Apache Server...\n\n"
 systemctl reload apache2
@@ -81,7 +84,7 @@ sudo -i
 
 # Update MPD config file
 echo -e "\n\n***************\n\nJUKEBOX - Update config file...\n\n"
-sudo cp /var/www/Jukebox/setup/mpd.conf ~/.config/mpd/mpd.conf
+sudo cp /var/www/Jukebox/setup/mpd.conf /etc/mpd.conf
 
 # Update MPD config file
 echo -e "\n\n***************\n\nJUKEBOX - Reload Music Player Daemon...\n\n"
@@ -107,9 +110,9 @@ chmod 777 /jukebox/music
 cp /var/www/Jukebox/setup/test.mp3 /jukebox/music/
 
 # Add desktop symlink
-ln -s /jukebox/music/ /home/pi/Desktop/Music
+ln -s /jukebox/music /home/pi/Desktop/Music
 
-# Add Video Startup
+# Add Video Playlist on Startup
 mkdir /home/pi/.config/autostart
 cp /var/www/Jukebox/setup/autovlc.desktop /home/pi/.config/autostart/
 cp /var/www/Jukebox/setup/playlist.m3u /home/pi/
