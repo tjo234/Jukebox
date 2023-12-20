@@ -2,7 +2,7 @@
 
 // Global variables
 var JUKEBOX = {};
-var intervalPlayerTick;
+
 
 /*
 -------------------------------------------------------------------------------
@@ -49,28 +49,43 @@ function playerWaitForChange() {
         playerWaitForChange();
     });
 }
+
+function secondsToElapsed(s){
+    console.log(s)
+    var str_elapsed;
+    if (s >= 60*60) {
+        str_elapsed = new Date(s * 1000).toISOString().slice(11, 19);    
+    } {
+        str_elapsed = new Date(s * 1000).toISOString().slice(14, 19);    
+    }
+    return str_elapsed;
+}
+var intervalPlayerTick;
+var elapsed;
 function seekUpdate(){
+    clearInterval(intervalPlayerTick);
     if (JUKEBOX.status.state == 'play') {
         $('#player-duration').html(JUKEBOX.status.str_duration);
         $('#player-elapsed').html(JUKEBOX.status.str_elapsed);
         $('#player-seek').attr('min', 0);
         $('#player-seek').attr('max', JUKEBOX.status.duration);
         $('#player-seek').val(JUKEBOX.status.elapsed);
+        elapsed = Number.parseInt(JUKEBOX.status.elapsed);
+        intervalPlayerTick = setInterval(function(){
+            elapsed++;
+            $('#player-seek').val(elapsed);
+            $('#player-elapsed').html(secondsToElapsed(elapsed));
+        }, 1000);
     } else if (JUKEBOX.status.state == 'stop') {
         $('#player-duration').html("0:00");
         $('#player-elapsed').html("0:00");
         $('#player-seek').attr('min', 0);
         $('#player-seek').attr('max', 100);
         $('#player-seek').val(0);
+        elapsed = 0;
     }
 }
-function playerTick(){
-    $.getJSON('/player/status', function(data){
-        console.log('tick', data.status.elapsed)
-        JUKEBOX = data;
-        seekUpdate();
-    });
-}
+
 function refreshPlayerStatus(){
     $.getJSON('/player/status', function(data){
         JUKEBOX = data;
@@ -81,10 +96,6 @@ function refreshPlayerUI(){
     console.log('refreshPlayerUI');
 
     seekUpdate();
-    clearInterval(intervalPlayerTick);
-    intervalPlayerTick = setInterval(function(){
-        playerTick()
-    }, 1000);
 
     // Album Cover 
     $('#img-album').attr('src', JUKEBOX.cover);

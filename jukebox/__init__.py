@@ -43,24 +43,21 @@ GENRES = [
 
 def get_template_values():
     return {
-        "genres": GENRES
+        "genres": GENRES,
+        "player": JukeboxPlayer.status()
     }
     
 def create_app():
     # Create Flask App
     app = Flask(__name__)
 
-    from werkzeug.middleware.profiler import ProfilerMiddleware
-
-    app.config["PROFILE"] = True
-    app.wsgi_app = ProfilerMiddleware(
-        app.wsgi_app,
-        filename_format="{method}-{path}-{time:.0f}-{elapsed:.0f}ms.prof",
-    )
-
     # Load Configuration
     if app.testing:
         app.config.from_object(TestingConfig())
+        from werkzeug.middleware.profiler import ProfilerMiddleware
+        app.config["PROFILE"] = True
+        app.wsgi_app = ProfilerMiddleware(app.wsgi_app,
+            filename_format="{method}-{path}-{time:.0f}-{elapsed:.0f}ms.prof")
     if app.debug:
         app.config.from_object(DevelopmentConfig())
     else:
@@ -80,7 +77,6 @@ def create_app():
     @app.route('/<route>')
     def render_page(route):
         obj = get_template_values()
-        obj['player'] = JukeboxPlayer.status()
         obj['route'] = route
         return render_template('%s.html' % route, **obj) 
 
