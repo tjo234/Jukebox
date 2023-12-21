@@ -14,8 +14,19 @@ body {
 	color:#04A9C1 !important;
 }
 .img-thumbnail {
-    background-color: black;
-    border: solid 1px black;
+    background-color: #111;
+    border: solid 1px #333;
+}
+.text-info {
+	color: #666 !important;
+	text-transform: uppercase;
+}
+.no-link{
+	text-decoration: none;
+	color: white;
+}
+.no-link small {
+	color: #999;
 }
 
 /* BUTTONS */

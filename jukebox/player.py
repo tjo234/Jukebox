@@ -58,9 +58,6 @@ class JukeboxPlayer():
     def initialize():
         mpd = get_mpd()
 
-        # Update Library
-        mpd.rescan()
-
         # Start playing
         mpd.play()   
 
@@ -79,14 +76,6 @@ class JukeboxPlayer():
     def albumart():
         mpd = get_mpd()
         return mpd.albumart(mpd.currentsong()['file'])
-
-    @staticmethod
-    def playlist():
-        return get_mpd().playlistinfo()
-
-    @staticmethod
-    def listplaylist(pid):
-        return get_mpd().listplaylist(pid)
 
     @staticmethod
     def update():
@@ -196,9 +185,18 @@ class JukeboxPlayer():
     def outputs():
         return get_mpd().outputs()
 
+    # Playlist
     @staticmethod
-    def status_only():
-        return get_mpd().status()
+    def playlist():
+        return get_mpd().playlistinfo()
+
+    @staticmethod
+    def playid(song_id):
+        return get_mpd().playid(song_id)
+
+    @staticmethod
+    def listplaylist(pid):
+        return get_mpd().songid(pid)
 
     @staticmethod
     def playlist_reset(artist):

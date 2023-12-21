@@ -1,43 +1,8 @@
-// App.js
+// player.js
 
 // Global variables
 window.JUKEBOX = {};
 
-
-/*
--------------------------------------------------------------------------------
-
-    AJAX View Handlers
-
--------------------------------------------------------------------------------
-*/
-$(function() {
-    loadView("home");
-});
-addEventListener("hashchange", (event) => {
-    const route = window.location.hash.split('?')[0].slice(1);   
-    loadView(route);
-});
-function loadView(route){
-    console.log(route)
-    $('#view-container').html('');
-    $.get('/view/'+route, function(data){
-        $('#view-container').html(data);
-    });
-}
-
-/*
--------------------------------------------------------------------------------
-
-    Music Player Controls
-
--------------------------------------------------------------------------------
-*/
-
-
-$(function() {
-    initPlayer();
-});
 function initPlayer(){
     playerWaitForChange()
     $.getJSON('/api/player/initialize', function(data){
@@ -167,15 +132,12 @@ function refreshPlayerUI(){
         $('.player-title').html(JUKEBOX.currentsong.title);
     }
 
-    // Playlist Info
-    var playlistHtml = '';
-    if(JUKEBOX.playlist) {
-        JUKEBOX.playlist.forEach(function(val){
-            playlistHtml += "<li>" + val + "</li>";
+    // Refresh Queue 
+    if ($('#queue')[0]) {
+        $.get('/view/queue', function(data){
+            $('#view-container').html(data);
         });
     }
-    $('#queue').html("<ul class='playlist'>" + playlistHtml + '</ul>');
-
 }
 
 /* 
@@ -224,4 +186,9 @@ function playerRepeat() {
 }
 function playerShuffle() {
     $.getJSON('/api/player/control/random', function(){});
+}
+function playlistSongId(songId) {
+    $.getJSON('/api/playlist/playid/'+songId, function(){
+        refreshPlayerStatus();
+    });
 }

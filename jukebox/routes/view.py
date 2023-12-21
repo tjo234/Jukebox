@@ -37,10 +37,20 @@ GENRES = [
     },
 ]
 
+def user_on_mobile():
+    user_agent = request.headers.get("User-Agent")
+    user_agent = user_agent.lower()
+    phones = ["android", "iphone"]
+
+    if any(x in user_agent for x in phones):
+        return True
+    return False
+
 def get_template_values():
     return {
         "genres": GENRES,
-        "player": JukeboxPlayer.status()
+        "player": JukeboxPlayer.status(),
+        "playlist": JukeboxPlayer.playlist()
     }
 
 # Root Static Handler (favicon)
@@ -54,7 +64,11 @@ def static_from_root():
 def render_page(route):
     obj = get_template_values()
     obj['route'] = route
-    return render_template('%s.html' % route, **obj) 
+    if user_on_mobile():
+        print('Mobile User')
+        return render_template('mobile/index.html', **obj) 
+    else:
+        return render_template('pages/%s.html' % route, **obj) 
 
 # Partial View Handler
 @view.route('/view/<route>')

@@ -1,2 +1,31 @@
-<div id="queue">
+<div id="queue" class="py-2 px-4">
+	<h6 class="text-info mb-4">
+		<i class="bi bi-play-circle-fill me-1"></i> Now Playing
+	</h6>
+	<div class="row text-secondary mb-4">
+		<div class="col-3">
+			<img src="{{ player.cover }}" class="img-thumbnail" />
+		</div>
+		<div class="col">
+			<h4 class="text-light mt-3 mb-0">{{ player.currentsong.title }}</h4>
+			<small>{{ player.currentsong.artist }}</small>
+		</div>
+	</div>
+	<br />	
+	<h6 class="text-info mb-4">
+		<i class="bi bi-file-music-fill me-1"></i> Next Up
+	</h6>
+	{% for p in playlist %}
+	<div class="row text-secondary mb-2">
+		<div class="col">
+			<a class="no-link" href="javascript:;" onclick="playlistSongId({{ p.id }})">
+				<span class="text-light">{{ p.title }}</span><br />
+				<small>{{ p.artist }}</small>
+			</a>
+		</div>
+		<div class="col-2">
+			<button class="btn btn-md text-light"><i class="bi bi-list"></i></button>
+		</div>
+	</div>
+	{% endfor %}
 </div>

@@ -4,7 +4,8 @@ from flask import Flask
 
 from .routes import api_routes, view_routes
 from. config import ProductionConfig, DevelopmentConfig, TestingConfig
-    
+from .utils import duration_to_time
+
 def create_app():
     # Create Flask App
     app = Flask(__name__)
@@ -31,6 +32,10 @@ def create_app():
     @app.template_filter('seconds')
     def filter_seconds_timedelta(s):
         return timedelta(seconds=int(s))
+
+    @app.template_filter('duration')
+    def filter_duration_to_time(s):
+        return duration_to_time(s)
 
     @app.template_filter('audio')
     def filter_mpd_audio_str(s):

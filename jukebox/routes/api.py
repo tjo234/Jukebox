@@ -17,13 +17,11 @@ def player_status():
 
 @api.route("/player/update")
 def player_update():
-    JukeboxPlayer.update()
+    JukeboxPlayer.rescan()
     return jsonify(JukeboxPlayer.status())
 
 @api.route("/player/initialize")
 def player_initialize():
-    # with app.app_context():
-    #     Database.initialize()
     return jsonify(JukeboxPlayer.initialize())
 
 @api.route("/player/library")
@@ -94,6 +92,12 @@ def player_idle():
 @api.route("/playlist/<playlist_id>")
 def playlist_playlist_by_id(playlist_id):
     resp = JukeboxPlayer.listplaylist(playlist_id)
+    return jsonify(resp)
+
+# Playlist Handlers
+@api.route("/playlist/playid/<song_id>")
+def playlist_playlist_by_song_id(song_id):
+    resp = JukeboxPlayer.playid(song_id)
     return jsonify(resp)
 
 @api.route('/playlist')
