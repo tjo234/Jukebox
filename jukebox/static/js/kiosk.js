@@ -7,7 +7,7 @@ $(function(){
 	waitForChange();
 });
 function waitForChange(){
-	$.getJSON('/player/idle', function(data){
+	$.getJSON('/api/player/idle', function(data){
         console.log('Change received: ' + data)
         refreshKiosk()
         waitForChange();

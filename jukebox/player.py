@@ -14,6 +14,43 @@ def get_mpd():
         mpd.connect("jukebox.local", 6600)
     return mpd
 
+def get_status():
+    mpd = get_mpd()
+
+    # Check for cover.jpg in album folder 
+    has_folder_cover = False
+    try:
+        has_folder_cover = ('binary' in mpd.albumart(mpd.currentsong()['file']))
+    except Exception as ex:
+        pass
+
+    # Check for embedded id3 cover
+    has_embedded_cover = False
+    try:
+        has_embedded_cover = ('binary' in mpd.readpicture(mpd.currentsong()['file']))
+    except Exception as ex:
+        pass
+
+    cover = "/static/img/album.png"
+    if has_folder_cover:
+        cover = "/api/player/albumart"
+    elif has_embedded_cover:
+        cover = "/api/player/cover"
+
+    # Format duration/elapsed here for UI consistency
+    objStatus = mpd.status()
+    if objStatus['state'] == "play":
+        objStatus['str_duration'] = duration_to_time(objStatus['duration'])
+        objStatus['str_elapsed'] = duration_to_time(objStatus['elapsed'])
+
+    return {
+        "version": mpd.mpd_version,
+        "status": objStatus,
+        "stats": mpd.stats(),
+        "currentsong": mpd.currentsong(),
+        "outputs": mpd.outputs(),
+        "cover": cover,
+    }
 
 class JukeboxPlayer():
 
@@ -27,46 +64,11 @@ class JukeboxPlayer():
         # Start playing
         mpd.play()   
 
-        return mpd.status()   
+        return get_status()
 
     @staticmethod
     def status():
-        mpd = get_mpd()
-
-        # Check for cover.jpg in album folder 
-        has_folder_cover = False
-        try:
-            has_folder_cover = ('binary' in mpd.albumart(mpd.currentsong()['file']))
-        except Exception as ex:
-            pass
-
-        # Check for embedded id3 cover
-        has_embedded_cover = False
-        try:
-            has_embedded_cover = ('binary' in mpd.readpicture(mpd.currentsong()['file']))
-        except Exception as ex:
-            pass
-
-        cover = "/static/img/album.png"
-        if has_folder_cover:
-            cover = "/player/albumart"
-        elif has_embedded_cover:
-            cover = "/player/cover"
-
-        # Format duration/elapsed here for UI consistency
-        objStatus = mpd.status()
-        if objStatus['state'] == "play":
-            objStatus['str_duration'] = duration_to_time(objStatus['duration'])
-            objStatus['str_elapsed'] = duration_to_time(objStatus['elapsed'])
-
-        return {
-            "version": mpd.mpd_version,
-            "status": objStatus,
-            "stats": mpd.stats(),
-            "currentsong": mpd.currentsong(),
-            "outputs": mpd.outputs(),
-            "cover": cover,
-        }
+        return get_status()
   
     @staticmethod
     def cover():
@@ -102,41 +104,41 @@ class JukeboxPlayer():
 
     @staticmethod
     def random():
-        mdb = get_mpd()
-        random = int(mdb.status()['random'])
+        mpd = get_mpd()
+        random = int(mpd.status()['random'])
         print('random: %s' % random)
         if random == 0: 
-            return mdb.random(1)
+            return mpd.random(1)
         else:
-            return mdb.random(0)
+            return mpd.random(0)
 
     @staticmethod
     def repeat():
-        mdb = get_mpd()
-        repeat = int(mdb.status()['repeat'])
-        single = int(mdb.status()['single'])
+        mpd = get_mpd()
+        repeat = int(mpd.status()['repeat'])
+        single = int(mpd.status()['single'])
 
         # 1 - OFF / OFF - Repeat OFF
         # 2 - ON / OFF  - Repeat ALL
         # 3 - ON / ON   - Repeat ONE
 
         if repeat == 0 and single == 0:
-            mdb.repeat(1)
+            mpd.repeat(1)
         elif repeat == 1 and single == 0:
-            mdb.single(1)
+            mpd.single(1)
         else:
-            mdb.single(0)
-            mdb.repeat(0)
+            mpd.single(0)
+            mpd.repeat(0)
         return True
 
     @staticmethod
     def mute():
-        mdb = get_mpd()
-        is_muted = (int(mdb.status()['volume']) == 0)
+        mpd = get_mpd()
+        is_muted = (int(mpd.status()['volume']) == 0)
         if is_muted:
-            return mdb.setvol(100)
+            return mpd.setvol(100)
         else:
-            return mdb.setvol(0)
+            return mpd.setvol(0)
 
     @staticmethod
     def volume(vol):
@@ -199,10 +201,11 @@ class JukeboxPlayer():
         return get_mpd().status()
 
     @staticmethod
-    def playlist_reset():
+    def playlist_reset(artist):
         mpd = get_mpd()
         mpd.clear()
-        mpd.findadd("any", "Grateful Dead")
-
-        
-
+        mpd.findadd("any", artist)
+        mpd.repeat(1)
+        mpd.single(0)
+        mpd.shuffle()
+        mpd.play()

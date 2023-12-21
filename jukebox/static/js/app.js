@@ -40,12 +40,12 @@ $(function() {
 });
 function initPlayer(){
     playerWaitForChange()
-    $.getJSON('/player/initialize', function(data){
+    $.getJSON('/api/player/initialize', function(data){
         refreshPlayerStatus();
     });
 }
 function playerWaitForChange() {
-    $.getJSON('/player/idle', function(data){
+    $.getJSON('/api/player/idle', function(data){
         console.log('Change received: ' + data)
         refreshPlayerStatus()
         playerWaitForChange();
@@ -90,7 +90,7 @@ function seekUpdate(){
 }
 
 function refreshPlayerStatus(){
-    $.getJSON('/player/status', function(data){
+    $.getJSON('/api/player/status', function(data){
         window.JUKEBOX = data;
         refreshPlayerUI();
     });
@@ -187,7 +187,7 @@ function refreshPlayerUI(){
 -------------------------------------------------------------------------------
 */
 function toggleOutput(id){
-    $.getJSON(`/player/toggleoutput/${id}`, function(){});
+    $.getJSON(`/api/player/toggleoutput/${id}`, function(){});
 }
 /* 
 -------------------------------------------------------------------------------
@@ -198,30 +198,30 @@ function toggleOutput(id){
 -------------------------------------------------------------------------------
 */
 function playerSeek(){
-    $.getJSON('/player/seek/'+$('#player-seek').val(), function(){});
+    $.getJSON('/api/player/seek/'+$('#player-seek').val(), function(){});
 }
 function updateLibrary(){
-    $.getJSON('/player/update', function(){});
+    $.getJSON('/api/player/update', function(){});
 }
 function playerPlayToggle() {
     if (JUKEBOX.status.state == 'play') {
-        $.getJSON('/player/control/pause', function(){});
+        $.getJSON('/api/player/control/pause', function(){});
     } else {
-        $.getJSON('/player/control/play', function(){});
+        $.getJSON('/api/player/control/play', function(){});
     }
 }
 function playerMuteToggle() {
-    $.getJSON('/player/control/mute', function(){});
+    $.getJSON('/api/player/control/mute', function(){});
 }
 function playerNextTrack() {
-    $.getJSON('/player/control/next', function(){});
+    $.getJSON('/api/player/control/next', function(){});
 }
 function playerPrevTrack() {
-    $.getJSON('/player/control/previous', function(){});
+    $.getJSON('/api/player/control/previous', function(){});
 }
 function playerRepeat() {
-    $.getJSON('/player/control/repeat', function(){});
+    $.getJSON('/api/player/control/repeat', function(){});
 }
 function playerShuffle() {
-    $.getJSON('/player/control/random', function(){});
+    $.getJSON('/api/player/control/random', function(){});
 }
