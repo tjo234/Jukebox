@@ -1,7 +1,7 @@
 // App.js
 
 // Global variables
-var JUKEBOX = {};
+window.JUKEBOX = {};
 
 
 /*
@@ -40,7 +40,9 @@ $(function() {
 });
 function initPlayer(){
     playerWaitForChange()
-    $.getJSON('/player/initialize', function(){});
+    $.getJSON('/player/initialize', function(data){
+        refreshPlayerStatus();
+    });
 }
 function playerWaitForChange() {
     $.getJSON('/player/idle', function(data){
@@ -51,7 +53,6 @@ function playerWaitForChange() {
 }
 
 function secondsToElapsed(s){
-    console.log(s)
     var str_elapsed;
     if (s >= 60*60) {
         str_elapsed = new Date(s * 1000).toISOString().slice(11, 19);    
@@ -63,6 +64,7 @@ function secondsToElapsed(s){
 var intervalPlayerTick;
 var elapsed;
 function seekUpdate(){
+    console.log('seekUpdate')
     clearInterval(intervalPlayerTick);
     if (JUKEBOX.status.state == 'play') {
         $('#player-duration').html(JUKEBOX.status.str_duration);
@@ -72,6 +74,7 @@ function seekUpdate(){
         $('#player-seek').val(JUKEBOX.status.elapsed);
         elapsed = Number.parseInt(JUKEBOX.status.elapsed);
         intervalPlayerTick = setInterval(function(){
+            console.log('tick')
             elapsed++;
             $('#player-seek').val(elapsed);
             $('#player-elapsed').html(secondsToElapsed(elapsed));
@@ -88,7 +91,7 @@ function seekUpdate(){
 
 function refreshPlayerStatus(){
     $.getJSON('/player/status', function(data){
-        JUKEBOX = data;
+        window.JUKEBOX = data;
         refreshPlayerUI();
     });
 }
