@@ -138,6 +138,12 @@ function refreshPlayerUI(){
             $('#view-container').html(data);
         });
     }
+
+    // Kiosk refresh
+    if ($('#kiosk')[0]) {
+        refreshKiosk();
+    }
+
 }
 
 /* 

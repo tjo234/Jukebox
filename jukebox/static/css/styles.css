@@ -134,14 +134,13 @@ body {
 	height:75px;
 }
 #player {
-	height:60px;
 	width: 100%;
 	overflow: hidden;
 }
-#player .btn {	
+/*#player .btn {	
 	height: 75px;
 	height: 75px;
-}
+}*/
 .player .btn-xxl {
 	height: 75px;
 }

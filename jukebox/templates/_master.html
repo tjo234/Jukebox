@@ -27,185 +27,26 @@
 			<a class="navbar-brand" href="/">
 				<img src="/static/img/logo.png" alt="Jukebox" height="50" />
 			</a>
+			{% if 'updating_db' in player.status %}
+			<div class="navbar-text">
+				<div class="spinner-border mt-2 me-2" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+				Updating database....
+			</div>
+			{% endif %}
 		</div>
 	</nav>
 	{% endblock %}
+	
 	{% block content %}
-	<div id="view-container" class="pt-3">
-	</div>
 	{% endblock %}
-	<!-- FOOTER NAV -->	
-	<nav id="footer" class="navbar fixed-bottom">
-		<div class="container-fluid p-0">
 
-			<!-- MINI PLAYER -->
-			<div id="player" class="player p-0">
-				<input id="trackid" type="hidden" />
-				<div class="row">
-					<div class="col-2">
-						<button id="player-btn" class="btn btn-lg" onclick="playerPlayToggle()" style="font-size:28px;">
-							<i class="bi bi-play-circle-fill player-btn-play {{ 'hidden' if player.status.state == 'play' else '' }}"></i>
-							<i class="bi bi-pause-circle-fill player-btn-pause {{ 'hidden' if player.status.state != 'play' else '' }}"></i>
-						</button>
-					</div>
-					<div class="col">
-						<a class="marquee" href="javascript:;" data-bs-toggle="modal" data-bs-target="#player-full">
-							<span class="player-title">{{ player.currentsong.title }}</span>
-							<span class="player-artist">{{ player.currentsong.artist }}</span>
-						</a>
-					</div>
-					<div class="col-2">
-						<button class="btn btn-lg" data-bs-toggle="modal" data-bs-target="#player-cast-full">
-							<i class="bi-speaker-fill"></i>
-						</button>
-
-					</div>
-				</div>
-			</div>
-
-			<!-- FOOTER NAV -->
-			<ul class="nav nav-pills nav-justified d-md-none" style="width: 100%;">
-				<li class="nav-item">
-					<a class="nav-link" href="/#home">
-						<i class="bi bi-house-fill"></i> 
-						<span>Home</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/#radio">
-						<i class="bi bi-broadcast-pin"></i> 
-						<span>Radio</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/#search">
-						<i class="bi bi-search"></i>
-						<span>Search</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/#queue">
-						<i class="bi bi-collection-play-fill"></i>
-						<span>Queue</span>
-					</a>
-				</li>
-			</ul>
-
-		</div>
-	</nav>
-
-	<!-- FULL SCREEN CAST -->
-	<div id="player-cast-full" class="modal modal-full fade" tabindex="-1">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-body">
-					<div class="modal-header">
-						<button type="button" class="btn btn-xl me-1" data-bs-dismiss="modal" aria-label="Close">
-							<i class="bi bi-chevron-down"></i>
-						</button>
-						<h5 class="text-secondary">
-							Playback Settings
-						</h5>
-					</div>
-					<div id="cast" class="pt-5">
-
-						<h4 class="text-secondary">Audio Outputs</h4>
-						{% for o in player.outputs %}
-						<div class="row my-4">
-							<div class="col pt-2">
-								<label class="switch">
-									<input type="checkbox" id="output-{{ o.outputid }}" 
-									{% if o.outputenabled|int == 1 %}checked{% endif %}
-									onchange="toggleOutput({{ o.outputid }})" />
-									<span class="slider round"></span>
-								</label>
-							</div>
-							<div class="col-9">
-								<h5 class="text-light switch-label">{{ o.outputname }}</h6>
-									<small>{{ o.plugin|upper }}</small>
-								</div>
-							</div>
-							{% endfor %}
-							<h4 class="text-secondary">Volume</h4>
-							{% if player.status.volume %}
-							<button class="btn btn-lg" onclick="playerMuteToggle()" style="font-size:18px;">
-								<i class="bi bi-volume-up-fill player-btn-volume"></i>
-								<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>
-								<i class="bi bi-volume-mute-fill player-btn-fixed" style="display: none;"></i>
-							</button>
-							{% else %}
-							Volume is controlled by the AV receiver.
-							{% endif %}
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- FULL SCREEN PLAYER -->
-		<div id="player-full" class="modal modal-full fade" tabindex="-1">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header px-4">
-						<div class="row align-items-center">
-							<div class="col">
-								<button type="button" class="btn btn-lg btn-back" data-bs-dismiss="modal" aria-label="Close">
-									<i class="bi bi-chevron-down"></i>
-								</button>
-							</div>
-							<div class="col-8">
-								<small class="player-album text-secondary">{{ player.currentsong.album }}</small>
-							</div>
-							<div class="col"></div>
-						</div>
-					</div>
-					<div class="modal-body px-4">
-						<div class="now-playing">
-							<img id="img-album" src="{{ player.cover }}" class="img-thumbnail my-5" />
-							<h2 class="player-title">
-								{{ player.currentsong.title }}
-							</h2>
-							<h4 class="text-secondary player-artist mb-4">
-								{{ player.currentsong.artist }}
-							</h4>
-						</div>
-						<div class="seek">
-							<input type="range" 
-							id="player-seek" 
-							style="width: 100%;"
-							onchange="playerSeek()"
-							/>
-							<small id="player-duration" style="float:right">0:00</small>
-							<small id="player-elapsed"></small>
-						</div>
-						<div class="player">
-							<button class="btn btn-lg" onclick="playerRepeat()">
-								<i id="btn-player-repeat"class="bi bi-repeat player-btn-repeat"></i>
-								<i id="btn-player-repeat-1" class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
-							</button>
-							<button class="btn btn-xl px-3" onclick="playerPrevTrack()">
-								<i class="bi bi-skip-start-fill"></i>
-							</button>
-							<button class="btn btn-xxl px-3" onclick="playerPlayToggle()" style="font-size:28px;">
-								<i class="bi bi-play-circle-fill player-btn-play {{ 'hidden' if player.status.state == 'play' else '' }}"></i>
-								<i class="bi bi-pause-circle-fill player-btn-pause {{ 'hidden' if player.status.state != 'play' else '' }}"></i>
-							</button>
-							<button class="btn btn-xl px-3" onclick="playerNextTrack()">
-								<i class="bi bi-skip-end-fill"></i>
-							</button>
-							<button id="btn-player-shuffle" class="btn btn-lg {{ 'on' if player.status.random|int == 1 else '' }}" onclick="playerShuffle()">
-								<i class="bi bi-shuffle player-btn-shuffle"></i>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<script type="text/javascript" src="/static/scripts/jquery.min.js"></script>
-		<script type="text/javascript" src="/static/scripts/bootstrap.bundle.min.js"></script>
-		<script type="text/javascript" src="/static/js/player.js"></script>
-		{% block footer_script %}
-		<script type="text/javascript" src="/static/js/desktop.js"></script>
-		{% endblock %}
-	</body>
-	</html>
+	<script type="text/javascript" src="/static/scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/scripts/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="/static/js/player.js"></script>
+	{% block footer_script %}
+	<script type="text/javascript" src="/static/js/desktop.js"></script>
+	{% endblock %}
+</body>
+</html>

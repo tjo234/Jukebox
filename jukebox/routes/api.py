@@ -17,8 +17,7 @@ def player_status():
 
 @api.route("/player/update")
 def player_update():
-    JukeboxPlayer.rescan()
-    return jsonify(JukeboxPlayer.status())
+    return jsonify(JukeboxPlayer.update())
 
 @api.route("/player/initialize")
 def player_initialize():

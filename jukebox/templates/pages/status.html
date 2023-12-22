@@ -1,70 +1,25 @@
 {% extends "_master.html" %}
 
 {% block content %}
-<div id="status" class="container-fluid">
-	<div class="row mt-4">
-		<div class="col-4 px-4">
-			<h3 class="text-secondary">Library</h3>
-			<table class="table table-dark">
-				<tr>
-					<td><i class="bi bi-mic-fill me-2"></i> Artists</td>
-					<td>{{ '{:,}'.format(player.stats.artists|int) }}</td>
-				</tr>
-				<tr>
-					<td><i class="bi bi-vinyl-fill me-2"></i> Albums</td>
-					<td>{{ '{:,}'.format(player.stats.albums|int) }}</td>
-				</tr>
-				<tr>
-					<td><i class="bi bi-file-music-fill me-2"></i> Songs</td>
-					<td>{{ '{:,}'.format(player.stats.songs|int) }}</td>
-				</tr>
-			</table>
-			<h3 class="text-secondary">MPD</h3>
-			<table class="table table-dark">
-				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> Last Update</td>
-					<td>{{ player.stats.db_update|dt }}</td>
-				</tr>
-				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> DB Playtime</td>
-					<td>{{ player.stats.db_playtime|seconds }}</td>
-				</tr>
-				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> Playtime</td>
-					<td>{{ player.stats.playtime|seconds }}</td>
-				</tr>
-				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> Uptime</td>
-					<td>{{ player.stats.uptime|seconds }}</td>
-				</tr>
-				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> Version</td>
-					<td>{{ player.version }}</td>
-				</tr>
-			</table>
-			<h3 class="text-secondary">Player</h3>
-			<table class="table table-dark">
-				<tr>
-					<td><i class="bi bi-speaker-fill me-2"></i> Sample Rate</td>
-					<td>{{ player.status.audio|audio if player.status.audio else "N/A" }}</td>
-				</tr>
-				<tr>
-					<td><i class="bi bi-speaker-fill me-2"></i> Bitrate</td>
-					<td>{{ player.status.bitrate if player.status.audio else "0" }} kpbs</td>
-				</tr>
-			</table>
-		</div>
-		<div class="col">
-			<table class="table table-dark">
-				<tr><td colspan="2">Status</td></tr>
-				{% for v in player.status %}
-				<tr>
-					<td><pre>{{ v }}</pre></td>
-					<td><pre>{{ player.status[v] }}</pre></td>
-				</tr>
-				{% endfor %}
-			</table>
-		</div>
-	</div>
-</div>
+<div id="status"></div>
+{% endblock %}
+{% block footer_script %}
+<script type="text/javascript">
+$(function(){
+	refreshStatus();
+	playerWaitForChange();
+});
+function playerWaitForChange() {
+    $.getJSON('/api/player/idle', function(data){
+        console.log('Change received: ' + data)
+        refreshStatus()
+        playerWaitForChange();
+    });
+}
+function refreshStatus(){
+	$.get('/view/status', function(data){
+        $('#status').html(data);
+    });
+}
+</script>
 {% endblock %}

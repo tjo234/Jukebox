@@ -68,7 +68,10 @@ def render_page(route):
         print('Mobile User')
         return render_template('mobile/index.html', **obj) 
     else:
-        return render_template('pages/%s.html' % route, **obj) 
+        try:
+            return render_template('pages/%s.html' % route, **obj) 
+        except:
+            return render_template('pages/404.html', **obj) 
 
 # Partial View Handler
 @view.route('/view/<route>')

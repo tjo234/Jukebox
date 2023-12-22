@@ -80,8 +80,7 @@ class JukeboxPlayer():
     @staticmethod
     def update():
         mpd = get_mpd() 
-        ret = mpd.rescan()
-        return mpd.status()
+        return mpd.rescan()
 
     @staticmethod
     def artists():

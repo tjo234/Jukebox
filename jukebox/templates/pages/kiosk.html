@@ -9,5 +9,23 @@
 {% endblock %}
 
 {% block footer_script %}
-<script type="text/javascript" src="/static/js/kiosk.js"></script>
+<script type="text/javascript">
+$(function(){
+	refreshKiosk();
+	playerWaitForChange();
+});
+function playerWaitForChange() {
+    $.getJSON('/api/player/idle', function(data){
+        console.log('Change received: ' + data)
+        refreshKiosk()
+        playerWaitForChange();
+    });
+}
+function refreshKiosk(){
+	$.get('/view/kiosk', function(data){
+        $('#kiosk').html(data);
+    });
+}
+</script>
 {% endblock %}
+
