@@ -1,39 +1,43 @@
-// desktop.js
-
 /*
 -------------------------------------------------------------------------------
 
-    AJAX View Handlers
+    Desktop App
 
 -------------------------------------------------------------------------------
 */
+const DEFAULT_ROUTE = 'home';
+
 $(function() {
-    loadView("home");
-    initPlayer();
+    loadView();
+    initPlayer(onPlayerChanged);
 });
-addEventListener("hashchange", (event) => {
-    const route = window.location.hash.split('?')[0].slice(1);   
-    loadView(route);
+
+addEventListener("hashchange", (event) => {  
+    loadView();
 });
-function loadView(route){
+
+function loadView(){
+    const route = window.location.hash ? window.location.hash.split('?')[0].slice(1) : DEFAULT_ROUTE;
     console.log(route)
-    $('#view-container').html('');
-    $("#sidebar ul.nav a").removeClass('active');
-    $('#sidebar ul.nav a[href="/#' + route + '"]').addClass('active');
-    $.get('/view/'+route, function(data){
-        $('#view-container').html(data);
-    });
+
+    // Update Navigation
+    $("#sidebar a").removeClass('active');
+    $('#sidebar a[href="/#' + route + '"]').addClass('active');
+
+    // Hide all
+    $('#views > div').hide();
+
+    // Check for static route
+    if ($('#view-' + route)[0]){
+        $('#view-' + route).fadeIn();
+    } else {
+        // Load dynamic route
+        $.get('/view/desktop/'+route, function(data){
+            $('#view-container').html(data).fadeIn();
+        });
+    }
 }
 
-
-
-$(function(){
-	refreshKiosk();
-	initPlayer();
-});
-
-function refreshKiosk(){
-	$.get('/view/kiosk', function(data){
-        $('#kiosk').html(data);
-    });
+function onPlayerChanged(){
+    console.log('onPlayerChanged');
 }

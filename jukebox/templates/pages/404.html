@@ -1,4 +1,4 @@
-{% extends "_master.html" %}
+{% extends "__master.html" %}
 
 {% block title %}Page Not Found{% endblock %}
 
@@ -8,6 +8,6 @@
 	<br /><br /><br />
 	<br /><br /><br />
 	<h1>404 - NOT FOUND</h1>
-	<p>The URL you entered does not exist.</p>
+	<p>The URL you entered (<u>{{ route }}</u>) does not exist.</p>
 </div>
 {% endblock %}

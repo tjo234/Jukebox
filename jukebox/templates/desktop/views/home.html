@@ -1,0 +1,33 @@
+{% if home %}
+	<div style="background: #0F0C16;" class="text-center">
+		<img src="/static/img/wide.png" style="width: 640px; height: 320px;" />
+	</div>
+	<hr />
+	<h4 class="mt-4 mb-2">Albums</h4>
+	{% for a in home %}
+	<div class="album me-2 mb-2" style="display: inline-block;">
+		 <a href="javascript:;" onclick="playAlbum('{{ a.album }}')">
+		 	<img src="{{ a.image }}" alt="{{ a.album }}" style="width: 140px; height: 140px">
+		 </a>
+	</div>
+	{% endfor %} 
+
+	<h4 class="mt-4 mb-2">Playlists</h4>
+	{% for p in playlists %}
+	<div class="album me-2" style="display: inline-block;">
+		 <a href="javascript:;" onclick="playPlaylist('{{ p.playlist }}')">
+		 	<img src="/static/img/album.jpg" style="width: 140px; height: 140px">
+		 </a>
+	</div>
+	{% endfor %} 
+{% else %}
+	<div class="text-center">
+	<br /><br /><br />
+	<br /><br /><br />
+	<br /><br /><br />
+	<br /><br /><br />
+	<br /><br /><br />
+	<h1><i class="bi bi-database-fill-x"></i></h1>
+	<h3>Connect to Jukebox</h3>
+	</div>
+{% endif %}

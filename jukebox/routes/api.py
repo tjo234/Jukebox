@@ -1,14 +1,9 @@
 #!/usr/bin/env
-import io
 from flask import Blueprint, jsonify, send_file
 
 from ..player import JukeboxPlayer
 
 api = Blueprint('api', __name__, url_prefix='/api')
-
-@api.route("/status")
-def api_status():
-	return "OK"
 
 # Player API
 @api.route("/player/status")
@@ -17,7 +12,11 @@ def player_status():
 
 @api.route("/player/update")
 def player_update():
-    return jsonify(JukeboxPlayer.update())
+    return jsonify(JukeboxPlayer.database_update())
+
+@api.route("/player/rescan")
+def player_rescan():
+    return jsonify(JukeboxPlayer.database_update(True))
 
 @api.route("/player/initialize")
 def player_initialize():
@@ -32,22 +31,6 @@ def player_library():
 def player_library_albums():
     resp = JukeboxPlayer.albums()
     return jsonify(resp)
-
-@api.route("/player/cover")
-def player_library_cover():
-    try:
-        cover = JukeboxPlayer.cover()
-        return send_file(io.BytesIO(cover['binary']), mimetype=cover['type'])
-    except Exception as ex:
-        return str(ex)
-
-@api.route("/player/albumart")
-def player_library_albumart():
-    try:
-        albumart = JukeboxPlayer.albumart()
-        return send_file(io.BytesIO(albumart['binary']), download_name="album.jpg")
-    except Exception as ex:
-        return str(ex)      
 
 @api.route("/player/artists")
 def player_library_artists():
@@ -83,8 +66,9 @@ def player_toggleoutput(oid):
     return jsonify(resp)
 
 @api.route("/player/idle")
-def player_idle():
-    resp = JukeboxPlayer.idle()
+@api.route("/player/idle/<signal>")
+def player_idle(signal=None):
+    resp = JukeboxPlayer.idle(signal)
     return jsonify(resp)
 
 # Playlist Handlers
@@ -93,18 +77,54 @@ def playlist_playlist_by_id(playlist_id):
     resp = JukeboxPlayer.listplaylist(playlist_id)
     return jsonify(resp)
 
-# Playlist Handlers
-@api.route("/playlist/playid/<song_id>")
-def playlist_playlist_by_song_id(song_id):
-    resp = JukeboxPlayer.playid(song_id)
-    return jsonify(resp)
-
 @api.route('/playlist')
 def playlist_default():
     resp = JukeboxPlayer.playlist()
     return jsonify(resp)   
 
-@api.route("/playlist/reset/<artist>")
-def playlist_playlist_reset(artist):
-    resp = JukeboxPlayer.playlist_reset(artist)
+@api.route('/playlists')
+def playlist_list_playlists():
+    resp = JukeboxPlayer.playlists()
+    return jsonify(resp)   
+
+@api.route('/playlist/load/<name>')
+def playlist_load_playlist(name):
+    resp = JukeboxPlayer.load(name)
+    return jsonify(resp)   
+
+@api.route("/playlist/queue/artist/<artist>")
+def playlist_play_artist(artist):
+    resp = JukeboxPlayer.playlist_play_artist(artist)
     return jsonify(resp)
+
+@api.route("/playlist/queue/album/<album>")
+def playlist_play_album(album):
+    resp = JukeboxPlayer.playlist_play_album(album)
+    return jsonify(resp)
+
+@api.route("/playlist/findadd/<tag>/<what>")
+def playlist_playlist_findadd(tag, what):
+    resp = JukeboxPlayer.findadd(tag, what)
+    return jsonify(resp)
+
+# SONG_ID
+@api.route("/playlist/playid/<song_id>")
+def playlist_playlist_by_song_id(song_id):
+    resp = JukeboxPlayer.playid(song_id)
+    return jsonify(resp)
+
+@api.route("/cover/")
+@api.route("/cover/<song_id>")
+@api.route("/album/<path:file>")
+def player_library_cover(song_id=None, file=None):
+    cover = JukeboxPlayer.cover(song_id=song_id, file=file)
+    return send_file(cover, download_name="%s.jpg" % song_id)
+
+@api.route("/search/<s>")
+def api_search(s):
+    resp = JukeboxPlayer.search(s)
+    return jsonify(resp)
+
+@api.route("/status")
+def api_status():
+    return "OK"

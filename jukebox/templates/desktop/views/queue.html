@@ -4,7 +4,7 @@
 	</h6>
 	<div class="row text-secondary mb-4">
 		<div class="col-3">
-			<img src="{{ player.cover }}" class="img-thumbnail" />
+			<img src="/api/cover/{{ player.currentsong.id }}" class="img-thumbnail" />
 		</div>
 		<div class="col">
 			<h4 class="text-light mt-3 mb-0">{{ player.currentsong.title }}</h4>
@@ -16,6 +16,7 @@
 		<i class="bi bi-file-music-fill me-1"></i> Next Up
 	</h6>
 	{% for p in playlist %}
+	{% if ('song' in player.status) and (p.pos|int > player.status.song|int) %}
 	<div class="row text-secondary mb-2">
 		<div class="col">
 			<a class="no-link" href="javascript:;" onclick="playlistSongId({{ p.id }})">
@@ -27,5 +28,6 @@
 			<button class="btn btn-md text-light"><i class="bi bi-list"></i></button>
 		</div>
 	</div>
+	{% endif %}
 	{% endfor %}
 </div>

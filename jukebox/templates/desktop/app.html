@@ -1,39 +1,23 @@
-{% extends "_master.html" %}
+{% extends "__master.html" %}
 
 {% block content %}
+<style>
+	body{
+		padding-top:70px;
+	}
+</style>
 <div class="container-fluid h-100">
 	<div class="row h-100">
 		<div class="col-md-3 col-lg-2 border-dark border-right p-0 bg-dark">
 			<ul id="sidebar" class="nav nav-pills flex-column h-100">
-				<li class="nav-item mt-3">
-					<a class="nav-link" href="/#home">
-						<i class="bi bi-house-fill"></i>
-						Home
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/#search">
-						<i class="bi bi-search"></i>
-						Search
-					</a>
-				</li>
-				<li class="nav-item">
-					<h5>Discover</h5>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/#live">
-						<i class="bi bi-music-note-beamed"></i>
-						Now Playing
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/#radio">
-						<i class="bi bi-broadcast-pin"></i>
-						Radio
-					</a>
-				</li>
 				<li class="nav-item">
 					<h5>Library</h5>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/#browse">
+						<i class="bi bi-folder-fill"></i>
+						Browse
+					</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/#artists">
@@ -48,24 +32,71 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/#tracks">
-						<i class="bi bi-music-note"></i>
-						Songs
-					</a>
-				</li>
-				<li class="nav-item">
 					<h5>Playlists</h5>
 				</li>
+				{% for p in playlists %}
 				<li class="nav-item">
-					<a class="nav-link" href="/#playlist?id=1">
-						Playlist #1
+					<a class="nav-link" href="/#playlist/{{ p.playlist }}" style="display: inline-block;">
+						<i class="bi bi-file-earmark-music"></i>
+						{{ p.playlist }}
 					</a>
 				</li>
+				{% endfor %}
 			</ul>
 		</div>
-		<div id="view-container" class="col">	
+		<div id="views" class="col px-4 py-2 h-100" style="overflow-y: auto;">	
+
+			<!-- Dynamic Views -->
+			<div id="view-container" style="display: none;"></div>
+
+			<div id="view-home" style="display: none;">
+				{% include "desktop/views/home.html" %}
+			</div>
+
+			<!-- ALBUMS VIEW -->
+			<div id="view-albums" style="display: none;">
+				{% include "desktop/views/albums.html" %}
+			</div>
+
+			<!-- ARTIST VIEW -->
+			<div id="view-artists" style="display: none;">
+				{% include "desktop/views/artists.html" %}
+			</div>
+
+			<!-- BROWSE VIEW -->
+			<div id="view-browse" style="display: none;">
+				{% include "desktop/views/browse.html" %}
+			</div>
+
+
 		</div>
 	</div>
+</div>
+
+<div class="modal fade" id="modalConnection" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Connect To Jukebox</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<h3>Let's get some music playing!</h3>
+        <!-- <ol>
+        	<li>Plug in your Jukebox</li>
+        	<li>Give it 1-2 minutes to boot up</li>
+        	<li>Enter the connection details below</li>
+        	<li>Click CONNECT</li>
+        </ol> -->
+        <label for="txtConnectionId" class="form-label">Server Address</label>
+        <input id="txtConnectionId" type="text" class="form-control-lg my-2 w-100" value="jukebox.local" />
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      	<button type="button" class="btn btn-primary">Connect to Jukebox</button>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
 <!--

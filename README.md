@@ -26,7 +26,6 @@ Development Server:
 - Visit localhost in the browser: `http://localhost:9999/`
 
 # Testing
-
 1. Run unittests `python3 -m unittest discover -v`
 
 -------

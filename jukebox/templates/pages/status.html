@@ -1,25 +1,21 @@
-{% extends "_master.html" %}
+{% extends "__master.html" %}
 
 {% block content %}
 <div id="status"></div>
 {% endblock %}
+
 {% block footer_script %}
 <script type="text/javascript">
 $(function(){
-	refreshStatus();
-	playerWaitForChange();
+    refreshStatus();
+    initPlayer(refreshStatus);
 });
-function playerWaitForChange() {
-    $.getJSON('/api/player/idle', function(data){
-        console.log('Change received: ' + data)
-        refreshStatus()
-        playerWaitForChange();
-    });
-}
 function refreshStatus(){
-	$.get('/view/status', function(data){
-        $('#status').html(data);
-    });
+    if ($('#status')[0]) {
+    	$.get('/view/desktop/status', function(data){
+            $('#status').html(data);
+        });
+    }
 }
 </script>
 {% endblock %}

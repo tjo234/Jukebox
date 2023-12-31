@@ -1,4 +1,4 @@
-{% extends "_master.html" %}
+{% extends "__master.html" %}
 
 {% block navbar %}
 {% endblock %}
@@ -67,7 +67,7 @@
 		</div>
 	</nav>
 
-	<!-- FULL SCREEN CAST -->
+	<!-- FULL SCREEN SETTINGS -->
 	<div id="player-cast-full" class="modal modal-full fade" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -134,7 +134,7 @@
 				</div>
 				<div class="modal-body px-4">
 					<div class="now-playing">
-						<img id="img-album" src="{{ player.cover }}" class="img-thumbnail my-5" />
+						<img id="img-album" decoding="lazy" src="/api/cover/{{ player.currentsong.id }}" class="img-thumbnail my-5" style="min-width: 363px; min-height: 363px;" />
 						<h2 class="player-title">
 							{{ player.currentsong.title }}
 						</h2>
@@ -178,4 +178,5 @@
 
 {% block footer_script %}
 <script type="text/javascript" src="/static/js/mobile.js"></script>
+<script type="text/javascript" src="/static/js/search.js"></script>
 {% endblock %}

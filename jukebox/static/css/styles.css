@@ -1,11 +1,33 @@
+/* THEME COLORS */
+:root {
+	--body-bg: black;
+	--navbar-bg: #05040e;
+	--navbar-link-color: #60bbdd;
+	--sidebar-bg: #111;
+	--sidebar-link-hover: #0F0C16;
+	--sidebar-link-active: #291844;
+}
+
+::-webkit-scrollbar * {
+  background:transparent;
+}
+
+
 html,
 body {
 	height: 100%;
 	font-size: 14px;
 }
 body {
-	background: black;
+	background: var(--body-bg);
 }
+
+h1 {
+	color:#ddd;
+}
+
+
+
 
 .hidden {
 	display: none;
@@ -62,10 +84,10 @@ body {
 
 /* Main Nav */
 #header {
-	background: #0F0C16 !important;
+	background: var(--navbar-bg) !important;
 }
 #header .navbar-brand i {
-	color: #60bbdd;
+	color: var(--navbar-link-color)
 }
 #header .nav-link  i {
 	margin-right: .5em;
@@ -73,20 +95,30 @@ body {
 }
 
 /* Sidebar Nav */
+#sidebar {
+	background: var(--sidebar-bg);
+}
+
 #sidebar .nav-item > h5 {
 	padding: 2rem var(--bs-nav-link-padding-x) 0;
 	font-size: 0.8rem;
 	color: #999;
 }
-#sidebar .nav-pills .nav-link {
+#sidebar .nav-link {
 	color:#aaa;
+	border-radius: 0;
+	border:none;
 }
-#sidebar .nav-pills .nav-link:hover {
-	color:#eee;
-	background-color: #333;
+#sidebar .nav-link:hover {
+	color:#bbb;
+	background-color: var(--sidebar-link-hover);
 }
-#sidebar .nav-pills .nav-link.active {
-	background-color: #222;
+#sidebar .nav-link.active {
+	background-color: var(--sidebar-link-active);
+	color: white;
+}
+#sidebar .nav-link i {
+	margin-right: 5px;
 }
 
 

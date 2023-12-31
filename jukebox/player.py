@@ -1,94 +1,140 @@
 #!/usr/bin/env
+import io
+import base64
+import socket
+import urllib
+
 from mpd import MPDClient, CommandError
 from flask import g
+from socket import gaierror
 
 from .utils import duration_to_time
+
+ALBUM_PATH = "jukebox/static/img/album.jpg"
+
+JUKEBOX_DEFAULT_ADDR = "jukebox.local"
+JUKEBOX_DEFAULT_PORT = 6600
 
 class JukeboxPlayerException(Exception):
     pass
 
+class MPDServerNotFoundException(Exception):
+    pass
+
+def get_connection():
+    # Connect to MPD
+    g._mpd = MPDClient()
+    try:    
+        g._mpd.connect(JUKEBOX_DEFAULT_ADDR, JUKEBOX_DEFAULT_PORT)
+    except:
+        s = "Could not locate the server at %s:%s" % (JUKEBOX_DEFAULT_ADDR, JUKEBOX_DEFAULT_PORT)
+        raise MPDServerNotFoundException(s)
+    g.artists = JukeboxPlayer.artists()
+    g.albums = JukeboxPlayer.albums()
+    return g._mpd
+
 def get_mpd():
     mpd = getattr(g, '_mpd', None)
-    if not mpd:
-        mpd = g._mpd = MPDClient()
-        mpd.connect("jukebox.local", 6600)
+    if not mpd:    
+       mpd = get_connection()
     return mpd
-
-def get_status():
-    mpd = get_mpd()
-
-    # Check for cover.jpg in album folder 
-    has_folder_cover = False
-    try:
-        has_folder_cover = ('binary' in mpd.albumart(mpd.currentsong()['file']))
-    except Exception as ex:
-        pass
-
-    # Check for embedded id3 cover
-    has_embedded_cover = False
-    try:
-        has_embedded_cover = ('binary' in mpd.readpicture(mpd.currentsong()['file']))
-    except Exception as ex:
-        pass
-
-    cover = "/static/img/album.png"
-    if has_folder_cover:
-        cover = "/api/player/albumart"
-    elif has_embedded_cover:
-        cover = "/api/player/cover"
-
-    # Format duration/elapsed here for UI consistency
-    objStatus = mpd.status()
-    if objStatus['state'] == "play":
-        objStatus['str_duration'] = duration_to_time(objStatus['duration'])
-        objStatus['str_elapsed'] = duration_to_time(objStatus['elapsed'])
-
-    return {
-        "version": mpd.mpd_version,
-        "status": objStatus,
-        "stats": mpd.stats(),
-        "currentsong": mpd.currentsong(),
-        "outputs": mpd.outputs(),
-        "cover": cover,
-    }
-
+ 
 class JukeboxPlayer():
 
     @staticmethod
-    def initialize():
+    def status():
         mpd = get_mpd()
 
-        # Start playing
-        mpd.play()   
+        # Format duration/elapsed for UI consistency
+        status = mpd.status()
+        if status['state'] == "play":
+            status['str_duration'] = duration_to_time(status['duration'])
+            status['str_elapsed'] = duration_to_time(status['elapsed'])
 
-        return get_status()
+        return {
+            "status": status,
+            "currentsong": mpd.currentsong(),
+            "version": mpd.mpd_version
+        }   
 
     @staticmethod
-    def status():
-        return get_status()
+    def version():
+        return get_mpd().mpd_version
+
+    @staticmethod
+    def browse(dir=""):
+        return get_mpd().lsinfo(dir)
+
+    @staticmethod
+    def stats():
+        return get_mpd().stats()
   
     @staticmethod
-    def cover():
+    def cover(song_id=None, file=None):
         mpd = get_mpd()
-        return mpd.readpicture(mpd.currentsong()['file'])
+
+        file = urllib.parse.unquote(file)
+        print ("File: %s" % file)
+
+        # Load by ID
+        if song_id:
+            file = mpd.playlistid(song_id)[0]['file']
+
+        # No Album
+        if file == None:
+            f = open(ALBUM_PATH, "rb")
+            return io.BytesIO(f.read())
+
+        # Load album.jpg from folder
+        try:
+            cover = mpd.albumart(file)['binary']
+            return io.BytesIO(cover)
+        except:
+            pass
+
+        # Load embedded ID3 album
+        try:
+            cover = mpd.readpicture(file)['binary']
+            return io.BytesIO(cover)
+        except:
+            pass
+
+        # Default Album
+        f = open(ALBUM_PATH, "rb")
+        return io.BytesIO(f.read())
         
     @staticmethod
-    def albumart():
-        mpd = get_mpd()
-        return mpd.albumart(mpd.currentsong()['file'])
-
-    @staticmethod
-    def update():
+    def database_update(rescan=False):
         mpd = get_mpd() 
-        return mpd.rescan()
+        if rescan:
+            return mpd.rescan()
+        else:
+            return mpd.update()
 
     @staticmethod
     def artists():
-        return get_mpd().list('artist')
+        return get_mpd().list('albumartist')[1:]
+
+    @staticmethod
+    def genres():
+        return get_mpd().list('genre')
 
     @staticmethod
     def albums():
-        return get_mpd().list('album')
+        mpd = get_mpd()
+        albums = mpd.list('album', 'group', 'albumartist')[1:]
+        return albums
+
+    @staticmethod
+    def albums_home():
+        mpd = get_mpd()
+        albums = mpd.list('album', 'group', 'albumartist')[1:9]
+        for a in albums:
+            try:
+                a['image'] = '/api/album/' + urllib.parse.quote(mpd.find('album', a['album'])[0]['file'])
+            except:
+                pass
+        return albums
 
     @staticmethod
     def random():
@@ -177,17 +223,42 @@ class JukeboxPlayer():
         return get_mpd().ping()
 
     @staticmethod
-    def idle():
-        return get_mpd().idle()
+    def idle(signal=None):
+        if signal:
+            return get_mpd().idle(signal)
+        else:
+            return get_mpd().idle()
 
     @staticmethod
     def outputs():
         return get_mpd().outputs()
 
+    @staticmethod
+    def search(search):
+        mpd = get_mpd()
+        return {
+            'artists': [a['albumartist'] for a in g.artists if a['albumartist'].find(search) == 0],
+            'albums': [a['album'] for a in g.albums if a['album'].find(search) == 0],
+            'tracks': mpd.search("any", search)
+        }
+
     # Playlist
     @staticmethod
     def playlist():
         return get_mpd().playlistinfo()
+
+    @staticmethod
+    def playlists():
+        return get_mpd().listplaylists()
+
+    @staticmethod
+    def load(name):
+        mpd = get_mpd()
+        mpd.clear()
+        mpd.load(name)
+        mpd.repeat(1)
+        mpd.single(0)
+        mpd.play()
 
     @staticmethod
     def playid(song_id):
@@ -198,10 +269,29 @@ class JukeboxPlayer():
         return get_mpd().songid(pid)
 
     @staticmethod
-    def playlist_reset(artist):
+    def findadd(tag, what):
         mpd = get_mpd()
         mpd.clear()
-        mpd.findadd("any", artist)
+        mpd.findadd(tag, what)
+        mpd.repeat(1)
+        mpd.single(0)
+        mpd.shuffle()
+        mpd.play()
+
+    @staticmethod
+    def playlist_play_album(album):
+        mpd = get_mpd()
+        mpd.clear()
+        mpd.findadd("album", album)
+        mpd.repeat(1)
+        mpd.single(0)
+        mpd.play()
+
+    @staticmethod
+    def playlist_play_artist(artist):
+        mpd = get_mpd()
+        mpd.clear()
+        mpd.findadd("artist", artist)
         mpd.repeat(1)
         mpd.single(0)
         mpd.shuffle()

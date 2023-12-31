@@ -1,3 +1,4 @@
+{% if player %}
 <div class="container-fluid">
 	<div class="row mt-4">
 		<div class="col-4 px-4">
@@ -5,62 +6,74 @@
 			<table class="table table-dark">
 				<tr>
 					<td><i class="bi bi-mic-fill me-2"></i> Artists</td>
-					<td>{{ '{:,}'.format(player.stats.artists|int) }}</td>
+					<td style="width: 50%;">{{ '{:,}'.format(stats.artists|int) }}</td>
 				</tr>
 				<tr>
 					<td><i class="bi bi-vinyl-fill me-2"></i> Albums</td>
-					<td>{{ '{:,}'.format(player.stats.albums|int) }}</td>
+					<td style="width: 50%;">{{ '{:,}'.format(stats.albums|int) }}</td>
 				</tr>
 				<tr>
 					<td><i class="bi bi-file-music-fill me-2"></i> Songs</td>
-					<td>{{ '{:,}'.format(player.stats.songs|int) }}</td>
+					<td style="width: 50%;">{{ '{:,}'.format(stats.songs|int) }}</td>
 				</tr>
 			</table>
 			<h3 class="text-secondary">MPD</h3>
 			<table class="table table-dark">
 				<tr>
 					<td><i class="bi bi-database-fill me-2"></i> Last Update</td>
-					<td>{{ player.stats.db_update|dt }}</td>
+					<td style="width: 50%;">{{ stats.db_update|dt }}</td>
 				</tr>
 				<tr>
 					<td><i class="bi bi-database-fill me-2"></i> DB Playtime</td>
-					<td>{{ player.stats.db_playtime|seconds }}</td>
+					<td style="width: 50%;">{{ stats.db_playtime|seconds }}</td>
 				</tr>
 				<tr>
 					<td><i class="bi bi-database-fill me-2"></i> Playtime</td>
-					<td>{{ player.stats.playtime|seconds }}</td>
+					<td style="width: 50%;">{{ stats.playtime|seconds }}</td>
 				</tr>
 				<tr>
 					<td><i class="bi bi-database-fill me-2"></i> Uptime</td>
-					<td>{{ player.stats.uptime|seconds }}</td>
+					<td style="width: 50%;">{{ stats.uptime|seconds }}</td>
 				</tr>
 				<tr>
 					<td><i class="bi bi-database-fill me-2"></i> Version</td>
-					<td>{{ player.version }}</td>
+					<td style="width: 50%;">{{ player.version }}</td>
 				</tr>
 			</table>
 			<h3 class="text-secondary">Player</h3>
 			<table class="table table-dark">
 				<tr>
 					<td><i class="bi bi-speaker-fill me-2"></i> Sample Rate</td>
-					<td>{{ player.status.audio|audio if player.status.audio else "N/A" }}</td>
+					<td style="width: 50%;">{{ player.status.audio|audio if player.status.audio else "N/A" }}</td>
 				</tr>
 				<tr>
 					<td><i class="bi bi-speaker-fill me-2"></i> Bitrate</td>
-					<td>{{ player.status.bitrate if player.status.audio else "0" }} kpbs</td>
+					<td style="width: 50%;">{{ player.status.bitrate if player.status.audio else "0" }} kpbs</td>
 				</tr>
 			</table>
 		</div>
 		<div class="col">
-			<table class="table table-dark">
-				<tr><td colspan="2">Status</td></tr>
-				{% for v in player.status %}
+			<h3 class="text-secondary">Status</h3>
+			<table class="table table-dark table-sm">
+				{% for v in player.status|sort %}
 				<tr>
-					<td><pre>{{ v }}</pre></td>
-					<td><pre>{{ player.status[v] }}</pre></td>
+					<td>{{ v|upper }}</td>
+					<td style="width:80%">{{ player.status[v] }}</td>
 				</tr>
 				{% endfor %}
 			</table>
 		</div>
 	</div>
 </div>
+{% else %}
+<div class="text-center">
+	<br /><br /><br />
+	<br /><br /><br />
+		<br /><br /><br />
+	<br /><br /><br />
+	<br /><br /><br />
+	<br /><br /><br />
+	<h1><i class="bi bi-database-fill-x"></i></h1>
+	<h3>Connect to Jukebox</h3>
+</div>
+{% endif %}

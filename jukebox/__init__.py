@@ -39,7 +39,7 @@ def create_app():
 
     @app.template_filter('audio')
     def filter_mpd_audio_str(s):
-        '''Converts MPD audio "441000:24:2" to "44.1 kHz | 24 bit"'''
+        '''Converts MPD audio string "441000:24:2" to "44.1 kHz | 24 bit"'''
         audio = s.split(':')
         hz = str(int(audio[0])/1000)
         return hz + ' kHz / ' + audio[1] + ' bit'

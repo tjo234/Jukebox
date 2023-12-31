@@ -1,31 +1,15 @@
-{% extends "_master.html" %}
+{% extends "__master.html" %}
 
 {% block navbar %}
 {% endblock %}
 
 {% block content %}
-<div id="kiosk">
+<div id="kiosk" class="h-100">
 </div>
 {% endblock %}
 
 {% block footer_script %}
-<script type="text/javascript">
-$(function(){
-	refreshKiosk();
-	playerWaitForChange();
-});
-function playerWaitForChange() {
-    $.getJSON('/api/player/idle', function(data){
-        console.log('Change received: ' + data)
-        refreshKiosk()
-        playerWaitForChange();
-    });
-}
-function refreshKiosk(){
-	$.get('/view/kiosk', function(data){
-        $('#kiosk').html(data);
-    });
-}
+<script type="text/javascript" src="/static/js/kiosk.js">
 </script>
 {% endblock %}
 

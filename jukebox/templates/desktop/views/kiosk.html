@@ -1,0 +1,11 @@
+<div class="container-fluid text-center h-100" style="background: #0F0C16;">
+	<div class="row">
+		{% if player and 'currentsong' in player %}
+		<img src="/api/cover/{{ player.currentsong.id }}" class="mb-4" style="width: 500px; height: 500px; margin: 200px auto 0;" />
+		<h1 class="text-light">{{ player.currentsong.title }}</h1>
+		<h3 class="text-secondary">{{ player.currentsong.artist }}</h3>
+		{% else %}
+		<img src="/static/img/logo.png" style="width: 500px; margin:  420px auto 0;" />
+		{% endif %}
+	</div>
+</div>

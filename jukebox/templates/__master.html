@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#05040e">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="description" content="Jukebox is a hi-res music server.">
+	<meta name="theme-color" content="#15141c">
+	<title>Jukebox Music Server</title>
+	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="apple-touch-icon" sizes="180x180" href="/static/img/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon-16x16.png">
+	<link rel="manifest" href="/static/manifest.json">
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+	<link rel="stylesheet" href="/static/css/styles.css">
+	{% block header_script %}
+	{% endblock %}
+</head>
+<body>
+{% block navbar %}
+<!-- NAV HEADER -->
+<nav id="header" class="navbar navbar-dark bg-dark fixed-top">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="/#home">
+			<img src="/static/img/apple-touch-icon.png" alt="Jukebox" height="40" />
+		</a>
+		<div class="ms-auto">
+			<button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#modalQueue">
+				<i class="bi bi-list"></i>
+			</button>
+			<button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#modalSettings">
+				<i class="bi bi-gear"></i>
+			</button>
+		</div>
+	</div>
+</nav>
+
+<!-- SETTINGS POPUP -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="modalSettings" aria-labelledby="menuLabel" data-bs-theme="dark">
+	<div class="offcanvas-header" style="border-bottom: solid 1px #333;">
+		<h5 class="offcanvas-title" id="menuLabel">Settings</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+		<ul class="navbar-nav justify-content-end flex-grow-1 pe-3 text-secondary">
+			<li class="navbar-header mt-4 mb-2">
+				<h6>
+					<i id="db-update" class="bi bi-database me-1"></i>
+					MANAGE LIBRARY 
+					{% if player and 'updating_db' in player.status %}
+					<div class="spinner-border spinner-border-sm ms-2" role="status" title="Database update in progress">
+					</div>
+					{% endif %}
+				</h6>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="javascript:;" 
+				data-bs-dismiss="offcanvas" onclick="updateDatabase(0)">Update Database</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="javascript:;" 
+				data-bs-dismiss="offcanvas" onclick="updateDatabase(1)">Rescan Database</a>
+			</li>
+			<li class="navbar-header mt-4 mb-2">
+				<h6>
+					<i id="db-update" class="bi bi-gear me-1"></i>
+					ADMIN
+				</h6>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/status" title="Status" target="_blank">
+					Server Status <i class="ms-2 bi bi-box-arrow-up-right"></i>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/kiosk" title="Status" target="_blank">
+					Kiosk Mode <i class="ms-2 bi bi-box-arrow-up-right"></i>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/">Reload Jukebox</a>
+			</li>
+			<!-- <li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/">Reset to Factory Settings</a>
+			</li> -->
+		</ul>
+		<div style="position: fixed; bottom: 10px">
+		{% if not player %}
+			<div class="text-warning">
+				<i class="bi bi-database-check me-2"></i>
+				MPD not connected.
+			</div>
+		{% elif player and player.version[2:]|float < 23.5 %}
+			<div class="text-warning">
+				<i class="bi bi-database-fill-exclamation me-1"></i>
+				<strong>MPD is out of date.</strong>
+				<br/>
+				<small>Please install MPD version 0.23.5 or higher.</small>
+			</div>
+		{% elif player %}
+			<div class="text-secondary">
+				<i class="bi bi-database-check me-2"></i>
+				MPD v{{ player.version }}
+			</div>
+		{% endif %}
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+<script type="text/javascript" src="/static/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="/static/scripts/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/static/js/player.js"></script>
+<script type="text/javascript" src="/static/js/nav.js"></script>
+{% block footer_script %}
+<script type="text/javascript" src="/static/js/desktop.js"></script>
+{% endblock %}
+</body>
+</html>
