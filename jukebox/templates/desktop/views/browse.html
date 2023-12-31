@@ -1,23 +1,28 @@
-<h1>Library</h1>
-<div>
-	<a style="font-size:2rem" class="btn" href="javascript:" onclick="browseLibrary('..')">
-		<i class="bi bi-folder me-2"></i>
-		<i class="bi bi-arrow-90deg-up"></i>
-	</a>
+<h5 class="text-light ms-2 my-3"><a href="/#browse" class="text-light"><i class="bi bi-house-fill"></i></a> / {{ path|replace('/', ' / ') }}</h5>
+<div class="library">
+	{% if path %}
+	<div>
+		<a class="btn text-light" href="/#browse?path={{ parent }}">
+			<i class="bi bi-arrow-90deg-up"></i>
+			..
+		</a>
+	</div>
+	{% endif %}
+
+	{% for d in browse if 'directory' in d %}
+	<div>
+		<a class="btn text-light" href="/#browse?path={{ d.directory }}">
+			<i class="bi bi-folder me-2"></i>
+			{{ d.directory.replace(path, '')[1:] if path else d.directory }}
+		</a>
+	</div>
+	{% endfor %}
+	{% for f in browse if 'file' in f %}
+	<div>
+		<a class="btn text-light" href="javascript:" onclick="queueSong('{{ f.file|urlencode }}')">
+			<i class="bi bi-file-music-fill me-2"></i>
+			{{ f.file.replace(path, '')[1:] if path else f.file }}
+		</a>
+	</div>
+	{% endfor %}
 </div>
-{% for d in browse if 'directory' in d %}
-<div>
-	<a style="font-size:2rem" class="btn" href="javascript:" onclick="browseLibrary('{{ d.directory }}')">
-		<i class="bi bi-folder me-2"></i>
-		{{ d.directory }}
-	</a>
-</div>
-{% endfor %}
-{% for f in browse if 'file' in f %}
-<div>
-	<a style="font-size:2rem" class="btn" href="javascript:" onclick="browseLibrary('{{ f.file }}')">
-		<i class="bi bi-file-music-fill me-2"></i>
-		{{ f.file }}
-	</a>
-</div>
-{% endfor %}

@@ -1,28 +1,140 @@
 <!-- MINI PLAYER -->
-<input type="hidden" id="player-id" value="{{ currentTrack.id }}" />
-<audio id="player-audio" src="/file/{{ currentTrack.id }}"></audio>	
-<div id="player" class="p-0">
-	<div class="row">
+<nav id="header" class="navbar navbar-dark bg-dark fixed-top p-0">
+	<div class="container-fluid">
 		<div class="col-2">
-			<button id="player-btn" class="btn btn-lg" onclick="playerPlayToggle()" style="font-size:28px;">
-				<i class="bi bi-play-circle-fill player-btn-play"></i>
-				<i class="bi bi-pause-circle-fill player-btn-pause" style="display: none;"></i>
-			</button>
-		</div>
-		<div class="col">
-			<a class="marquee" href="javascript:;" data-bs-toggle="modal" data-bs-target="#player-full">
-				{{ currentTrack.track }} - {{ currentTrack.artist }}
+			<a class="navbar-brand" href="/#home">
+				<img src="/static/img/apple-touch-icon.png" alt="Jukebox" height="40" />
 			</a>
 		</div>
+		<div class="col-2 player-controls text-center">
+			<button class="btn btn-lg px-1" onclick="playerRepeat()" style="font-size:12px;">
+				<i id="btn-player-repeat"class="bi bi-repeat player-btn-repeat"></i>
+				<i id="btn-player-repeat-1" class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
+			</button>
+			<button class="btn btn-lg px-2" onclick="playerPrevTrack()" style="font-size:20px;">
+				<i class="bi bi-skip-start-fill"></i>
+			</button>
+			<button class="btn btn-lg px-2" onclick="playerPlayToggle()" style="font-size:30px;">
+				<i class="bi bi-play-circle-fill player-btn-play {{ 'hidden' if player.status.state == 'play' else '' }}"></i>
+				<i class="bi bi-pause-circle-fill player-btn-pause {{ 'hidden' if player.status.state != 'play' else '' }}"></i>
+			</button>
+			<button class="btn btn-lg px-2" onclick="playerNextTrack()" style="font-size:20px;">
+				<i class="bi bi-skip-end-fill"></i>
+			</button>
+			<button id="btn-player-shuffle" class="btn btn-lg px-1" onclick="playerShuffle()" style="font-size:12px;">
+				<i class="bi bi-shuffle player-btn-shuffle"></i>
+			</button>
+
+		</div>
+		<div class="col-4 text-center">
+			<div class="player-marquee">
+				<h6 class="p-0 m-0 text-light player-title">{{ player.currentsong.title }}</h6>
+				<small class="text-secondary player-artist">{{ player.currentsong.artist }}</small>
+			</div>
+		</div>
 		<div class="col-2">
-			<button class="btn btn-lg" onclick="playerMuteToggle()" style="font-size:18px;">
+			<button class="btn btn-lg text-light" onclick="playerMuteToggle()" style="font-size:18px;">
 				<i class="bi bi-volume-up-fill player-btn-volume"></i>
 				<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>
 			</button>
+			VOLUME
+			
+			
+		</div>
+		<div class="ms-auto">
+			<button class="btn text-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#modalQueue">
+				<i class="bi bi-music-note-list"></i>
+			</button>
+			<button class="btn text-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#modalSettings">
+				<i class="bi bi-gear"></i>
+			</button>
+		</div>
+	</div>
+</nav>
+
+<!-- SETTINGS POPUP -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="modalSettings" aria-labelledby="menuLabel" data-bs-theme="dark">
+	<div class="offcanvas-header" style="border-bottom: solid 1px #333;">
+		<h5 class="offcanvas-title" id="menuLabel">
+			<i class="bi bi-gear me-3"></i>
+			Settings
+		</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+		<ul class="navbar-nav justify-content-end flex-grow-1 pe-3 text-secondary">
+			<li class="navbar-header mt-4 mb-2">
+				<h6>
+					<i id="db-update" class="bi bi-database me-1"></i>
+					MANAGE LIBRARY 
+					{% if player and 'updating_db' in player.status %}
+					<div class="spinner-border spinner-border-sm ms-2" role="status" title="Database update in progress">
+					</div>
+					{% endif %}
+				</h6>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="javascript:;" 
+				data-bs-dismiss="offcanvas" onclick="updateDatabase(0)">Update Database</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="javascript:;" 
+				data-bs-dismiss="offcanvas" onclick="updateDatabase(1)">Rescan Database</a>
+			</li>
+			<li class="navbar-header mt-4 mb-2">
+				<h6>
+					<i id="db-update" class="bi bi-gear me-1"></i>
+					ADMIN
+				</h6>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/status" title="Status" target="_blank">
+					Server Status <i class="ms-2 bi bi-box-arrow-up-right"></i>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/kiosk" title="Status" target="_blank">
+					Kiosk Mode <i class="ms-2 bi bi-box-arrow-up-right"></i>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/">Reload Jukebox</a>
+			</li>
+			<!-- <li class="nav-item">
+				<a class="nav-link" aria-current="page" href="/">Reset to Factory Settings</a>
+			</li> -->
+		</ul>
+		<div style="position: fixed; bottom: 10px">
+		{% if not player %}
+			<div class="text-warning">
+				<i class="bi bi-database-check me-2"></i>
+				MPD not connected.
+			</div>
+		{% elif player and player.version[2:]|float < 23.5 %}
+			<div class="text-warning">
+				<i class="bi bi-database-fill-exclamation me-1"></i>
+				<strong>MPD is out of date.</strong>
+				<br/>
+				<small>Please install MPD version 0.23.5 or higher.</small>
+			</div>
+		{% elif player %}
+			<div class="text-secondary">
+				<i class="bi bi-database-check me-2"></i>
+				MPD v{{ player.version }}
+			</div>
+		{% endif %}
 		</div>
 	</div>
 </div>
 
-
-
+<!-- QUEUE POPUP -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="modalQueue" aria-labelledby="menuLabel" data-bs-theme="dark">
+	<div class="offcanvas-header" style="border-bottom: solid 1px #333;">
+		<h5 class="offcanvas-title" id="menuLabel"><i class="bi bi-music-note-list me-3"></i>Now Playing</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div id="playlist-queue" class="offcanvas-body">
+	{% include "desktop/views/queue.html" %}
+	</div>
+</div>
 

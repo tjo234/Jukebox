@@ -8,8 +8,8 @@
 	--sidebar-link-active: #291844;
 }
 
-::-webkit-scrollbar * {
-  background:transparent;
+::-webkit-scrollbar {
+  background:black;
 }
 
 
@@ -82,16 +82,27 @@ h1 {
 	filter: drop-shadow(1px 2px 3px #000000);
 }
 
+.player-marquee {
+		padding-top: 12px;
+    background: #111;
+    border: solid 1px #222;
+    border-radius: 5px;
+    height: 60px;
+}
+
 /* Main Nav */
 #header {
 	background: var(--navbar-bg) !important;
+	border-bottom: solid 1px #111;
 }
 #header .navbar-brand i {
 	color: var(--navbar-link-color)
 }
 #header .nav-link  i {
 	margin-right: .5em;
-
+}
+#header .player-controls button {
+	color: #999;
 }
 
 /* Sidebar Nav */

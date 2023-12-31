@@ -12,17 +12,17 @@
 window.JUKEBOX = {};
 
 function initPlayer(callback){
-    refreshPlayerStatus(callback);
+    refreshPlayerStatus('init', callback);
     playerWaitForChange(callback);
 }
 function playerWaitForChange(callback) {
-    $.getJSON('/api/player/idle', function(data){
-        console.log('Change received: ' + data)
-        refreshPlayerStatus(callback)
+    $.getJSON('/api/player/idle', function(evt){
+        console.log('Change received: ' + evt)
+        refreshPlayerStatus(evt, callback)
         playerWaitForChange(callback);
     });
 }
-function refreshPlayerStatus(callback){
+function refreshPlayerStatus(evt, callback){
     $.getJSON('/api/player/status', function(data){
         window.JUKEBOX = data;
     })
@@ -31,7 +31,7 @@ function refreshPlayerStatus(callback){
         window.JUKEBOX = {};
     })
     .always(function() { 
-        callback();
+        callback(evt);
     });
 }
 
@@ -81,7 +81,7 @@ function playlistSongId(songId) {
 
 function playAlbum(a){
     console.log('playAlbum', a)
-     $.getJSON('/api/playlist/queue/album/'+a, function(){});
+     $.getJSON('/api/playlist/queue/album/?album='+a, function(){});
 }
 function playArtist(a){
     console.log('playArtist', a)

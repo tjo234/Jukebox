@@ -1,5 +1,5 @@
 #!/usr/bin/env
-from flask import Blueprint, jsonify, send_file
+from flask import Blueprint, jsonify, send_file, request
 
 from ..player import JukeboxPlayer
 
@@ -97,8 +97,9 @@ def playlist_play_artist(artist):
     resp = JukeboxPlayer.playlist_play_artist(artist)
     return jsonify(resp)
 
-@api.route("/playlist/queue/album/<album>")
-def playlist_play_album(album):
+@api.route("/playlist/queue/album/")
+def playlist_play_album():
+    album = request.args.get('album')
     resp = JukeboxPlayer.playlist_play_album(album)
     return jsonify(resp)
 
@@ -115,6 +116,7 @@ def playlist_playlist_by_song_id(song_id):
 
 @api.route("/cover/")
 @api.route("/cover/<song_id>")
+@api.route("/album/")
 @api.route("/album/<path:file>")
 def player_library_cover(song_id=None, file=None):
     cover = JukeboxPlayer.cover(song_id=song_id, file=file)

@@ -29,8 +29,6 @@ def get_connection():
     except:
         s = "Could not locate the server at %s:%s" % (JUKEBOX_DEFAULT_ADDR, JUKEBOX_DEFAULT_PORT)
         raise MPDServerNotFoundException(s)
-    g.artists = JukeboxPlayer.artists()
-    g.albums = JukeboxPlayer.albums()
     return g._mpd
 
 def get_mpd():
@@ -62,8 +60,9 @@ class JukeboxPlayer():
         return get_mpd().mpd_version
 
     @staticmethod
-    def browse(dir=""):
-        return get_mpd().lsinfo(dir)
+    def browse(path):
+        print(path)
+        return get_mpd().lsinfo(path)
 
     @staticmethod
     def stats():
@@ -73,12 +72,14 @@ class JukeboxPlayer():
     def cover(song_id=None, file=None):
         mpd = get_mpd()
 
-        file = urllib.parse.unquote(file)
-        print ("File: %s" % file)
-
+        if file:
+            file = urllib.parse.unquote(file)
+    
         # Load by ID
         if song_id:
             file = mpd.playlistid(song_id)[0]['file']
+
+        print ("File: %s" % file)
 
         # No Album
         if file == None:
@@ -128,7 +129,7 @@ class JukeboxPlayer():
     @staticmethod
     def albums_home():
         mpd = get_mpd()
-        albums = mpd.list('album', 'group', 'albumartist')[1:9]
+        albums = mpd.list('album', 'group', 'albumartist')[1:7]
         for a in albums:
             try:
                 a['image'] = '/api/album/' + urllib.parse.quote(mpd.find('album', a['album'])[0]['file'])
@@ -285,6 +286,7 @@ class JukeboxPlayer():
         mpd.findadd("album", album)
         mpd.repeat(1)
         mpd.single(0)
+        mpd.random(0)
         mpd.play()
 
     @staticmethod
@@ -294,5 +296,5 @@ class JukeboxPlayer():
         mpd.findadd("artist", artist)
         mpd.repeat(1)
         mpd.single(0)
-        mpd.shuffle()
+        mpd.random(1)
         mpd.play()

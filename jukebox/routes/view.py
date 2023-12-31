@@ -31,18 +31,15 @@ def static_from_root():
 @view.route('/<route>')
 def render_page(route):
     obj = get_template_values()
-    obj['route'] = route
-    obj['albums'] = getattr(g, 'albums', [])
-    obj['artists'] = getattr(g, 'artists', [])
-
-    
+    obj['route'] = route  
     if route == "index" and user_on_mobile():
         return render_template('mobile/app.html', **obj) 
     if route == "index":
         obj['home'] = JukeboxPlayer.albums_home()
-        obj['browse'] = JukeboxPlayer.browse()
+        obj['browse'] = JukeboxPlayer.browse(request.args.get('path', ''))
+        obj['albums'] = JukeboxPlayer.albums()
+        obj['artists'] = JukeboxPlayer.artists()
         return render_template('desktop/app.html', **obj) 
-
     try:
         return render_template('pages/%s.html' % route, **obj) 
     except:
@@ -53,16 +50,21 @@ def render_page(route):
 def render_desktop_view(route):
     obj = {} 
     obj['player'] = JukeboxPlayer.status()
-
-    if route == "home":
-        obj['home'] = JukeboxPlayer.albums_home()
-        obj['playlists'] = JukeboxPlayer.playlists()
-    if route == "albums":
-        obj['albums'] = getattr(g, 'albums', [])
-    if route == "artists":
-        obj['artists'] = getattr(g, 'artists', [])
-    if route == "artists":
-        obj['artists'] = getattr(g, 'artists', [])
+    if route == "browse":
+        path = request.args.get('path', '')
+        obj['path'] = path
+        obj['parent'] = path.rsplit('/')[0] if '/' in path else ''
+        obj['browse'] = JukeboxPlayer.browse(path)
+    if route == "queue":
+        obj['playlist'] = JukeboxPlayer.playlist()
+    #     obj['home'] = JukeboxPlayer.albums_home()
+    #     obj['playlists'] = JukeboxPlayer.playlists()
+    # if route == "albums":
+    #     obj['albums'] = JukeboxPlayer.albums_home()
+    # if route == "artists":
+    #     obj['artists'] = getattr(g, 'artists', [])
+    # if route == "artists":
+    #     obj['artists'] = getattr(g, 'artists', [])
     
     return render_template('desktop/views/%s.html' % route, **obj) 
 

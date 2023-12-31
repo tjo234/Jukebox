@@ -1,27 +1,32 @@
 {% if home %}
-	<div style="background: #0F0C16;" class="text-center">
-		<img src="/static/img/wide.png" style="width: 640px; height: 320px;" />
-	</div>
-	<hr />
-	<h4 class="mt-4 mb-2">Albums</h4>
+<div style="background: #0F0C16;" class="text-center">
+	<img src="/static/img/wide.png" style="height: 200px;" />
+</div>
+<hr />
+<h4 class="mt-4 mb-2">Recently Added</h4>
+<div class="row">
 	{% for a in home %}
-	<div class="album me-2 mb-2" style="display: inline-block;">
-		 <a href="javascript:;" onclick="playAlbum('{{ a.album }}')">
-		 	<img src="{{ a.image }}" alt="{{ a.album }}" style="width: 140px; height: 140px">
-		 </a>
+	<div class="col-2 mb-4">
+		<a href="javascript:;" onclick="playAlbum('{{ a.album }}')">
+			<img src="{{ a.image }}" alt="{{ a.album }}" class="img-fluid" />
+		</a>
 	</div>
 	{% endfor %} 
+</div>
 
-	<h4 class="mt-4 mb-2">Playlists</h4>
+<h4 class="mt-4 mb-2">Playlists</h4>
+<div class="row">
 	{% for p in playlists %}
-	<div class="album me-2" style="display: inline-block;">
-		 <a href="javascript:;" onclick="playPlaylist('{{ p.playlist }}')">
-		 	<img src="/static/img/album.jpg" style="width: 140px; height: 140px">
-		 </a>
+	<div class="col-2 mb-4">
+		<a href="javascript:;" onclick="playPlaylist('{{ p.playlist }}')" style="text-decoration: none;">
+			<img src="/static/img/album.jpg" class="img-fluid">
+			<h6 class="text-light mt-2">{{ p.playlist }}</h6>
+		</a>
 	</div>
 	{% endfor %} 
+</div>
 {% else %}
-	<div class="text-center">
+<div class="text-center">
 	<br /><br /><br />
 	<br /><br /><br />
 	<br /><br /><br />
@@ -29,5 +34,5 @@
 	<br /><br /><br />
 	<h1><i class="bi bi-database-fill-x"></i></h1>
 	<h3>Connect to Jukebox</h3>
-	</div>
+</div>
 {% endif %}
