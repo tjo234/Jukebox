@@ -6,6 +6,8 @@
 -------------------------------------------------------------------------------
 */
 const DEFAULT_ROUTE = 'home';
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
 $(function() {
     loadView();
@@ -18,7 +20,8 @@ addEventListener("hashchange", (event) => {
 
 function loadView(){
     const route = window.location.hash ? window.location.hash.split('?')[0].slice(1) : DEFAULT_ROUTE;
-    console.log(route)
+    const qs = window.location.hash.split('?')[1];
+    console.log('loadView', route)
 
     // Update Navigation
     $("#sidebar a").removeClass('active');
@@ -29,10 +32,14 @@ function loadView(){
 
     // Check for static route
     if ($('#view-' + route)[0]){
+        console.log('Static route:', route)
         $('#view-' + route).fadeIn();
     } else {
         // Load dynamic route
-        $.get('/view/desktop/'+ window.location.hash.slice(1), function(data){
+        fullPath = '/view/desktop/'+ route + '?' + qs;
+        console.log('Dynamic route:', route)
+        $.get(fullPath, function(data){
+            console.log('Route loaded', route)
             $('#view-container').html(data).fadeIn();
         });
     }
@@ -46,6 +53,14 @@ function loadView(){
 
 function onPlayerChanged(change){
     console.log('onPlayerChanged', change);
+    console.log(JUKEBOX);
+
+    if(JUKEBOX.status.updating_db){
+        var s = `Database update in progress [Job: ${JUKEBOX.status.updating_db}]`;
+        $('#loading').attr('title', s).show();
+    } else {
+        $('#loading').hide();
+    }  
 
     // Play/Pause Toggle
     if (JUKEBOX.status.state == 'play') {

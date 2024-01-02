@@ -1,17 +1,13 @@
 <div id="now-playing" class="container-fluid">
 	<div class="row">
-		{% if home %}
-		{% for t in home %}
-		<div class="col-sm-2 mb-4">
-			<img src="{{ t.cover }}" class="img-thumbnail img-fluid" style="height:100%; width: 100%;" />
-				<!-- <div class="card-body">
-					<h5 class="card-title">{{ t.album }}</h5>
-					<p class="card-text">{{ t.artist }}</p>
-				</div> -->
-		</div>
-		{% endfor %}
-		{% else %}
+		{% if player %}
 		<img src="/static/img/logo_tall.png" style="width: 500px" />
+		{% else %}
+		<div class="text-center" style="padding:370px 0;">
+			<h1><i class="bi bi-database-fill-x"></i></h1>
+			<h3>Connect to Jukebox</h3>
+		</div>
+		
 		{% endif %}
 	</div>
 </div>

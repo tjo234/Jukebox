@@ -44,6 +44,10 @@ function refreshPlayerStatus(evt, callback){
 
 -------------------------------------------------------------------------------
 */
+function updateDatabase(rescan){
+    var url = (rescan == true) ? '/api/player/rescan' : '/api/player/update'; 
+    $.getJSON(url);
+}
 function toggleOutput(id){
     $.getJSON(`/api/player/toggleoutput/${id}`, function(){});
 }
@@ -63,6 +67,10 @@ function playerPlayToggle() {
 function playerMuteToggle() {
     $.getJSON('/api/player/control/mute', function(){});
 }
+function changeVolume() {
+    v = $('#volume-bar').val()
+    $.getJSON('/api/player/volume/'+v, function(){});
+}
 function playerNextTrack() {
     $.getJSON('/api/player/control/next', function(){});
 }
@@ -70,15 +78,19 @@ function playerPrevTrack() {
     $.getJSON('/api/player/control/previous', function(){});
 }
 function playerRepeat() {
+    console.log('playerRepeat')
     $.getJSON('/api/player/control/repeat', function(){});
 }
 function playerShuffle() {
+    console.log('playerShuffle')
     $.getJSON('/api/player/control/random', function(){});
 }
+
+
+
 function playlistSongId(songId) {
     $.getJSON('/api/playlist/playid/'+songId, function(){});
 }
-
 function playAlbum(a){
     console.log('playAlbum', a)
      $.getJSON('/api/playlist/queue/album/?album='+a, function(){});

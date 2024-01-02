@@ -17,14 +17,14 @@
 				<div class="row">
 					<div class="col-2">
 						<button id="player-btn" class="btn btn-lg" onclick="playerPlayToggle()" style="font-size:28px;">
-							<i class="bi bi-play-circle-fill player-btn-play {{ 'hidden' if player.status.state == 'play' else '' }}"></i>
-							<i class="bi bi-pause-circle-fill player-btn-pause {{ 'hidden' if player.status.state != 'play' else '' }}"></i>
+							<i class="bi bi-play-circle-fill player-btn-play"></i>
+							<i class="bi bi-pause-circle-fill player-btn-pause hidden"></i>
 						</button>
 					</div>
 					<div class="col">
 						<a class="marquee" href="javascript:;" data-bs-toggle="modal" data-bs-target="#player-full">
-							<span class="player-title">{{ player.currentsong.title }}</span>
-							<span class="player-artist">{{ player.currentsong.artist }}</span>
+							<span class="player-title"></span>
+							<span class="player-artist"></span>
 						</a>
 					</div>
 					<div class="col-2">
@@ -82,6 +82,7 @@
 				<div class="modal-body">			
 					<div id="cast" class="pt-5">
 						<h4 class="text-secondary">Audio Outputs</h4>
+						{% if 'outputs' in player %}
 						{% for o in player.outputs %}
 						<div class="row my-4">
 							<div class="col pt-2">
@@ -98,16 +99,21 @@
 							</div>
 						</div>
 						{% endfor %}
-						<h4 class="text-secondary">Volume</h4>
-						{% if player.status.volume %}
-						<button class="btn btn-lg" onclick="playerMuteToggle()" style="font-size:18px;">
-							<i class="bi bi-volume-up-fill player-btn-volume"></i>
-							<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>
-							<i class="bi bi-volume-mute-fill player-btn-fixed" style="display: none;"></i>
-						</button>
-						{% else %}
-						Volume is controlled by the AV receiver.
 						{% endif %}
+
+						
+							<h4 class="text-secondary">Volume</h4>
+							{% if 'status' in player %}
+							{% if 'volume' in player.status %}
+							<button class="btn btn-lg" onclick="playerMuteToggle()" style="font-size:18px;">
+								<i class="bi bi-volume-up-fill player-btn-volume"></i>
+								<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>
+								<i class="bi bi-volume-mute-fill player-btn-fixed" style="display: none;"></i>
+							</button>
+							{% else %}
+							Volume is controlled by the AV receiver.
+							{% endif %}
+							{% endif %}
 					</div>
 				</div>
 			</div>
@@ -127,19 +133,19 @@
 							</button>
 						</div>
 						<div class="col-8">
-							<small class="player-album text-secondary">{{ player.currentsong.album }}</small>
+							<small class="player-album text-secondary"></small>
 						</div>
 						<div class="col"></div>
 					</div>
 				</div>
 				<div class="modal-body px-4">
 					<div class="now-playing">
-						<img id="img-album" decoding="lazy" src="/api/cover/{{ player.currentsong.id }}" class="img-thumbnail my-5" style="min-width: 363px; min-height: 363px;" />
+						<img id="img-album" decoding="lazy" src="/api/cover/" class="img-thumbnail my-5" style="min-width: 363px; min-height: 363px;" />
 						<h2 class="player-title">
-							{{ player.currentsong.title }}
+							
 						</h2>
 						<h4 class="text-secondary player-artist mb-4">
-							{{ player.currentsong.artist }}
+							
 						</h4>
 					</div>
 					<div class="seek">
@@ -160,13 +166,13 @@
 							<i class="bi bi-skip-start-fill"></i>
 						</button>
 						<button class="btn btn-xxl px-3" onclick="playerPlayToggle()" style="font-size:28px;">
-							<i class="bi bi-play-circle-fill player-btn-play {{ 'hidden' if player.status.state == 'play' else '' }}"></i>
-							<i class="bi bi-pause-circle-fill player-btn-pause {{ 'hidden' if player.status.state != 'play' else '' }}"></i>
+							<i class="bi bi-play-circle-fill player-btn-play hidden"></i>
+							<i class="bi bi-pause-circle-fill player-btn-pause"></i>
 						</button>
 						<button class="btn btn-xl px-3" onclick="playerNextTrack()">
 							<i class="bi bi-skip-end-fill"></i>
 						</button>
-						<button id="btn-player-shuffle" class="btn btn-lg {{ 'on' if player.status.random|int == 1 else '' }}" onclick="playerShuffle()">
+						<button id="btn-player-shuffle" class="btn btn-lg" onclick="playerShuffle()">
 							<i class="bi bi-shuffle player-btn-shuffle"></i>
 						</button>
 					</div>

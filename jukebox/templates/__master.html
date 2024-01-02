@@ -20,20 +20,25 @@
 	{% block header_script %}
 	{% endblock %}
 </head>
-<body>
-{% block navbar %}
-{% include "desktop/views/player.html" %}
-{% endblock %}
+<body class="{{ device }}">
+	{% block navbar %}
+	<nav id="header" class="navbar navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/#home">
+				<img src="/static/img/apple-touch-icon.png" alt="Jukebox" height="40" />
+			</a>
+		</div>
+	</nav>
+	{% endblock %}
 
-{% block content %}
-{% endblock %}
+	{% block content %}
+	{% endblock %}
 
-<script type="text/javascript" src="/static/scripts/jquery.min.js"></script>
-<script type="text/javascript" src="/static/scripts/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="/static/js/player.js"></script>
-<script type="text/javascript" src="/static/js/nav.js"></script>
-{% block footer_script %}
-<script type="text/javascript" src="/static/js/desktop.js"></script>
-{% endblock %}
+	<script type="text/javascript" src="/static/scripts/jquery.min.js"></script>
+	<script type="text/javascript" src="/static/scripts/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="/static/js/player.js"></script>
+	{% block footer_script %}
+	<script type="text/javascript" src="/static/js/desktop.js"></script>
+	{% endblock %}
 </body>
 </html>

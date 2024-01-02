@@ -1,11 +1,10 @@
 {% extends "__master.html" %}
 
+{% block navbar %}
+{% include "desktop/views/_navbar.html" %}
+{% endblock %}
+
 {% block content %}
-<style>
-	body{
-		padding-top:78px;
-	}
-</style>
 <div class="container-fluid h-100">
 	<div class="row h-100">
 		<div class="col-md-3 col-lg-2 border-dark border-right p-0 bg-dark">
@@ -42,7 +41,20 @@
 					</a>
 				</li>
 				{% endfor %}
+				<li style="position: absolute; bottom: 10px; width: 250px;">
+					
+					<span id="loading" title="Database update in progress Job: {{ player.status.updating_db }}" 
+							style="position:absolute; left: 210px; padding: 6px 10px; display: none" data-bs-toggle="tooltip">
+						<span class="spinner-border spinner-border-sm" role="status"></span>
+					</span>
+					
+					<button class="btn text-secondary" type="button" data-bs-toggle="offcanvas" 
+						data-bs-target="#modalSettings" style="display: block; width: 250px; text-align: left;">
+						<i class="bi bi-gear me-2"></i> Settings
+					</button>
+				</li>
 			</ul>
+			
 		</div>
 		<div id="views" class="col px-4 py-2 h-100" style="overflow-y: auto;">	
 
@@ -93,6 +105,11 @@
   </div>
 </div>
 {% endblock %}
+
+
+
+
+
 <!--
 <div class="col-md-9 col-lg-10 h-100 p-0">
 	<table id="tbl-filter">

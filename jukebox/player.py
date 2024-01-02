@@ -15,17 +15,15 @@ ALBUM_PATH = "jukebox/static/img/album.jpg"
 JUKEBOX_DEFAULT_ADDR = "jukebox.local"
 JUKEBOX_DEFAULT_PORT = 6600
 
-class JukeboxPlayerException(Exception):
-    pass
-
 class MPDServerNotFoundException(Exception):
     pass
 
 def get_connection():
     # Connect to MPD
-    g._mpd = MPDClient()
+    mpd = MPDClient()
     try:    
-        g._mpd.connect(JUKEBOX_DEFAULT_ADDR, JUKEBOX_DEFAULT_PORT)
+        mpd.connect(JUKEBOX_DEFAULT_ADDR, JUKEBOX_DEFAULT_PORT)
+        g._mpd = mpd
     except:
         s = "Could not locate the server at %s:%s" % (JUKEBOX_DEFAULT_ADDR, JUKEBOX_DEFAULT_PORT)
         raise MPDServerNotFoundException(s)

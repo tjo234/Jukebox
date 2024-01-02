@@ -19,6 +19,7 @@ def get_template_values():
         "player": JukeboxPlayer.status(),
         "playlist": JukeboxPlayer.playlist(),
         "playlists": JukeboxPlayer.playlists(),
+        "outputs": JukeboxPlayer.outputs(),
     }
 
 # Root Static Handler (favicon)
@@ -30,17 +31,26 @@ def static_from_root():
 @view.route('/', defaults={'route': 'index'})
 @view.route('/<route>')
 def render_page(route):
-    obj = get_template_values()
+    obj = {}
+    obj = get_template_values() 
+    if not obj:
+        obj['connected'] = False    
     obj['route'] = route  
+
     if route == "index" and user_on_mobile():
+        obj['device'] = "mobile"  
+        
         return render_template('mobile/app.html', **obj) 
-    if route == "index":
+    
+    if route == "index":   
+        obj['device'] = "desktop"  
         obj['home'] = JukeboxPlayer.albums_home()
-        obj['browse'] = JukeboxPlayer.browse(request.args.get('path', ''))
-        obj['albums'] = JukeboxPlayer.albums()
         obj['artists'] = JukeboxPlayer.artists()
+        obj['albums'] = JukeboxPlayer.albums()
         return render_template('desktop/app.html', **obj) 
+
     try:
+        print('Page: ' + route)
         return render_template('pages/%s.html' % route, **obj) 
     except:
         return render_template('pages/404.html', **obj) 
@@ -50,6 +60,8 @@ def render_page(route):
 def render_desktop_view(route):
     obj = {} 
     obj['player'] = JukeboxPlayer.status()
+    obj['stats'] = JukeboxPlayer.stats()
+
     if route == "browse":
         path = request.args.get('path', '')
         obj['path'] = path
@@ -57,14 +69,11 @@ def render_desktop_view(route):
         obj['browse'] = JukeboxPlayer.browse(path)
     if route == "queue":
         obj['playlist'] = JukeboxPlayer.playlist()
-    #     obj['home'] = JukeboxPlayer.albums_home()
-    #     obj['playlists'] = JukeboxPlayer.playlists()
-    # if route == "albums":
-    #     obj['albums'] = JukeboxPlayer.albums_home()
-    # if route == "artists":
-    #     obj['artists'] = getattr(g, 'artists', [])
-    # if route == "artists":
-    #     obj['artists'] = getattr(g, 'artists', [])
+    if route == "albums":
+        obj['albums'] = JukeboxPlayer.artists()
+    if route == "artists":
+        obj['artists'] = JukeboxPlayer.artists()
+    
     
     return render_template('desktop/views/%s.html' % route, **obj) 
 
