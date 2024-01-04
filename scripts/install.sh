@@ -28,7 +28,6 @@ apt -y autoremove
 echo -e "\n\n***************\n\nJUKEBOX - Install Apache2 WSGI...\n\n"
 apt -y install apache2
 apt -y install apache2-dev
-apt -y install libapache2-mod-wsgi-py3
 
 # Remove default config
 rm /etc/apache2/sites-enabled/000-default.conf
@@ -39,11 +38,15 @@ git clone https://github.com/tjo234/Jukebox.git /var/www/Jukebox
 
 # Install dependencies
 echo -e "\n\n***************\n\nJUKEBOX - Install dependencies...\n\n"
+cd /var/www/Jukebox
 pip install -r requirements.txt
 
 # Replace Apache Config file
 cp /var/www/Jukebox/setup/apache.conf /etc/apache2/sites-available/jukebox.conf
 a2ensite jukebox
+
+# Install mod_wsgi
+apt -y install libapache2-mod-wsgi-py3
 
 # Restart Apache Server
 echo -e "\n\n***************\n\nJUKEBOX - Restart Apache Server...\n\n"
@@ -93,6 +96,7 @@ cp /var/www/Jukebox/setup/test.mp3 $MUSIC_DIR
 # Add External Symlinks
 ln -s /media/pi/MUSIC/ $MUSIC_DIR/MUSIC
 ln -s /media/pi/JUKEBOX/ $MUSIC_DIR/JUKEBOX
+ln -s /media/pi/MP3/ $MUSIC_DIR/MP3
 
 # Add Video Playlist on Startup
 mkdir /home/pi/.config/autostart
