@@ -15,7 +15,7 @@ You should be able to run it multiple times without any issue.
 sudo -i
 
 # Update APT to latest version
-echo -e "\\n*** JUKEBOX - Update APT installer to latest version..."
+echo -e "\n\n***************** \n\nJUKEBOX - Update APT installer to latest version..."
 apt update
 
 echo -e "\n\n***************\n\nJUKEBOX - Upgrade any outdated packages...\n\n"
@@ -28,32 +28,22 @@ apt -y autoremove
 echo -e "\n\n***************\n\nJUKEBOX - Install Apache2 WSGI...\n\n"
 apt -y install apache2
 apt -y install apache2-dev
+apt -y install libapache2-mod-wsgi-py3
 
-# Delete/replace application folder
-echo -e "\n\n***************\n\nJUKEBOX - Delete/create Jukebox application folder...\n\n"
-rm -R /var/www/Jukebox
+# Remove default config
+rm /etc/apache2/sites-enabled/000-default.conf
 
 # Download latest application code
 echo -e "\n\n***************\n\nJUKEBOX - Downloading code from GitHub...\n\n"
 git clone https://github.com/tjo234/Jukebox.git /var/www/Jukebox
 
-# Create VirtualEnv
-echo -e "\n\n***************\n\nJUKEBOX - Setup Python Virtual Environment...\n\n"
-cd /var/www/Jukebox
-
-# Install dependencies into VirtualEnv
+# Install dependencies
 echo -e "\n\n***************\n\nJUKEBOX - Install dependencies...\n\n"
 pip install -r requirements.txt
-
-# Install mod_wsgi into VirtualEnv
-pip install mod_wsgi
 
 # Replace Apache Config file
 cp /var/www/Jukebox/setup/apache.conf /etc/apache2/sites-available/jukebox.conf
 a2ensite jukebox
-
-# Remove default config
-rm /etc/apache2/sites-available/000-default.conf
 
 # Restart Apache Server
 echo -e "\n\n***************\n\nJUKEBOX - Restart Apache Server...\n\n"
@@ -81,6 +71,7 @@ echo -e "\n\n***************\n\nJUKEBOX - Installing MPD...\n\n"
 sudo apt -y install mpd/bullseye-backports
 
 # Run MPD server
+echo -e "\n\n***************\n\nJUKEBOX - Running MPD Server...\n\n"
 mpd
 
 # Back to SuperUser
@@ -91,42 +82,21 @@ echo -e "\n\n***************\n\nJUKEBOX - Update config file...\n\n"
 sudo cp /var/www/Jukebox/setup/mpd.conf /etc/mpd.conf
 
 # Update MPD config file
-echo -e "\n\n***************\n\nJUKEBOX - Reload Music Player Daemon...\n\n"
+echo -e "\n\n***************\n\nJUKEBOX - Restart Music Player Daemon...\n\n"
 sudo systemctl restart mpd
-
-# Create database 
-echo -e "\n\n***************\n\nJUKEBOX - Create Database folder and set permissions...\n\n"
-# mkdir /var/database
-# chown -R www-data:www-data /var/database
-# chmod -R u+w /var/database
-
-# # Add Jukebox folder
-# mkdir /jukebox
-# chmod 777 /jukebox
-# cp /var/www/Jukebox/setup/intro.mov /jukebox/
-# cp /var/www/Jukebox/setup/desktop.png /jukebox/
-
-# # Add Music Folder
-# mkdir /jukebox/music
-# chmod 777 /jukebox/music
 
 MUSIC_DIR=/var/lib/mpd/music
 
 # Add test file
 cp /var/www/Jukebox/setup/test.mp3 $MUSIC_DIR
 
-# Add desktop symlink
-ln -s $MUSIC_DIR /home/pi/Desktop/Music
-
 # Add External Symlinks
-ln -s /media/pi/MEDIA/ $MUSIC_DIR/media
-ln -s /media/pi/MUSIC/ $MUSIC_DIR/music
-ln -s /media/pi/JUKEBOX/ $MUSIC_DIR/jukebox
+ln -s /media/pi/MUSIC/ $MUSIC_DIR/MUSIC
+ln -s /media/pi/JUKEBOX/ $MUSIC_DIR/JUKEBOX
 
 # Add Video Playlist on Startup
 mkdir /home/pi/.config/autostart
 cp /var/www/Jukebox/setup/autovlc.desktop /home/pi/.config/autostart/
-cp /var/www/Jukebox/setup/playlist.m3u /home/pi/
 
 # Exit SuperUser Mode
 exit
