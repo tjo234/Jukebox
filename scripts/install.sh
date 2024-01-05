@@ -36,13 +36,17 @@ rm /etc/apache2/sites-enabled/000-default.conf
 echo -e "\n\n***************\n\nJUKEBOX - Downloading code from GitHub...\n\n"
 git clone https://github.com/tjo234/Jukebox.git /var/www/Jukebox
 
-# Setup VirtualEnv
-echo -e "\n\n***************\n\nJUKEBOX - Setup Virtual Environment...\n\n"
-
-# Install dependencies
-echo -e "\n\n***************\n\nJUKEBOX - Install dependencies...\n\n"
+echo -e "\n\n***************\n\nJUKEBOX - Make VirtualEnvironment...\n\n"
 cd /var/www/Jukebox
+python3 -m venv .env
+source .env/bin/activate
+
+echo -e "\n\n***************\n\nJUKEBOX - Install dependencies...\n\n"
 pip install -r requirements.txt
+
+# Install mod_wsgi
+echo -e "\n\n***************\n\nJUKEBOX - Install mod_wsgi...\n\n"
+pip install mod_wsgi
 
 # Replace Apache Config file
 echo -e "\n\n***************\n\nJUKEBOX - Enable Jukebox config mod_wsgi...\n\n"
@@ -72,40 +76,25 @@ exit
 
 # Install Music Player Daemon as normal user
 echo -e "\n\n***************\n\nJUKEBOX - Installing MPD...\n\n"
-sudo apt -y install mpd/bullseye-backports
+apt -y install mpd/bullseye-backports
 
-# Run MPD server
+# Run MPD server on-demand
 echo -e "\n\n***************\n\nJUKEBOX - Running MPD Server...\n\n"
-mpd
-
-# Install mod_wsgi
-echo -e "\n\n***************\n\nJUKEBOX - Install mod_wsgi...\n\n"
-pip install mod_wsgi
+systemctl enable mpd.socket
+systemctl start mpd.socket
 
 # Back to SuperUser
 sudo -i
-
-# Update MPD config file
-echo -e "\n\n***************\n\nJUKEBOX - Update config file...\n\n"
-sudo cp /var/www/Jukebox/setup/mpd.conf /etc/mpd.conf
-
-# Update MPD config file
-echo -e "\n\n***************\n\nJUKEBOX - Restart Music Player Daemon...\n\n"
-sudo systemctl restart mpd
 
 MUSIC_DIR=/var/lib/mpd/music
 
 # Add test file
 cp /var/www/Jukebox/setup/test.mp3 $MUSIC_DIR
 
-# Add External Symlinks
+# Add Symlinks
 ln -s /media/pi/MUSIC/ $MUSIC_DIR/MUSIC
 ln -s /media/pi/JUKEBOX/ $MUSIC_DIR/JUKEBOX
 ln -s /media/pi/MP3/ $MUSIC_DIR/MP3
-
-# Add Video Playlist on Startup
-mkdir /home/pi/.config/autostart
-cp /var/www/Jukebox/setup/autovlc.desktop /home/pi/.config/autostart/
 
 # Exit SuperUser Mode
 exit
