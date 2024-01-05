@@ -38,12 +38,10 @@ git clone https://github.com/tjo234/Jukebox.git /var/www/Jukebox
 
 # Setup VirtualEnv
 echo -e "\n\n***************\n\nJUKEBOX - Setup Virtual Environment...\n\n"
-cd /var/www/Jukebox
-python3 -m venv .env
-source .env/bin/activate
 
 # Install dependencies
 echo -e "\n\n***************\n\nJUKEBOX - Install dependencies...\n\n"
+cd /var/www/Jukebox
 pip install -r requirements.txt
 
 # Install mod_wsgi
