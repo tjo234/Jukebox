@@ -45,10 +45,11 @@ cd /var/www/Jukebox
 pip install -r requirements.txt
 
 # Install mod_wsgi
+echo -e "\n\n***************\n\nJUKEBOX - Install mod_wsgi...\n\n"
 pip install mod_wsgi 
-#apt -y install libapache2-mod-wsgi-py3
 
 # Replace Apache Config file
+echo -e "\n\n***************\n\nJUKEBOX - Enable Jukebox config mod_wsgi...\n\n"
 cp /var/www/Jukebox/setup/apache.conf /etc/apache2/sites-available/jukebox.conf
 a2ensite jukebox
 
