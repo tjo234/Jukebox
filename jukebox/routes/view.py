@@ -1,5 +1,5 @@
 #!/usr/bin/env
-from flask import Blueprint, render_template, send_from_directory, request, g, current_app
+from flask import Blueprint, render_template, make_response, send_from_directory, request, g, current_app
 from ..player import JukeboxPlayer
 
 view = Blueprint('view', __name__)
@@ -31,29 +31,37 @@ def static_from_root():
 @view.route('/', defaults={'route': 'index'})
 @view.route('/<route>')
 def render_page(route):
+    resp = None
     obj = {}
     obj = get_template_values() 
     if not obj:
         obj['connected'] = False    
+
     obj['route'] = route  
+    obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
+    obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
 
     if route == "index" and user_on_mobile():
         obj['device'] = "mobile"  
-        
-        return render_template('mobile/app.html', **obj) 
+        resp = render_template('mobile/app.html', **obj) 
     
-    if route == "index":   
+    elif route == "index":   
         obj['device'] = "desktop"  
         obj['home'] = JukeboxPlayer.albums_home()
         obj['artists'] = JukeboxPlayer.artists()
         obj['albums'] = JukeboxPlayer.albums()
-        return render_template('desktop/app.html', **obj) 
+        resp = render_template('desktop/app.html', **obj) 
 
-    try:
-        print('Page: ' + route)
-        return render_template('pages/%s.html' % route, **obj) 
-    except:
-        return render_template('pages/404.html', **obj) 
+    else:
+        try:
+            resp = render_template('pages/%s.html' % route, **obj) 
+        except:
+            resp = render_template('pages/404.html', **obj) 
+
+    resp = make_response(resp) 
+    resp.set_cookie('JUKEBOX_ADDR', JukeboxPlayer.addr())
+    resp.set_cookie('JUKEBOX_PORT', str(JukeboxPlayer.port()))
+    return resp
 
 # Partial View Handler
 @view.route('/view/desktop/<route>')
@@ -73,8 +81,7 @@ def render_desktop_view(route):
         obj['albums'] = JukeboxPlayer.artists()
     if route == "artists":
         obj['artists'] = JukeboxPlayer.artists()
-    
-    
+       
     return render_template('desktop/views/%s.html' % route, **obj) 
 
 # Partial View Handler

@@ -4,7 +4,7 @@ from flask import Flask
 
 from .routes import api_routes, view_routes
 #from. config import ProductionConfig, DevelopmentConfig, TestingConfig
-from .utils import duration_to_time
+from .utils import duration_to_time, mpd_audio_str
 
 def create_app():
     # Create Flask App
@@ -39,10 +39,6 @@ def create_app():
 
     @app.template_filter('audio')
     def filter_mpd_audio_str(s):
-        '''Converts MPD audio string "441000:24:2" to "44.1 kHz | 24 bit"'''
-        audio = s.split(':')
-        hz = str(int(audio[0])/1000)
-        return hz + ' kHz / ' + audio[1] + ' bit'
-        return timedelta(seconds=int(s))
+        return filter_mpd_audio_str(s)
 
     return app

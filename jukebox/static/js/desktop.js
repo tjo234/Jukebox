@@ -18,6 +18,14 @@ addEventListener("hashchange", (event) => {
     loadView();
 });
 
+function changeServer(){
+    var addr = prompt('Enter a server address (e.g. jukebox.local or 192.168.1.101)')
+    if (addr != null){
+        document.cookie = `JUKEBOX_ADDR=${addr}`;
+        window.location.reload()
+    }
+}
+
 function loadView(){
     const route = window.location.hash ? window.location.hash.split('?')[0].slice(1) : DEFAULT_ROUTE;
     const qs = window.location.hash.split('?')[1];

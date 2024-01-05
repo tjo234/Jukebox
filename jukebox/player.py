@@ -5,10 +5,10 @@ import socket
 import urllib
 
 from mpd import MPDClient, CommandError
-from flask import g
+from flask import g, request
 from socket import gaierror
 
-from .utils import duration_to_time
+from .utils import *
 
 ALBUM_PATH = "jukebox/static/img/album.jpg"
 
@@ -21,11 +21,13 @@ class MPDServerNotFoundException(Exception):
 def get_connection():
     # Connect to MPD
     mpd = MPDClient()
+    addr = JukeboxPlayer.addr()
+    port = JukeboxPlayer.port()
     try:    
-        mpd.connect(JUKEBOX_DEFAULT_ADDR, JUKEBOX_DEFAULT_PORT)
+        mpd.connect(addr, port)
         g._mpd = mpd
     except:
-        s = "Could not locate the server at %s:%s" % (JUKEBOX_DEFAULT_ADDR, JUKEBOX_DEFAULT_PORT)
+        s = "Could not locate the server at %s:%s" % (addr,port)
         raise MPDServerNotFoundException(s)
     return g._mpd
 
@@ -46,7 +48,8 @@ class JukeboxPlayer():
         if status['state'] == "play":
             status['str_duration'] = duration_to_time(status['duration'])
             status['str_elapsed'] = duration_to_time(status['elapsed'])
-
+            status['audio_hz'] = mpd_audio_hz(status['audio'])
+            status['audio_bits'] = mpd_audio_bits(status['audio'])
         return {
             "status": status,
             "currentsong": mpd.currentsong(),
@@ -56,6 +59,14 @@ class JukeboxPlayer():
     @staticmethod
     def version():
         return get_mpd().mpd_version
+
+    @staticmethod
+    def addr():
+        return request.cookies.get('JUKEBOX_ADDR', JUKEBOX_DEFAULT_ADDR) 
+
+    @staticmethod
+    def port():
+        return request.cookies.get('JUKEBOX_PORT', JUKEBOX_DEFAULT_PORT) 
 
     @staticmethod
     def browse(path):

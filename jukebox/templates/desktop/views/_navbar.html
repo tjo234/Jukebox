@@ -8,7 +8,7 @@
 			</a>
 		</div>
 		{% if player %}
-		<div class="col-2 player-controls text-center">
+		<div class="col-3 player-controls text-center">
 			<button class="btn btn-lg px-1" onclick="playerRepeat()" style="font-size:12px;">
 				<i id="btn-player-repeat"class="bi bi-repeat player-btn-repeat"></i>
 				<i id="btn-player-repeat-1" class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
@@ -49,17 +49,34 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="modalSettings" aria-labelledby="menuLabel" data-bs-theme="dark">
 	<div class="offcanvas-header" style="border-bottom: solid 1px #333;">
 		<h5 class="offcanvas-title" id="menuLabel">
-			<i class="bi bi-gear me-3"></i>
-			Settings
+			<i class="bi bi-gear-fill me-2"></i> Settings
 		</h5>
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
 	<div class="offcanvas-body">
-		<ul class="navbar-nav justify-content-end flex-grow-1 pe-3 text-secondary">
-			<li class="navbar-header mt-4 mb-2">
+		<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+			<li class="navbar-header mt-4 mb-2 text-secondary">
 				<h6>
-					<i id="db-update" class="bi bi-database me-1"></i>
-					MANAGE LIBRARY
+					STATUS
+				</h6>
+			</li>
+			<li class="nav-item mb-3">
+				<a href="javascript:;" onclick="changeServer()" class="btn btn-lg btn-dark" style="background: #111; border: solid 1px #222"> 
+					<span class="text-success" style="font-size: 38px; top:5px; position: relative; line-height: 1rem">&bull;</span>
+					{{ JUKEBOX_ADDR or 'jukebox.local' }}
+				</a>
+			</li>
+			<li class="nav-item">
+				<span class="badge rounded-pill text-bg-info">
+					 {{ player.status.audio_hz }} &bull; 
+					{{ player.status.audio_bits }}
+				</span>
+				<span class="badge rounded-pill text-bg-info">
+					{{ player.currentsong.file.rsplit(".")[1].upper() }}
+				</span>
+			<li class="navbar-header mt-4 mb-2 text-secondary">
+				<h6>
+					LIBRARY
 				</h6>
 			</li>
 			<li class="nav-item">
@@ -70,15 +87,14 @@
 				<a class="nav-link" aria-current="page" href="javascript:;" 
 				data-bs-dismiss="offcanvas" onclick="updateDatabase(true)">Rescan Database</a>
 			</li>
-			<li class="navbar-header mt-4 mb-2">
+			<li class="navbar-header mt-4 mb-2 text-secondary">
 				<h6>
-					<i id="db-update" class="bi bi-gear me-1"></i>
-					ADMIN
+					SERVER
 				</h6>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" aria-current="page" href="/status" title="Status">
-					Server Status
+					Status Page
 				</a>
 			</li>
 			<li class="nav-item">
