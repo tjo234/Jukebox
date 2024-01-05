@@ -46,12 +46,13 @@ source .env/bin/activate
 echo -e "\n\n***************\n\nJUKEBOX - Install dependencies...\n\n"
 pip install -r requirements.txt
 
+# Install mod_wsgi
+pip install mod_wsgi 
+#apt -y install libapache2-mod-wsgi-py3
+
 # Replace Apache Config file
 cp /var/www/Jukebox/setup/apache.conf /etc/apache2/sites-available/jukebox.conf
 a2ensite jukebox
-
-# Install mod_wsgi
-apt -y install libapache2-mod-wsgi-py3
 
 # Restart Apache Server
 echo -e "\n\n***************\n\nJUKEBOX - Restart Apache Server...\n\n"
