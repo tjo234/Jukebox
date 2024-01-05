@@ -44,10 +44,6 @@ echo -e "\n\n***************\n\nJUKEBOX - Install dependencies...\n\n"
 cd /var/www/Jukebox
 pip install -r requirements.txt
 
-# Install mod_wsgi
-echo -e "\n\n***************\n\nJUKEBOX - Install mod_wsgi...\n\n"
-pip install mod_wsgi 
-
 # Replace Apache Config file
 echo -e "\n\n***************\n\nJUKEBOX - Enable Jukebox config mod_wsgi...\n\n"
 cp /var/www/Jukebox/setup/apache.conf /etc/apache2/sites-available/jukebox.conf
@@ -81,6 +77,10 @@ sudo apt -y install mpd/bullseye-backports
 # Run MPD server
 echo -e "\n\n***************\n\nJUKEBOX - Running MPD Server...\n\n"
 mpd
+
+# Install mod_wsgi
+echo -e "\n\n***************\n\nJUKEBOX - Install mod_wsgi...\n\n"
+pip install mod_wsgi
 
 # Back to SuperUser
 sudo -i
