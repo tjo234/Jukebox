@@ -35,18 +35,19 @@
 				</li>
 				{% for p in playlists %}
 				<li class="nav-item">
-					<a class="nav-link" href="/#playlist/{{ p.playlist }}" style="display: inline-block;">
+					<a class="nav-link" href="javascript:;" data-something="/#playlist/{{ p.playlist }}" onclick="playPlaylist('{{ p.playlist }}')" style="display: inline-block;">
 						<i class="bi bi-file-earmark-music"></i>
 						{{ p.playlist }}
 					</a>
 				</li>
 				{% endfor %}
 				<li style="position: absolute; bottom: 10px; width: 250px;">
-					
+					{% if player %}
 					<span id="loading" title="Database update in progress Job: {{ player.status.updating_db }}" 
 							style="position:absolute; left: 210px; padding: 6px 10px; display: none" data-bs-toggle="tooltip">
 						<span class="spinner-border spinner-border-sm" role="status"></span>
 					</span>
+					{% endif %}
 					
 					<button class="btn text-secondary" type="button" data-bs-toggle="offcanvas" 
 						data-bs-target="#modalSettings" style="display: block; width: 250px; text-align: left;">
@@ -105,71 +106,3 @@
   </div>
 </div>
 {% endblock %}
-
-
-
-
-
-<!--
-<div class="col-md-9 col-lg-10 h-100 p-0">
-	<table id="tbl-filter">
-		<tr>
-			<td style="width: 33%">
-				<select id="drp-artists" multiple>
-					{% for a in artists %}
-					<option value="{{ a[0] }}">{{ a[0] }}</option>
-					{% endfor %}
-				</select>
-			</td>
-			<td style="width: 33%">
-				<select id="drp-albums" multiple>
-					{% for a in albums %}
-					{% if a[0] != None %}
-					<option value="{{ a[0] }}">{{ a[0] }}</option>
-					{% endif %}
-					{% endfor %}
-				</select>
-			</td>
-			<td style="width: 33%">
-				<select id="drp-genres" multiple>
-					{% for g in genres %}
-					<option value="{{ g[0] }}">{{ g[0] }}</option>
-					{% endfor %}
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3" style="max-height:100%; overflow-y: scroll;">
-				<table id="tbl-tracks" class="table table-sm table-dark">
-					<thead class="table-dark">
-						<tr>
-							<th scope="col">&nbsp;</th>
-							<th class="ps-3" scope="col">Song</th>
-							<th scope="col">Artist</th>
-							<th scope="col">Album</th>
-							<th scope="col">Year</th>
-							<th scope="col">Genre</th>
-							<th scope="col">Track</th>
-							<th class="pe-3" scope="col">Disc</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for t in tracks %}
-						<tr>
-							<td></td>
-							<td class="ps-3 overflow-x-hidden">{{ t.track }}</td>
-							<td>{{ t.albumartist }}</td>
-							<td>{{ t.album }}</td>
-							<td>{{ t.year }}</td>
-							<td>{{ t.genre }}</td>
-							<td>{{ t.tracknumber|replace('/', ' of ') if t.tracknumber else "" }}</td>
-							<td class="pe-3">{{ t.discnumber|replace('/', ' of ') if t.discnumber else "" }}</td>
-						</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</td>
-		</tr>
-	</table>
-</div>			 
--->

@@ -5,18 +5,24 @@
 
 -------------------------------------------------------------------------------
 */
-const DEFAULT_ROUTE = 'home';
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
+const DEFAULT_ROUTE = 'home';
+
+
+// Page Load
 $(function() {
+
+    $('[data-bs-toggle="tooltip"]').tooltip();
+
     loadView();
     initPlayer(onPlayerChanged);
 });
 
+// Handle Route Changes
 addEventListener("hashchange", (event) => {  
     loadView();
 });
+
 
 function changeServer(){
     var addr = prompt('Enter a server address (e.g. jukebox.local or 192.168.1.101)')
@@ -28,7 +34,7 @@ function changeServer(){
 
 function loadView(){
     const route = window.location.hash ? window.location.hash.split('?')[0].slice(1) : DEFAULT_ROUTE;
-    const qs = window.location.hash.split('?')[1];
+    const qs = window.location.hash ? window.location.hash.split('?')[1] : '';
     console.log('loadView', route)
 
     // Update Navigation
@@ -52,9 +58,7 @@ function loadView(){
         });
     }
 
-    if (route == "albums") {
-        $('#view-albums img')
-    }
+    
 
 
 }
@@ -109,7 +113,7 @@ function onPlayerChanged(change){
         $('.player-title').html('&nbsp;');
         $('#img-album').attr('src', '/static/img/album.png');
     }
-    else if ($('#trackid').val() != JUKEBOX.currentsong.id){
+    else {
         $('.player-artist').html(JUKEBOX.currentsong.artist);
         $('.player-title').html(JUKEBOX.currentsong.title);
         $('#img-album').attr('src', '/api/cover/' + JUKEBOX.currentsong.id);

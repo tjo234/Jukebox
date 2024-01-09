@@ -32,8 +32,10 @@
 				<button class="btn text-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#modalOutputs" style="float:right">
 					<i class="bi bi-cast"></i>
 				</button>
+				{% if player and 'status' in player and player.status.state != "stop" %}
 				<h6 class="p-0 m-0 text-light player-title">{{ player.currentsong.title }}</h6>
 				<small class="text-secondary player-artist">{{ player.currentsong.artist }}</small>
+				{% endif %}
 			</div>
 		</div>
 		<div class="ms-auto">
@@ -66,6 +68,7 @@
 					{{ JUKEBOX_ADDR or 'jukebox.local' }}
 				</a>
 			</li>
+			{% if player and 'status' in player and player.status.state != "stop" %}
 			<li class="nav-item">
 				<span class="badge rounded-pill text-bg-info">
 					 {{ player.status.audio_hz }} &bull; 
@@ -74,6 +77,8 @@
 				<span class="badge rounded-pill text-bg-info">
 					{{ player.currentsong.file.rsplit(".")[1].upper() }}
 				</span>
+			</li>
+			{% endif %}
 			<li class="navbar-header mt-4 mb-2 text-secondary">
 				<h6>
 					LIBRARY
@@ -113,12 +118,12 @@
 			{% if not player %}
 			<div class="text-warning">
 				<i class="bi bi-database-check me-2"></i>
-				MPD not connected.
+				MPD server not connected.
 			</div>
 			{% elif player and player.version[2:]|float < 23.5 %}
 			<div class="text-warning">
 				<i class="bi bi-database-fill-exclamation me-1"></i>
-				<strong>MPD is out of date.</strong>
+				<strong>MPD server is out of date.</strong>
 				<br/>
 				<small>Please install MPD version 0.23.5 or higher.</small>
 			</div>

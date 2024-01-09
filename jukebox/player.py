@@ -11,7 +11,6 @@ from socket import gaierror
 from .utils import *
 
 ALBUM_PATH = "jukebox/static/img/album.jpg"
-
 JUKEBOX_DEFAULT_ADDR = "jukebox.local"
 JUKEBOX_DEFAULT_PORT = 6600
 
@@ -205,6 +204,20 @@ class JukeboxPlayer():
         return get_mpd().play()
 
     @staticmethod
+    def add(file):
+        mpd = get_mpd()
+        mpd.add(file)
+        mpd.play()
+
+    @staticmethod
+    def save(name):
+        return get_mpd().save(name)
+
+    @staticmethod
+    def clear():
+        return get_mpd().clear()
+
+    @staticmethod
     def pause():
         return get_mpd().pause()
 
@@ -262,12 +275,14 @@ class JukeboxPlayer():
         return get_mpd().listplaylists()
 
     @staticmethod
-    def load(name):
+    def load(playlist):
+        print('Loading playlist: %s' % playlist)
         mpd = get_mpd()
         mpd.clear()
-        mpd.load(name)
+        mpd.load(playlist)
         mpd.repeat(1)
         mpd.single(0)
+        mpd.random(0)
         mpd.play()
 
     @staticmethod
@@ -285,6 +300,7 @@ class JukeboxPlayer():
         mpd.findadd(tag, what)
         mpd.repeat(1)
         mpd.single(0)
+        mpd.random(0)
         mpd.shuffle()
         mpd.play()
 

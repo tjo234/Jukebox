@@ -1,6 +1,6 @@
 #!/usr/bin/env
 from flask import Blueprint, render_template, make_response, send_from_directory, request, g, current_app
-from ..player import JukeboxPlayer
+from ..player import JukeboxPlayer, MPDServerNotFoundException
 
 view = Blueprint('view', __name__)
 
@@ -33,31 +33,38 @@ def static_from_root():
 def render_page(route):
     resp = None
     obj = {}
-    obj = get_template_values() 
-    if not obj:
-        obj['connected'] = False    
-
     obj['route'] = route  
     obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
     obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
 
+    # Load Server Status
+    try:
+        obj = get_template_values() 
+        if route == "index":   
+            obj['home'] = JukeboxPlayer.albums_home()
+            obj['artists'] = JukeboxPlayer.artists()
+            obj['albums'] = JukeboxPlayer.albums()
+    except MPDServerNotFoundException:
+        pass
+
+    # Mobile App
     if route == "index" and user_on_mobile():
         obj['device'] = "mobile"  
         resp = render_template('mobile/app.html', **obj) 
-    
+
+    # Desktop App
     elif route == "index":   
         obj['device'] = "desktop"  
-        obj['home'] = JukeboxPlayer.albums_home()
-        obj['artists'] = JukeboxPlayer.artists()
-        obj['albums'] = JukeboxPlayer.albums()
         resp = render_template('desktop/app.html', **obj) 
 
+    # Static Pages
     else:
         try:
             resp = render_template('pages/%s.html' % route, **obj) 
         except:
             resp = render_template('pages/404.html', **obj) 
 
+    # Set Cookie
     resp = make_response(resp) 
     resp.set_cookie('JUKEBOX_ADDR', JukeboxPlayer.addr())
     resp.set_cookie('JUKEBOX_PORT', str(JukeboxPlayer.port()))
@@ -67,20 +74,23 @@ def render_page(route):
 @view.route('/view/desktop/<route>')
 def render_desktop_view(route):
     obj = {} 
-    obj['player'] = JukeboxPlayer.status()
-    obj['stats'] = JukeboxPlayer.stats()
-
-    if route == "browse":
-        path = request.args.get('path', '')
-        obj['path'] = path
-        obj['parent'] = path.rsplit('/')[0] if '/' in path else ''
-        obj['browse'] = JukeboxPlayer.browse(path)
-    if route == "queue":
-        obj['playlist'] = JukeboxPlayer.playlist()
-    if route == "albums":
-        obj['albums'] = JukeboxPlayer.artists()
-    if route == "artists":
-        obj['artists'] = JukeboxPlayer.artists()
+    obj['route'] = route  
+    try:
+        obj['player'] = JukeboxPlayer.status()
+        obj['stats'] = JukeboxPlayer.stats()
+        if route == "browse":
+            path = request.args.get('path', '')
+            obj['path'] = path
+            obj['parent'] = path.rsplit('/')[0] if '/' in path else ''
+            obj['browse'] = JukeboxPlayer.browse(path)
+        if route == "queue":
+            obj['playlist'] = JukeboxPlayer.playlist()
+        if route == "albums":
+            obj['albums'] = JukeboxPlayer.artists()
+        if route == "artists":
+            obj['artists'] = JukeboxPlayer.artists()
+    except MPDServerNotFoundException:
+        pass
        
     return render_template('desktop/views/%s.html' % route, **obj) 
 

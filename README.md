@@ -22,7 +22,7 @@ This will update your system, install Jukebox, and launch the server.
 - On the RaspberryPi, visit `http://localhost/`
 - On another computer on the same Wifi network, visit `http://jukebox.local/`
 
-You should see the Jukebox App loaded up, with a test file playing.
+You should see Jukebox loaded up, with a test file playing.
 
 ## 3. Load Your Music
 
@@ -37,9 +37,8 @@ You can also use a tool like Musicbrainz Picard to make sure your album art is u
 
 NOTE: You can also copy your music directly to the SD card in `/var/mpd/music/` but we don't recommend it.
 
-**Why not? SD cards are more likely to fail in the long term. You don't want to lose your precious music!
+**Why not?** SD cards are more likely to fail in the long term. You don't want to lose your music!
 
-It is also much faster to get Jukebox up and running again.
 
 ## 4. Refresh the Library 
 

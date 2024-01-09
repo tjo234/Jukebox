@@ -87,6 +87,13 @@ function playerShuffle() {
 }
 
 
+function saveQueueAsPlaylist(){
+    var name = prompt('Playlist Name:')
+    $.getJSON('/api/playlist/save/?playlist='+name, function(){});
+}
+function clearPlaylist(){
+    $.getJSON('/api/playlist/clear/', function(){});
+}
 
 function playlistSongId(songId) {
     $.getJSON('/api/playlist/playid/'+songId, function(){});
@@ -97,11 +104,15 @@ function playAlbum(a){
 }
 function playArtist(a){
     console.log('playArtist', a)
-     $.getJSON('/api/playlist/queue/artist/'+a, function(){});
+     $.getJSON('/api/playlist/queue/artist/?artist='+a, function(){});
+}
+function queueSong(file){
+    console.log('queueSong', file)
+     $.getJSON('/api/playlist/add/?file='+file, function(){});
 }
 function playPlaylist(p){
     console.log('playPlaylist', p)
-    $.getJSON('/api/playlist/load/'+p, function(){});
+    $.getJSON('/api/playlist/load/?playlist='+p, function(){});
 }
 function playerFindAdd(tag, what){
     $.getJSON(`/api/playlist/findadd/${tag}/${what}`, function(){

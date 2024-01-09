@@ -5,6 +5,10 @@ from ..player import JukeboxPlayer
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
+@api.route("/status")
+def api_status():
+    return "OK"
+    
 # Player API
 @api.route("/player/status")
 def player_status():
@@ -87,13 +91,15 @@ def playlist_list_playlists():
     resp = JukeboxPlayer.playlists()
     return jsonify(resp)   
 
-@api.route('/playlist/load/<name>')
-def playlist_load_playlist(name):
-    resp = JukeboxPlayer.load(name)
+@api.route('/playlist/load/')
+def playlist_load_playlist():
+    playlist = request.args.get('playlist')
+    resp = JukeboxPlayer.load(playlist=playlist)
     return jsonify(resp)   
 
-@api.route("/playlist/queue/artist/<artist>")
-def playlist_play_artist(artist):
+@api.route("/playlist/queue/artist/")
+def playlist_play_artist():
+    artist = request.args.get('artist')
     resp = JukeboxPlayer.playlist_play_artist(artist)
     return jsonify(resp)
 
@@ -106,6 +112,23 @@ def playlist_play_album():
 @api.route("/playlist/findadd/<tag>/<what>")
 def playlist_playlist_findadd(tag, what):
     resp = JukeboxPlayer.findadd(tag, what)
+    return jsonify(resp)
+
+@api.route("/playlist/add/")
+def playlist_playlist_add():
+    file = request.args.get('file')
+    resp = JukeboxPlayer.add(file)
+    return jsonify(resp)
+
+@api.route("/playlist/save/")
+def playlist_playlist_save():
+    playlist = request.args.get('playlist')
+    resp = JukeboxPlayer.save(playlist)
+    return jsonify(resp)
+
+@api.route("/playlist/clear/")
+def playlist_playlist_clear():
+    resp = JukeboxPlayer.clear()
     return jsonify(resp)
 
 # SONG_ID
@@ -126,7 +149,3 @@ def player_library_cover(song_id=None, file=None):
 def api_search(s):
     resp = JukeboxPlayer.search(s)
     return jsonify(resp)
-
-@api.route("/status")
-def api_status():
-    return "OK"
