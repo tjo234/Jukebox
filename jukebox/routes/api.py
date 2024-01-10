@@ -137,6 +137,12 @@ def playlist_playlist_by_song_id(song_id):
     resp = JukeboxPlayer.playid(song_id)
     return jsonify(resp)
 
+# SONG_ID
+@api.route("/playlist/deleteid/<song_id>")
+def playlist_delete_by_song_id(song_id):
+    resp = JukeboxPlayer.deleteid(song_id)
+    return jsonify(resp)
+
 @api.route("/cover/")
 @api.route("/cover/<song_id>")
 @api.route("/album/")

@@ -39,6 +39,6 @@ def create_app():
 
     @app.template_filter('audio')
     def filter_mpd_audio_str(s):
-        return filter_mpd_audio_str(s)
+        return mpd_audio_str(s)
 
     return app

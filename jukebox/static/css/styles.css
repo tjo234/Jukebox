@@ -12,6 +12,26 @@
   background:black;
 }
 
+.col-right {
+	text-align: right; padding-right: 1.5em;
+}
+
+/* QUEUE */
+.row-play-pos:hover {
+	background: #333;
+	transition: all 0.3s ease-in;
+}
+.row-play-pos .play {
+	display: none;	
+}
+.row-play-pos:hover .play {
+	display: block;
+}
+.row-play-pos:hover .pos {
+	display: none;
+}
+
+
 /* Top Level Styles */
 html,
 body {
@@ -57,13 +77,14 @@ body.desktop {
 	font-size: 0.8rem;
 	color: #999;
 }
-#sidebar .nav-link {
-	color:#aaa;
+#sidebar .nav-link,
+#sidebar .nav-link a {
+	color:#aaa !important;
 	border-radius: 0;
 	border:none;
 }
 #sidebar .nav-link:hover {
-	color:#bbb;
+	color:#bbb !important;
 	background-color: var(--sidebar-link-hover);
 }
 #sidebar .nav-link.active {

@@ -7,7 +7,6 @@
 				<img src="/static/img/apple-touch-icon.png" alt="Jukebox" height="40" />
 			</a>
 		</div>
-		{% if player %}
 		<div class="col-3 player-controls text-center">
 			<button class="btn btn-lg px-1" onclick="playerRepeat()" style="font-size:12px;">
 				<i id="btn-player-repeat"class="bi bi-repeat player-btn-repeat"></i>
@@ -32,10 +31,8 @@
 				<button class="btn text-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#modalOutputs" style="float:right">
 					<i class="bi bi-cast"></i>
 				</button>
-				{% if player and 'status' in player and player.status.state != "stop" %}
-				<h6 class="p-0 m-0 text-light player-title">{{ player.currentsong.title }}</h6>
-				<small class="text-secondary player-artist">{{ player.currentsong.artist }}</small>
-				{% endif %}
+				<h6 class="p-0 m-0 text-light player-title">{{ player.currentsong.title if 'currentsong' in player else '' }}</h6>
+				<small class="text-secondary player-artist">{{ player.currentsong.artist if 'currentsong' in player else '' }}</small>
 			</div>
 		</div>
 		<div class="ms-auto">
@@ -43,7 +40,6 @@
 				<i class="bi bi-music-note-list"></i>
 			</button>
 		</div>
-		{% endif %}
 	</div>
 </nav>
 

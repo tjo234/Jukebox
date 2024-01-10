@@ -290,6 +290,10 @@ class JukeboxPlayer():
         return get_mpd().playid(song_id)
 
     @staticmethod
+    def deleteid(song_id):
+        return get_mpd().deleteid(song_id)
+
+    @staticmethod
     def listplaylist(pid):
         return get_mpd().songid(pid)
 

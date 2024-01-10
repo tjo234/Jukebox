@@ -1,5 +1,6 @@
 <div class="row">	
 	{% for a in albums %}
+	{% if a.album != "" %}
 	<div class="col-3 mb-4">
 		<a href="javascript:;" onclick="playAlbum('{{ a.album|urlencode }}')" style="width: 100%;">
 			<img src="/static/img/album.jpg" class="img-fluid" />
@@ -13,5 +14,6 @@
 			<i class="bi bi-add-circle"></i>
 		</a> -->
 	</div>
+	{% endif %}
 	{% endfor %}
 </div>

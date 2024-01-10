@@ -17,7 +17,7 @@ function initPlayer(callback){
 }
 function playerWaitForChange(callback) {
     $.getJSON('/api/player/idle', function(evt){
-        console.log('Change received: ' + evt)
+        //console.log('Change received: ' + evt)
         refreshPlayerStatus(evt, callback)
         playerWaitForChange(callback);
     });
@@ -34,6 +34,15 @@ function refreshPlayerStatus(evt, callback){
         callback(evt);
     });
 }
+
+// SPACEBAR = Play/Pause Toggle 
+$(document).keydown(function(e){
+    if (e.which == 32) {
+        console.log('Play/Pause')
+        playerPlayToggle();
+        e.preventDefault();
+    }
+});
 
 
 /* 
@@ -88,30 +97,29 @@ function playerShuffle() {
 
 
 function saveQueueAsPlaylist(){
-    var name = prompt('Playlist Name:')
+    var name = prompt('Save Playlist As:');
+    if (name == '') return;
     $.getJSON('/api/playlist/save/?playlist='+name, function(){});
 }
 function clearPlaylist(){
     $.getJSON('/api/playlist/clear/', function(){});
 }
-
 function playlistSongId(songId) {
     $.getJSON('/api/playlist/playid/'+songId, function(){});
 }
+function deleteFromQueue(songId) {
+    $.getJSON('/api/playlist/deleteid/'+songId, function(){});
+}
 function playAlbum(a){
-    console.log('playAlbum', a)
      $.getJSON('/api/playlist/queue/album/?album='+a, function(){});
 }
 function playArtist(a){
-    console.log('playArtist', a)
      $.getJSON('/api/playlist/queue/artist/?artist='+a, function(){});
 }
 function queueSong(file){
-    console.log('queueSong', file)
      $.getJSON('/api/playlist/add/?file='+file, function(){});
 }
 function playPlaylist(p){
-    console.log('playPlaylist', p)
     $.getJSON('/api/playlist/load/?playlist='+p, function(){});
 }
 function playerFindAdd(tag, what){

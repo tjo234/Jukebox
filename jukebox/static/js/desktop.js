@@ -64,10 +64,9 @@ function loadView(){
 }
 
 function onPlayerChanged(change){
-    console.log('onPlayerChanged', change);
-    console.log(JUKEBOX);
+    console.log('onPlayerChanged', change, JUKEBOX);
 
-    if(JUKEBOX.status.updating_db){
+    if('updating_db' in JUKEBOX.status){
         var s = `Database update in progress [Job: ${JUKEBOX.status.updating_db}]`;
         $('#loading').attr('title', s).show();
     } else {
@@ -107,7 +106,7 @@ function onPlayerChanged(change){
     }
 
     // Track Info
-    if (!JUKEBOX.currentsong.id) {
+    if (!('title' in JUKEBOX.currentsong)) {
         // Nothing Playing
         $('.player-artist').html('&nbsp;');
         $('.player-title').html('&nbsp;');

@@ -35,10 +35,15 @@
 				</li>
 				{% for p in playlists %}
 				<li class="nav-item">
-					<a class="nav-link" href="javascript:;" data-something="/#playlist/{{ p.playlist }}" onclick="playPlaylist('{{ p.playlist }}')" style="display: inline-block;">
-						<i class="bi bi-file-earmark-music"></i>
-						{{ p.playlist }}
-					</a>
+					<div class="nav-link">
+						<button class="btn btn-sm text-secondary" onclick="playPlaylist('{{ p.playlist }}')" style="float: right;">
+							<i class="bi bi-play-circle"></i>
+						</button>
+						<a class="no-link text-secondary" href="/#playlist/{{ p.playlist }}" style="display:inline-block; min-width: 185px;">
+							<i class="bi bi-file-earmark-music"></i>
+							{{ p.playlist }}
+						</a>
+					</div>
 				</li>
 				{% endfor %}
 				<li style="position: absolute; bottom: 10px; width: 250px;">
