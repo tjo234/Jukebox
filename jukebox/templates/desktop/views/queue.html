@@ -2,13 +2,29 @@
 {% if playlist and playlist|length > 0 %}
 
 	{% if player.currentsong %}
-	<div class="row text-secondary mb-4">
-		<div class="col-3">
-			<img src="/api/cover/{{ player.currentsong.id }}" class="img-thumbnail" style="width:64px; height: 64px;" />
+	<div class="row text-secondary mb-5 mt-4">
+		<div class="col-2">
+			<img src="/api/cover/{{ player.currentsong.id }}" class="img-thumbnail" style="width:84px; height: 84px;" />
 		</div>
 		<div class="col">
-			<h4 class="text-light mt-3 mb-0">{{ player.currentsong.title }}</h4>
+			<h4 class="text-light mt-2 mb-0">{{ player.currentsong.title }}</h4>
 			<small>{{ player.currentsong.artist }}</small>
+			<div class="mt-2">
+				{% if player and 'status' in player and player.status.state != "stop" %}
+					{% set ext = player.currentsong.file[-4:].replace('.','')|upper %}
+					{% if ext in ['WAV', 'FLAC', 'ALAC'] %}
+					<span class="badge me-1 text-bg-info">
+						<i class="bi bi-soundwave"></i> HD
+					</span>
+					{% endif %} 
+					<span class="badge text-bg-dark me-1">
+						 {{ ext }}
+					</span>
+					 <span class="badge text-bg-dark me-1">
+					 	{{ player.status.audio_hz }} &bull; {{ player.status.audio_bits }}
+					</span>
+				{% endif %}
+			</div>
 		</div>
 	</div>
 	<div class="row mb-2">
@@ -22,10 +38,9 @@
 			<a href="javascript:;" class="btn btn-sm" onclick="saveQueueAsPlaylist()" data-bs-toggle="tooltip" data-bs-title="Save as playlist">
 				<i class="bi bi-floppy-fill"></i>
 			</a>
-			
 		</div>
 	</div>
-	<hr class="m-0 mb-2" />
+	<hr class="m-0 mb-2" style="color:grey;" />
 	{% endif %}
 
 	

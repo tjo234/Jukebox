@@ -16,6 +16,11 @@
 	text-align: right; padding-right: 1.5em;
 }
 
+.offcanvas.queue {
+	width: 600px !important;
+	background: #000;
+}
+
 /* QUEUE */
 .row-play-pos:hover {
 	background: #333;

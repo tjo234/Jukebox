@@ -36,7 +36,10 @@
 			</div>
 		</div>
 		<div class="ms-auto">
-			<button class="btn text-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#modalQueue">
+			<button class="btn text-light" data-bs-toggle="modal" data-bs-target="#modalNowPlaying">
+				<i class="bi bi-tv"></i>
+			</button>
+			<button class="btn text-light" data-bs-toggle="offcanvas" data-bs-target="#modalQueue">
 				<i class="bi bi-music-note-list"></i>
 			</button>
 		</div>
@@ -59,22 +62,15 @@
 				</h6>
 			</li>
 			<li class="nav-item mb-3">
-				<a href="javascript:;" onclick="changeServer()" class="btn btn-lg btn-dark" style="background: #111; border: solid 1px #222"> 
-					<span class="text-success" style="font-size: 38px; top:5px; position: relative; line-height: 1rem">&bull;</span>
-					{{ JUKEBOX_ADDR or 'jukebox.local' }}
+				<a href="javascript:;" onclick="changeServer()" class="btn btn-dark" style="background: #111;">
+					{% if player %}
+					<i class="bi bi-check-circle text-success me-2" title="ONLINE"></i>
+					{% else %}
+					<i class="bi bi-x-circle text-secondary me-2" title="OFFLINE"></i>
+					{% endif %}
+					{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}
 				</a>
 			</li>
-			{% if player and 'status' in player and player.status.state != "stop" %}
-			<li class="nav-item">
-				<span class="badge rounded-pill text-bg-info">
-					 {{ player.status.audio_hz }} &bull; 
-					{{ player.status.audio_bits }}
-				</span>
-				<span class="badge rounded-pill text-bg-info">
-					{{ player.currentsong.file.rsplit(".")[1].upper() }}
-				</span>
-			</li>
-			{% endif %}
 			<li class="navbar-header mt-4 mb-2 text-secondary">
 				<h6>
 					LIBRARY
@@ -134,8 +130,8 @@
 </div>
 
 <!-- QUEUE POPUP -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="modalQueue" aria-labelledby="menuLabel" data-bs-theme="dark">
-	<div class="offcanvas-header" style="border-bottom: solid 1px #333;">
+<div class="offcanvas queue offcanvas-end" tabindex="-1" id="modalQueue" aria-labelledby="menuLabel" data-bs-theme="dark">
+	<div class="offcanvas-header" style="border-bottom: solid 1px #111;">
 		<h5 class="offcanvas-title" id="menuLabel"><i class="bi bi-music-note-list me-3"></i>Now Playing</h5>
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
@@ -184,4 +180,14 @@
 			{% endif %}
 		</div>
 	</div>
+</div>
+
+
+<!-- NOW PLAYING -->
+<div class="modal fade" id="modalNowPlaying" aria-hidden="true" aria-labelledby="modalNowPlayingLabel" tabindex="-1">
+  <div class="modal-dialog modal-fullscreen">
+    <div id="kiosk" class="modal-content">
+      {% include "desktop/views/kiosk.html" %}
+    </div>
+  </div>
 </div>

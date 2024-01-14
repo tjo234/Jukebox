@@ -4,5 +4,13 @@
 {% endblock %}
 
 {% block content %}
-<img src="/static/img/logo_tall.png" class="img-fluid" />
+<img src="/static/img/logo_tall.png" style="width: 100%;top: -60px;position: relative; display: none" />
+<script type="text/javascript">
+	$(function(){
+		$('img').fadeIn(10*1000);
+		setTimeout(function(){
+			//$('img').fadeOut();
+		}, 5000)
+	});
+</script>
 {% endblock %}

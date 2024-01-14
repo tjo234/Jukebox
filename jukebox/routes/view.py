@@ -33,9 +33,6 @@ def static_from_root():
 def render_page(route):
     resp = None
     obj = {}
-    obj['route'] = route  
-    obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
-    obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
 
     # Load Server Status
     try:
@@ -46,6 +43,11 @@ def render_page(route):
             obj['albums'] = JukeboxPlayer.albums()
     except MPDServerNotFoundException:
         pass
+
+    # Append Route and Cookies
+    obj['route'] = route  
+    obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
+    obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
 
     # Mobile App
     if route == "index" and user_on_mobile():
@@ -74,7 +76,9 @@ def render_page(route):
 @view.route('/view/desktop/<route>')
 def render_desktop_view(route):
     obj = {} 
-    obj['route'] = route  
+    obj['route'] = route
+    obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
+    obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
     try:
         obj['player'] = JukeboxPlayer.status()
         obj['stats'] = JukeboxPlayer.stats()
@@ -98,6 +102,9 @@ def render_desktop_view(route):
 @view.route('/view/mobile/<route>')
 def render_mobile_view(route):
     obj = {} 
+    obj['route'] = route
+    obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
+    obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
     if route == "radio":
         obj['genres'] = JukeboxPlayer.genres()
     elif route in ["queue"]:

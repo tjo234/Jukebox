@@ -17,7 +17,7 @@ function initPlayer(callback){
 }
 function playerWaitForChange(callback) {
     $.getJSON('/api/player/idle', function(evt){
-        //console.log('Change received: ' + evt)
+        console.log('Change received: ' + evt)
         refreshPlayerStatus(evt, callback)
         playerWaitForChange(callback);
     });
@@ -94,8 +94,6 @@ function playerShuffle() {
     console.log('playerShuffle')
     $.getJSON('/api/player/control/random', function(){});
 }
-
-
 function saveQueueAsPlaylist(){
     var name = prompt('Save Playlist As:');
     if (name == '') return;

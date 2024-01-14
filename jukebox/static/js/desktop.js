@@ -12,7 +12,7 @@ const DEFAULT_ROUTE = 'home';
 // Page Load
 $(function() {
 
-    $('[data-bs-toggle="tooltip"]').tooltip();
+   // $('[data-bs-toggle="tooltip"]').tooltip();
 
     loadView();
     initPlayer(onPlayerChanged);
@@ -140,6 +140,14 @@ function onPlayerChanged(change){
         $.get('/view/desktop/queue', function(data){
             $('#playlist-queue').html(data);
         });
+    }
+
+    // Refresh Kiosk
+    if ($('#kiosk')[0]) {
+        console.log('refreshKiosk')
+        $.get('/view/desktop/kiosk', function(data){
+          $('#kiosk').html(data);
+      });
     }
 
 }

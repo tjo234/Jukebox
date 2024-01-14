@@ -10,13 +10,12 @@ $(document).keydown(function(e){
 });
 
 $(function(){
-    refreshKiosk();
     initPlayer(refreshKiosk);
 });
 
 function refreshKiosk(){
+    console.log('refreshKiosk')
     if ($('#kiosk')[0]) {
-        console.log('refreshKiosk')
         $.get('/view/desktop/kiosk', function(data){
           $('#kiosk').html(data);
       });
