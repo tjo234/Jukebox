@@ -4,3 +4,4 @@
 *.sublime-workspace
 .env/*
 __pycache__/*
+jukebox/static/img/albums/*
