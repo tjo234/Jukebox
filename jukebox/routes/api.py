@@ -155,3 +155,8 @@ def player_library_cover(song_id=None, file=None):
 def api_search(s):
     resp = JukeboxPlayer.search(s)
     return jsonify(resp)
+
+@api.route("/cache_album_covers")
+def api_cache_album_covers():
+    resp = JukeboxPlayer.cache_album_covers()
+    return jsonify(resp)
