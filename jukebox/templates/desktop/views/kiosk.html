@@ -1,14 +1,24 @@
-<div class="container-fluid text-center h-100" style="background: #0F0C16;">
+<div class="h-100" style="background: #0F0C16;">
 	<table style="width: 100%; height: 100%;">
 		<tr>
 			<td>
+				<a href="javascript:;" class="btn btn-huge" onclick="playerPrevTrack()">
+				</a>
+			</td>
+			<td class="text-center">
 				{% if player.currentsong %}
-				<img src="/api/cover/{{ player.currentsong.id }}" class="mb-4" style="width: 500px; height: 500px; margin: 50px auto 0;" />
-				<h1 class="text-light">{{ player.currentsong.title }}</h1>
-				<h3 class="text-secondary">{{ player.currentsong.artist }}</h3>
+				<a href="javascript:;" onclick="playerPlayToggle()">
+					<img src="/api/cover/{{ player.currentsong.id }}" class="mb-4 img-fluid" style="width: 340px; height: 340px; margin: 20px auto;" />
+				</a>
+				<h3 class="text-light">{{ player.currentsong.title }}</h3>
+				<h4 class="text-secondary">{{ player.currentsong.artist }}</h4>
 				{% else %}
 				<img src="/static/img/logo.png" style="width: 500px; margin: 50px auto 0;" />
 				{% endif %}
+			</td>
+			<td>
+				<a href="javascript:;" class="btn btn-huge" onclick="playerNextTrack()">
+				</a>
 			</td>
 		</tr>
 	</table>

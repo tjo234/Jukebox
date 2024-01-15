@@ -143,10 +143,10 @@ function onPlayerChanged(change){
     }
 
     // Refresh Kiosk
-    if ($('#kiosk')[0]) {
+    if ($('#fullscreen')[0]) {
         console.log('refreshKiosk')
-        $.get('/view/desktop/kiosk', function(data){
-          $('#kiosk').html(data);
+        $.get('/view/desktop/fullscreen', function(data){
+          $('#fullscreen').html(data);
       });
     }
 

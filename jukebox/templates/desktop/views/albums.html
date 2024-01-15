@@ -3,8 +3,7 @@
 	{% if a.album != "" %}
 	<div class="col-3 mb-4">
 		<a href="javascript:;" onclick="playAlbum('{{ a.album|urlencode }}')" style="width: 100%;">
-			<img src="/static/img/album.jpg" class="img-fluid" />
-			<!-- <img src="/static/img/album/{{ a.album|urlencode }}.jpg" class="img-fluid" /> -->
+			<img src="/static/img/albums/{{ a.album|quoteplus|urlencode }}.jpg" style="height:250px; width: 250px" />
 		</a>
 		<a href="/#albums?album={{ a.album|urlencode }}" class="btn text-light mt-2" style="width: 100%;">
 			<h6 class="p-0 m-0" style="font-size:0.9rem;">{{ a.album|truncate(36, True) }}</h6>
