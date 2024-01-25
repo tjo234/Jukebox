@@ -14,6 +14,10 @@ def api_status():
 def player_status():
     return jsonify(JukeboxPlayer.status())
 
+@api.route("/player/ping")
+def player_ping():
+    return jsonify(JukeboxPlayer.ping())
+
 @api.route("/player/update")
 def player_update():
     return jsonify(JukeboxPlayer.database_update())

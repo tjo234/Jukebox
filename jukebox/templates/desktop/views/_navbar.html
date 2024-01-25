@@ -157,8 +157,8 @@
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
 	<div class="offcanvas-body">			
-		<div id="cast" class="pt-5">
-			<h5 class="text-secondary">Outputs</h5>
+		<div id="cast">
+			<!-- <h5 class="text-secondary">Outputs</h5> -->
 			{% for o in outputs %}
 			<div class="row my-4">
 				<div class="col pt-2">
@@ -175,8 +175,8 @@
 				</div>
 			</div>
 			{% endfor %}
-			<h5 class="text-secondary my-4">Volume</h5>
 			{% if 'status' in player and 'volume' in player.status %}
+			<h5 class="text-secondary mt-5 mb-2">Volume</h5>
 			<button class="btn text-light" onclick="playerMuteToggle()" style="font-size: 20px">
 				<i class="bi bi-volume-up-fill player-btn-volume"></i>
 				<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>

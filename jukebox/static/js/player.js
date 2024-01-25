@@ -11,6 +11,21 @@
 */
 window.JUKEBOX = {};
 
+$(document).keydown(function(e){
+    console.log( "Handler for `keypress` called.", e.which, e.metaKey);
+    if (e.which == 32) {
+        playerPlayToggle();
+    } else if (e.metaKey && e.which == 39) {
+        playerNextTrack()
+    } else if (e.metaKey && e.which == 37) {
+        playerPrevTrack()
+    } else if (e.metaKey && e.which == 40) {
+        lowerVolume();
+    } else if (e.metaKey && e.which == 38) {
+        raiseVolume();
+    }
+});
+
 function initPlayer(callback){
     refreshPlayerStatus('init', callback);
     playerWaitForChange(callback);
@@ -34,15 +49,6 @@ function refreshPlayerStatus(evt, callback){
         callback(evt);
     });
 }
-
-// SPACEBAR = Play/Pause Toggle 
-$(document).keydown(function(e){
-    if (e.which == 32) {
-        console.log('Play/Pause')
-        playerPlayToggle();
-        e.preventDefault();
-    }
-});
 
 
 /* 
@@ -85,8 +91,19 @@ function playerMuteToggle() {
     $.getJSON('/api/player/control/mute', function(){});
 }
 function changeVolume() {
-    v = $('#volume-bar').val()
+    v = $('#volume-bar').val();
     $.getJSON('/api/player/volume/'+v, function(){});
+}
+function lowerVolume() {
+    v = $('#volume-bar').val() * 0.9;
+    $('#volume-bar').val(v);
+    $.getJSON('/api/player/volume/' + v, function(){});
+}
+function raiseVolume() {
+    v = $('#volume-bar').val() * 1.1;
+    if (v > 100) v = 100;
+    $('#volume-bar').val(v);
+    $.getJSON('/api/player/volume/' + v, function(){});
 }
 function playerNextTrack() {
     $.getJSON('/api/player/control/next', function(){});
