@@ -62,7 +62,7 @@
 				</h6>
 			</li>
 			<li class="nav-item mb-3">
-				<a href="javascript:;" onclick="changeServer()" class="btn btn-dark" style="background: #111;">
+				<a role="button" onclick="changeServer()" class="btn btn-dark" style="background: #111;">
 					{% if player %}
 					<i class="bi bi-check-circle text-success me-2" title="ONLINE"></i>
 					{% else %}
@@ -77,12 +77,20 @@
 				</h6>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" aria-current="page" href="javascript:;" 
-				data-bs-dismiss="offcanvas" onclick="updateDatabase()">Update Database</a>
+				<a class="nav-link" aria-current="page" role="button"
+				data-bs-dismiss="offcanvas" onclick="updateDatabase()">Scan Database</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" aria-current="page" href="javascript:;" 
+				<a class="nav-link" aria-current="page" role="button" 
 				data-bs-dismiss="offcanvas" onclick="updateDatabase(true)">Rescan Database</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" role="button" 
+				data-bs-dismiss="offcanvas" onclick="cacheAlbumCovers()">Cache Album Covers</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" aria-current="page" role="button" 
+				data-bs-dismiss="offcanvas" onclick="reCacheAlbumCovers()">Recache Album Covers</a>
 			</li>
 			<li class="navbar-header mt-4 mb-2 text-secondary">
 				<h6>

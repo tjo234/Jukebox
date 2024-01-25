@@ -35,7 +35,7 @@
 			Next Up
 		</div>
 		<div class="col col-right">
-			<a href="javascript:;" class="btn btn-sm" onclick="saveQueueAsPlaylist()" data-bs-toggle="tooltip" data-bs-title="Save as playlist">
+			<a role="button" class="btn btn-sm" onclick="saveQueueAsPlaylist()" data-bs-toggle="tooltip" data-bs-title="Save as playlist">
 				<i class="bi bi-floppy-fill"></i>
 			</a>
 		</div>
@@ -53,13 +53,13 @@
 			<i class="bi bi-volume-up-fill"></i>
 			{% else %}
 			<span class="pos">{{ p.pos|int+1 }}</span>
-			<a class="play no-link" href="javascript:;" onclick="playlistSongId({{ p.id }})">
+			<a class="play no-link" role="button" onclick="playlistSongId({{ p.id }})">
 				<i class="bi bi-play-fill"></i>
 			</a>
 			{% endif %}
 		</div>
 		<div class="col">
-			<a class="no-link" href="javascript:;" onclick="playlistSongId({{ p.id }})">
+			<a class="no-link" role="button" onclick="playlistSongId({{ p.id }})">
 				<span class="text-light">{{ p.title }}</span><br />
 				<small style="font-size: 11px;">{{ p.artist }}</small>
 			</a>
@@ -73,7 +73,7 @@
 	{% endfor %}
 
 	<hr />
-	<a href="javascript:;" class="btn p-0 text-secondary" onclick="clearPlaylist()">
+	<a role="button" class="btn p-0 text-secondary" onclick="clearPlaylist()">
 		<i class="bi bi-trash-fill me-2"></i>
 		<small>CLEAR QUEUE</small>
 	</a>

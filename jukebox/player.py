@@ -12,8 +12,8 @@ from socket import gaierror
 from .utils import *
 
 ALBUM_CACHE_PATH = "jukebox/static/img/albums/"
-BLANK_ALBUM_CACHE = ALBUM_CACHE_PATH + ".noalbum"
 ALBUM_PATH = "jukebox/static/img/album.jpg"
+
 JUKEBOX_DEFAULT_ADDR = "jukebox.local"
 JUKEBOX_DEFAULT_PORT = 6600
 
@@ -40,29 +40,22 @@ def get_mpd():
     return mpd
 
 
-def cache_album_cover(a):
+def cache_album_cover(album_name, skip_existing=True):
     
     # Check for blank
-    if a == "":
+    if not album_name or album_name == "":
         return
-    
-    # Check blank cache
-    with open(BLANK_ALBUM_CACHE, "r") as f:
-        content = f.read()
-        if a in content:
-            return 
 
     # Get path
-    album = urllib.parse.quote_plus(a)
-    img_path = ALBUM_CACHE_PATH + "%s.jpg" % album
+    img_path = ALBUM_CACHE_PATH + "%s.jpg" % urllib.parse.quote_plus(album_name)
 
     # Check if image exists
-    if os.path.exists(img_path):
+    if os.path.exists(img_path) and skip_existing == True:
         return 
 
     # Find track by album
     mpd = get_mpd()
-    file = mpd.find('album', a)[0]['file']
+    file = mpd.find('album', album_name)[0]['file']
 
     # Get embedded image
     img_bytes = None
@@ -78,16 +71,18 @@ def cache_album_cover(a):
         except:
             pass
 
-    # Add to blank cache
+    # Add Default Image
     if not img_bytes:
-        print("No image found for: %s" % a)
-        with open(BLANK_ALBUM_CACHE, "a") as f:
-            f.write(a + '\n')
-        return 
+        print("No image found for: %s" % album_name)
 
-    with open(img_path, "xb") as binary_file:
+        # Load default image
+        with open(ALBUM_PATH, "rb") as f:
+            img_bytes = f.read()
+
+    # Write album to cache folder
+    with open(img_path, "wb") as binary_file:
         binary_file.write(img_bytes)
-        print("Cached image for: %s" % a)
+        print("Cached image for: %s" % album_name)
  
 class JukeboxPlayer():
 
@@ -166,19 +161,14 @@ class JukeboxPlayer():
         return io.BytesIO(f.read())
 
     @staticmethod
-    def cache_album_covers(reset_blank_cache=False):
-        # Reset blank cache
-        if reset_blank_cache:
-            with open(BLANK_ALBUM_CACHE, "w") as f:
-                f.write('')
-
+    def cache_album_covers(skip_existing=True):
         # Get albums        
         albums = get_mpd().list('album', 'group', 'albumartist')[1:]
         success = 0
         fail = 0
         for a in [a['album'] for a in albums]:
             try:
-                cache_album_cover(a)
+                cache_album_cover(album_name=a, skip_existing=skip_existing)
                 success += 1
             except Exception as ex:
                 fail += 1

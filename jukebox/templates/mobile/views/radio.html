@@ -3,7 +3,7 @@
 	<div class="card genre mb-2 card-bg-{{loop.index % 10}}">
 		<div class="card-body">
 			<h5 class="card-title">{{ g.genre }}</h5>
-			<a href="javascript:;" class="btn btn-primary btn-sm" onclick="playerFindAdd('genre', '{{ g.genre }}')">
+			<a role="button" class="btn btn-primary btn-sm" onclick="playerFindAdd('genre', '{{ g.genre }}')">
 				<i class="bi bi-broadcast-pin me-1"></i> Start Radio
 			</a>
 		</div>

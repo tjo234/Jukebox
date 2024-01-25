@@ -32,7 +32,7 @@ function searchItem(r){
     return `
     <div class="row text-secondary mb-2">
         <div class="col">
-            <a class="no-link" href="javascript:;" onclick="playlistSongId(${r.id})">
+            <a class="no-link" role="button" onclick="playlistSongId(${r.id})">
                 <span class="text-light">${r.title}</span><br />
                 <small>${r.artist}</small>
             </a>

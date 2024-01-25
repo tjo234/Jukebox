@@ -10,11 +10,12 @@ $(document).keydown(function(e){
 });
 
 $(function(){
-    initPlayer(refreshKiosk);
+    initPlayer(onPlayerChanged);
 });
 
-function refreshKiosk(){
-    console.log('refreshKiosk')
+function onPlayerChanged(change){
+    console.log('onPlayerChanged', change, JUKEBOX);
+
     if ($('#kiosk')[0]) {
         $.get('/view/desktop/kiosk', function(data){
           $('#kiosk').html(data);

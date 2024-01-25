@@ -1,15 +1,15 @@
 <div class="row">	
 	{% for a in albums %}
 	{% if a.album != "" %}
-	<div class="col-3 mb-4">
-		<a href="javascript:;" onclick="playAlbum('{{ a.album|urlencode }}')" style="width: 100%;">
+	<div class="col-3 mb-4 text-center">
+		<a role="button" onclick="playAlbum('{{ a.album|urlencode }}')" style="width: 100%;">
 			<img src="/static/img/albums/{{ a.album|quoteplus|urlencode }}.jpg" style="height:250px; width: 250px" />
 		</a>
 		<a href="/#albums?album={{ a.album|urlencode }}" class="btn text-light mt-2" style="width: 100%;">
 			<h6 class="p-0 m-0" style="font-size:0.9rem;">{{ a.album|truncate(36, True) }}</h6>
 			<small class="text-secondary" style="font-size:0.8rem;">{{ a.albumartist|truncate(32, True) }}</small>
 		</a>
-		<!-- <a  class="btn text-secondary" href="javascript:;" onclick="playAlbum('{{ a.album }}')" style="height: 2rem; line-height: 2rem;">
+		<!-- <a  class="btn text-secondary" role="button" onclick="playAlbum('{{ a.album }}')" style="height: 2rem; line-height: 2rem;">
 			<i class="bi bi-add-circle"></i>
 		</a> -->
 	</div>

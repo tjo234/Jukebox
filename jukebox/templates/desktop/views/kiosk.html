@@ -2,12 +2,12 @@
 	<table style="width: 100%; height: 100%;">
 		<tr>
 			<td>
-				<a href="javascript:;" class="btn btn-huge" onclick="playerPrevTrack()">
+				<a role="button" class="btn btn-huge" onclick="playerPrevTrack()">
 				</a>
 			</td>
 			<td class="text-center">
 				{% if player.currentsong %}
-				<a href="javascript:;" onclick="playerPlayToggle()">
+				<a role="button" onclick="playerPlayToggle()">
 					<img src="/api/cover/{{ player.currentsong.id }}" class="mb-4 img-fluid" style="width: 340px; height: 340px; margin: 20px auto;" />
 				</a>
 				<h3 class="text-light">{{ player.currentsong.title }}</h3>
@@ -17,7 +17,7 @@
 				{% endif %}
 			</td>
 			<td>
-				<a href="javascript:;" class="btn btn-huge" onclick="playerNextTrack()">
+				<a role="button" class="btn btn-huge" onclick="playerNextTrack()">
 				</a>
 			</td>
 		</tr>

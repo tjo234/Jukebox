@@ -7,7 +7,7 @@
 <div class="row">
 	{% for a in home %}
 	<div class="col-2 mb-4">
-		<a href="javascript:;" onclick="playAlbum('{{ a.album }}')">
+		<a role="button" onclick="playAlbum('{{ a.album }}')">
 			<img src="{{ a.image }}" alt="{{ a.album }}" class="img-fluid" />
 		</a>
 	</div>
@@ -18,7 +18,7 @@
 <div class="row">
 	{% for p in playlists %}
 	<div class="col-2 mb-4">
-		<a href="javascript:;" onclick="playPlaylist('{{ p.playlist }}')" style="text-decoration: none;">
+		<a role="button" onclick="playPlaylist('{{ p.playlist }}')" style="text-decoration: none;">
 			<img src="/static/img/album.jpg" class="img-fluid">
 			<h6 class="text-light mt-2">{{ p.playlist }}</h6>
 		</a>

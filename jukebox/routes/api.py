@@ -158,5 +158,10 @@ def api_search(s):
 
 @api.route("/cache_album_covers")
 def api_cache_album_covers():
-    resp = JukeboxPlayer.cache_album_covers()
+    resp = JukeboxPlayer.cache_album_covers(skip_existing=True)
+    return jsonify(resp)
+
+@api.route("/recache_album_covers")
+def api_recache_album_covers():
+    resp = JukeboxPlayer.cache_album_covers(skip_existing=False)
     return jsonify(resp)

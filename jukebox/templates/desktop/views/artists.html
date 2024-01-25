@@ -1,12 +1,12 @@
 <div class="row">
 	{% for a in artists %}
 	<div class="col-4 mb-2">
-		<a href="/#artists?artist={{ a.albumartist }}" class="btn text-light" style="width: 300px; text-align: left; float: left;">
+		<a href="/#artists?artist={{ a.albumartist|urlencode }}" class="btn text-light" style="width: 300px; text-align: left; float: left;">
 			<h5>{{ a.albumartist|truncate(32, True) }}</h5>
 		</a>
-		<a href="javascript:;" class="btn text-secondary" onclick="playArtist('{{ a.albumartist }}')">
+		<a role="button" class="btn text-secondary" onclick="playArtist('{{ a.albumartist|urlencode }}')">
 			<i class="bi bi-play-circle"></i>
 		</a>
 	</div>
 	{% endfor %}
-</div>
+</div>x

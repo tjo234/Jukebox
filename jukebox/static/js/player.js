@@ -57,6 +57,14 @@ function updateDatabase(rescan){
     var url = (rescan == true) ? '/api/player/rescan' : '/api/player/update'; 
     $.getJSON(url);
 }
+function cacheAlbumCovers(){
+    console.log('cacheAlbumCovers')
+    $.getJSON('/api/cache_album_covers');
+}
+function reCacheAlbumCovers(){
+    console.log('reCacheAlbumCovers')
+    $.getJSON('/api/recache_album_covers');
+}
 function toggleOutput(id){
     $.getJSON(`/api/player/toggleoutput/${id}`, function(){});
 }
