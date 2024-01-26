@@ -1,4 +1,5 @@
 #!/usr/bin/env
+import time
 from flask import Blueprint, render_template, make_response, send_from_directory, request, g, current_app
 from ..player import JukeboxPlayer, MPDServerNotFoundException
 
@@ -34,6 +35,7 @@ def render_page(route):
     resp = None
     obj = {}
 
+
     # Load Server Status
     try:
         obj = get_template_values() 
@@ -46,6 +48,7 @@ def render_page(route):
 
     # Append Route and Cookies
     obj['route'] = route  
+    obj['now'] = int(time.time() * 1000)
     obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
     obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
 
@@ -90,7 +93,7 @@ def render_desktop_view(route):
         if route in ["queue", "queue-simple"]:
             obj['playlist'] = JukeboxPlayer.playlist()
         if route == "albums":
-            obj['albums'] = JukeboxPlayer.artists()
+            obj['albums'] = JukeboxPlayer.albums()
         if route == "artists":
             obj['artists'] = JukeboxPlayer.artists()
     except MPDServerNotFoundException:

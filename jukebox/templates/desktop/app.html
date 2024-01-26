@@ -39,7 +39,7 @@
 						<button class="btn btn-sm text-secondary" onclick="playPlaylist('{{ p.playlist }}')" style="float: right;">
 							<i class="bi bi-play-circle"></i>
 						</button>
-						<a class="no-link text-secondary" href="/#playlist/{{ p.playlist }}" style="display:inline-block; min-width: 185px;">
+						<a class="no-link text-secondary" href="/#playlist/{{ p.playlist }}" style="display:inline-block; min-width: 165px;">
 							<i class="bi bi-file-earmark-music"></i>
 							{{ p.playlist }}
 						</a>
@@ -71,15 +71,7 @@
 				{% include "desktop/views/home.html" %}
 			</div>
 
-			<!-- ALBUMS VIEW -->
-			<div id="view-albums" style="display: none;">
-				{% include "desktop/views/albums.html" %}
-			</div>
-
-			<!-- ARTIST VIEW -->
-			<div id="view-artists" style="display: none;">
-				{% include "desktop/views/artists.html" %}
-			</div>
+			
 
 		</div>
 	</div>
