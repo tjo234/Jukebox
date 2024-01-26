@@ -19,7 +19,7 @@ rm -R /var/www/Jukebox
 
 # Download latest application code
 echo -e "\n\n***************\n\nJUKEBOX - Downloading code from GitHub...\n\n"
-git clone https://github.com/tjo234/Jukebox.git /var/www/Jukebox
+git clone --depth 1 https://github.com/tjo234/Jukebox.git /var/www/Jukebox
 
 # Create VirtualEnv
 echo -e "\n\n***************\n\nJUKEBOX - Setup Python Virtual Environment...\n\n"
