@@ -13,16 +13,22 @@ window.JUKEBOX = {};
 
 $(document).keydown(function(e){
     console.log( "Handler for `keypress` called.", e.which, e.metaKey);
+    
     if (e.which == 32) {
         playerPlayToggle();
+        e.preventDefault();
     } else if (e.metaKey && e.which == 39) {
-        playerNextTrack()
+        playerNextTrack();
+        e.preventDefault();
     } else if (e.metaKey && e.which == 37) {
-        playerPrevTrack()
+        playerPrevTrack();
+        e.preventDefault();
     } else if (e.metaKey && e.which == 40) {
         lowerVolume();
+        e.preventDefault();
     } else if (e.metaKey && e.which == 38) {
         raiseVolume();
+        e.preventDefault();
     }
 });
 
@@ -74,8 +80,8 @@ function reCacheAlbumCovers(){
 function toggleOutput(id){
     $.getJSON(`/api/player/toggleoutput/${id}`, function(){});
 }
-function playerSeek(){
-    $.getJSON('/api/player/seek/'+$('#player-seek').val(), function(){});
+function playerSeek(obj){
+    $.getJSON('/api/player/seek/'+$(obj).val(), function(){});
 }
 function updateLibrary(){
     $.getJSON('/api/player/update', function(){});
@@ -90,19 +96,19 @@ function playerPlayToggle() {
 function playerMuteToggle() {
     $.getJSON('/api/player/control/mute', function(){});
 }
-function changeVolume() {
-    v = $('#volume-bar').val();
+function changeVolume(obj) {
+    v = $(obj).val();
     $.getJSON('/api/player/volume/'+v, function(){});
 }
 function lowerVolume() {
-    v = $('#volume-bar').val() * 0.9;
-    $('#volume-bar').val(v);
+    v = parseInt(JUKEBOX.status.volume * 0.9);
+    $('.volume-bar').val(v);
     $.getJSON('/api/player/volume/' + v, function(){});
 }
 function raiseVolume() {
-    v = $('#volume-bar').val() * 1.1;
+    v = parseInt(JUKEBOX.status.volume * 1.1);
     if (v > 100) v = 100;
-    $('#volume-bar').val(v);
+    $('.volume-bar').val(v);
     $.getJSON('/api/player/volume/' + v, function(){});
 }
 function playerNextTrack() {
@@ -150,3 +156,44 @@ function playerFindAdd(tag, what){
         $('#player-full').modal('show');
     });
 }
+
+
+/* UI Helpers */
+function secondsToElapsed(s){
+    var str_elapsed;
+    if (s >= 60*60) {
+        str_elapsed = new Date(s * 1000).toISOString().slice(11, 19);    
+    } {
+        str_elapsed = new Date(s * 1000).toISOString().slice(14, 19);    
+    }
+    return str_elapsed;
+}
+
+/* Seek Bar UI Refresh */
+function seekUpdate(){
+    clearInterval(intervalPlayerTick);
+    if (JUKEBOX.status.state == 'play') {
+        $('.player-duration').html(JUKEBOX.status.str_duration);
+        $('.player-elapsed').html(JUKEBOX.status.str_elapsed);
+        $('.player-seek').attr('min', 0);
+        $('.player-seek').attr('max', JUKEBOX.status.duration);
+        $('.player-seek').val(JUKEBOX.status.elapsed);
+        elapsed = Number.parseInt(JUKEBOX.status.elapsed);
+        intervalPlayerTick = setInterval(function(){
+            console.log('tick')
+            elapsed++;
+            $('.player-seek').val(elapsed);
+            $('.player-elapsed').html(secondsToElapsed(elapsed));
+        }, 1000);
+    } else if (JUKEBOX.status.state == 'stop') {
+        $('.player-duration').html("0:00");
+        $('.player-elapsed').html("0:00");
+        $('.player-seek').attr('min', 0);
+        $('.player-seek').attr('max', 100);
+        $('.player-seek').val(0);
+        elapsed = 0;
+    }
+}
+
+
+

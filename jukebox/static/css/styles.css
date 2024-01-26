@@ -64,10 +64,12 @@ body.desktop {
 #header .nav-link  i {
 	margin-right: .5em;
 }
-#header .player-controls button {
+
+.player-controls button,
+.player-controls button:hover {
 	color: #999;
 }
-#header .player-marquee {
+.player-marquee {
 		padding-top: 12px;
     background: #111;
     border: solid 1px #222;

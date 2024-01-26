@@ -57,10 +57,6 @@ function loadView(){
             $('#view-container').html(data).fadeIn();
         });
     }
-
-    
-
-
 }
 
 function onPlayerChanged(change){
@@ -85,24 +81,24 @@ function onPlayerChanged(change){
 
     // Random Button (OFF / REPEAT / REPEAT ONE)
     if (Number(JUKEBOX.status.repeat) == 0 && Number(JUKEBOX.status.single) == 0) {
-        $('#btn-player-repeat').removeClass('on');
-        $('#btn-player-repeat').removeClass('hidden');
-        $('#btn-player-repeat-1').addClass('hidden');
+        $('.player-btn-repeat').removeClass('on');
+        $('.player-btn-repeat').removeClass('hidden');
+        $('.player-btn-repeat-1').addClass('hidden');
     } else if (Number(JUKEBOX.status.repeat) == 1 && Number(JUKEBOX.status.single) == 0) {
-        $('#btn-player-repeat').addClass('on');
-        $('#btn-player-repeat').removeClass('hidden');
-        $('#btn-player-repeat-1').addClass('hidden');
+        $('.player-btn-repeat').addClass('on');
+        $('.player-btn-repeat').removeClass('hidden');
+        $('.player-btn-repeat-1').addClass('hidden');
     } else if (Number(JUKEBOX.status.repeat) == 1 && Number(JUKEBOX.status.single) == 1) {
-        $('#btn-player-repeat').addClass('hidden');
-        $('#btn-player-repeat-1').addClass('on');
-        $('#btn-player-repeat-1').removeClass('hidden');
+        $('.player-btn-repeat').addClass('hidden');
+        $('.player-btn-repeat-1').addClass('on');
+        $('.player-btn-repeat-1').removeClass('hidden');
     }     
 
     // Shuffle Button
     if (Number(JUKEBOX.status.random) == 1) {
-        $('#btn-player-shuffle').addClass('on');
+        $('.player-btn-shuffle').addClass('on');
     } else {
-        $('#btn-player-shuffle').removeClass('on');
+        $('.player-btn-shuffle').removeClass('on');
     }
 
     // Track Info
@@ -110,12 +106,12 @@ function onPlayerChanged(change){
         // Nothing Playing
         $('.player-artist').html('&nbsp;');
         $('.player-title').html('&nbsp;');
-        $('#img-album').attr('src', '/static/img/album.png');
+        $('.img-album').attr('src', '/static/img/album.png');
     }
     else {
         $('.player-artist').html(JUKEBOX.currentsong.artist);
         $('.player-title').html(JUKEBOX.currentsong.title);
-        $('#img-album').attr('src', '/api/cover/' + JUKEBOX.currentsong.id);
+        $('.img-album').attr('src', getAlbumURL(JUKEBOX.currentsong.album));
     }
 
     // Volume Toggle
@@ -135,6 +131,9 @@ function onPlayerChanged(change){
         }
     }
 
+    // Update Seek Bar
+    updateSeekBarUI();
+
     // Refresh Queue 
     if ($('#playlist-queue')[0]) {
         $.get('/view/desktop/queue', function(data){
@@ -142,12 +141,51 @@ function onPlayerChanged(change){
         });
     }
 
-    // Refresh Kiosk
-    if ($('#fullscreen')[0]) {
-        console.log('refreshKiosk')
-        $.get('/view/desktop/fullscreen', function(data){
-          $('#fullscreen').html(data);
-      });
+     if ($('#queue-simple')[0]) {
+        $.get('/view/desktop/queue-simple', function(data){
+            $('#queue-simple').html(data);
+        });
     }
 
+}
+function getAlbumURL(album) {
+    return "/static/img/albums/" + encodeURIComponent(album).replace(/%20/g,'+') + ".jpg";
+}
+
+/* UI Helpers */
+function secondsToElapsed(s){
+    var str_elapsed;
+    if (s >= 60*60) {
+        str_elapsed = new Date(s * 1000).toISOString().slice(11, 19);    
+    } {
+        str_elapsed = new Date(s * 1000).toISOString().slice(14, 19);    
+    }
+    return str_elapsed;
+}
+
+/* Seek Bar UI Refresh */
+var intervalPlayerTick;
+function updateSeekBarUI(){
+    clearInterval(intervalPlayerTick);
+    if (JUKEBOX.status.state == 'play') {
+        $('.player-duration').html(JUKEBOX.status.str_duration);
+        $('.player-elapsed').html(JUKEBOX.status.str_elapsed);
+        $('.player-seek').attr('min', 0);
+        $('.player-seek').attr('max', JUKEBOX.status.duration);
+        $('.player-seek').val(JUKEBOX.status.elapsed);
+        elapsed = Number.parseInt(JUKEBOX.status.elapsed);
+        intervalPlayerTick = setInterval(function(){
+            console.log('tick')
+            elapsed++;
+            $('.player-seek').val(elapsed);
+            $('.player-elapsed').html(secondsToElapsed(elapsed));
+        }, 1000);
+    } else if (JUKEBOX.status.state == 'stop') {
+        $('.player-duration').html("0:00");
+        $('.player-elapsed').html("0:00");
+        $('.player-seek').attr('min', 0);
+        $('.player-seek').attr('max', 100);
+        $('.player-seek').val(0);
+        elapsed = 0;
+    }
 }

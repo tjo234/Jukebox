@@ -4,12 +4,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="kiosk" class="h-100">
+<div id="fullscreen" class="h-100">
+{% include "desktop/views/kiosk.html" %}
 </div>
 {% endblock %}
-
-{% block footer_script %}
-<script type="text/javascript" src="/static/js/kiosk.js">
-</script>
-{% endblock %}
-

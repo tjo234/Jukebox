@@ -9,8 +9,8 @@
 		</div>
 		<div class="col-3 player-controls text-center">
 			<button class="btn btn-lg px-1" onclick="playerRepeat()" style="font-size:12px;">
-				<i id="btn-player-repeat"class="bi bi-repeat player-btn-repeat"></i>
-				<i id="btn-player-repeat-1" class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
+				<i class="bi bi-repeat player-btn-repeat"></i>
+				<i class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
 			</button>
 			<button class="btn btn-lg px-2" onclick="playerPrevTrack()" style="font-size:20px;">
 				<i class="bi bi-skip-start-fill"></i>
@@ -183,8 +183,8 @@
 			</button>
 			
 			<!-- VOLUME BAR -->
-			<input type="range" id="volume-bar" value="{{ player.status.volume }}"
-			style="width: 200px; top: 5px; position: relative;" onchange="changeVolume()" />
+			<input type="range" class="volume-bar" value="{{ player.status.volume }}"
+			style="width: 200px; top: 5px; position: relative;" onchange="changeVolume(this)" />
 			{% endif %}
 		</div>
 	</div>

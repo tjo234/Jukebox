@@ -87,7 +87,7 @@ def render_desktop_view(route):
             obj['path'] = path
             obj['parent'] = path.rsplit('/')[0] if '/' in path else ''
             obj['browse'] = JukeboxPlayer.browse(path)
-        if route == "queue":
+        if route in ["queue", "queue-simple"]:
             obj['playlist'] = JukeboxPlayer.playlist()
         if route == "albums":
             obj['albums'] = JukeboxPlayer.artists()

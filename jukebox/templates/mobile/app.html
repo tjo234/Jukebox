@@ -149,18 +149,14 @@
 						</h4>
 					</div>
 					<div class="seek">
-						<input type="range" 
-						id="player-seek" 
-						style="width: 100%;"
-						onchange="playerSeek()"
-						/>
-						<small id="player-duration" style="float:right">0:00</small>
-						<small id="player-elapsed"></small>
+						<input type="range" class="player-seek" style="width: 100%;" onchange="playerSeek()" />
+						<small class="player-duration" style="float:right">0:00</small>
+						<small class="player-elapsed">0:00</small>
 					</div>
 					<div class="player">
 						<button class="btn btn-lg" onclick="playerRepeat()">
-							<i id="btn-player-repeat"class="bi bi-repeat player-btn-repeat"></i>
-							<i id="btn-player-repeat-1" class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
+							<i class="bi bi-repeat player-btn-repeat"></i>
+							<i class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
 						</button>
 						<button class="btn btn-xl px-3" onclick="playerPrevTrack()">
 							<i class="bi bi-skip-start-fill"></i>
@@ -172,7 +168,7 @@
 						<button class="btn btn-xl px-3" onclick="playerNextTrack()">
 							<i class="bi bi-skip-end-fill"></i>
 						</button>
-						<button id="btn-player-shuffle" class="btn btn-lg" onclick="playerShuffle()">
+						<button class="btn btn-lg" onclick="playerShuffle()">
 							<i class="bi bi-shuffle player-btn-shuffle"></i>
 						</button>
 					</div>
