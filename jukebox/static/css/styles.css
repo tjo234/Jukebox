@@ -47,8 +47,10 @@ body {
 }
 body {
 	background: var(--body-bg);
-	margin:0;
-  overflow:hidden;
+}
+
+body.desktop {
+	padding-top: 78px;
 }
 
 /* Main Nav */

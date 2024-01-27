@@ -1,3 +1,4 @@
 [Desktop Entry] 
 Type=Application
 Exec=vlc /home/pi/playlist.m3u --fullscreen --play-and-exit --no-video-title-show
+

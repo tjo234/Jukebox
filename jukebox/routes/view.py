@@ -108,10 +108,11 @@ def render_mobile_view(route):
     obj['route'] = route
     obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
     obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
+    obj['player'] = JukeboxPlayer.status()
+    
     if route == "radio":
         obj['genres'] = JukeboxPlayer.genres()
     elif route in ["queue"]:
-        obj['player'] = JukeboxPlayer.status()
         obj['playlist'] = JukeboxPlayer.playlist()
     
     return render_template('mobile/views/%s.html' % route, **obj)   

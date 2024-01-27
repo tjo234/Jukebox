@@ -48,11 +48,15 @@ function loadView(){
     if ($('#view-' + route)[0]){
         console.log('Static route:', route)
         $('#view-' + route).fadeIn();
+    } else if ($('body').hasClass('mobile')) {
+        console.log('Dynamic mobile route:', route)
+        $.get('/view/mobile/'+ route + '?' + qs, function(data){
+            console.log('Route loaded', route)
+            $('#view-container').html(data).fadeIn();
+        });
     } else {
-        // Load dynamic route
-        fullPath = '/view/desktop/'+ route + '?' + qs;
         console.log('Dynamic route:', route)
-        $.get(fullPath, function(data){
+        $.get('/view/desktop/'+ route + '?' + qs, function(data){
             console.log('Route loaded', route)
             $('#view-container').html(data).fadeIn();
         });
@@ -106,11 +110,13 @@ function onPlayerChanged(change){
         // Nothing Playing
         $('.player-artist').html('&nbsp;');
         $('.player-title').html('&nbsp;');
+        $('.player-album').html('&nbsp;');
         $('.img-album').attr('src', '/static/img/album.png');
     }
     else {
         $('.player-artist').html(JUKEBOX.currentsong.artist);
         $('.player-title').html(JUKEBOX.currentsong.title);
+        $('.player-album').html(JUKEBOX.currentsong.album);
         $('.img-album').attr('src', '/api/cover/'+JUKEBOX.status.songid);
     }
 

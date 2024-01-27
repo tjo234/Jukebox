@@ -1,13 +1,12 @@
-<div id="now-playing" class="container-fluid">
+<div id="now-playing">
 	<div class="row">
 		{% if player %}
-		<img src="/static/img/logo_tall.png" style="width: 500px" />
+		<img src="/static/img/logo_tall.png" />
 		{% else %}
-		<div class="text-center" style="padding:370px 0;">
+		<div class="text-center">
 			<h1><i class="bi bi-database-fill-x"></i></h1>
 			<h3>Connect to Jukebox</h3>
 		</div>
-		
 		{% endif %}
 	</div>
 </div>
