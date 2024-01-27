@@ -111,7 +111,7 @@ function onPlayerChanged(change){
     else {
         $('.player-artist').html(JUKEBOX.currentsong.artist);
         $('.player-title').html(JUKEBOX.currentsong.title);
-        $('.img-album').attr('src', getAlbumURL(JUKEBOX.currentsong.album));
+        $('.img-album').attr('src', '/api/cover/'+JUKEBOX.status.songid);
     }
 
     // Volume Toggle

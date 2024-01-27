@@ -128,6 +128,7 @@ class JukeboxPlayer():
     def cover(song_id=None, file=None):
         mpd = get_mpd()
 
+        # Load by Filename
         if file:
             file = urllib.parse.unquote(file)
     
@@ -136,11 +137,6 @@ class JukeboxPlayer():
             file = mpd.playlistid(song_id)[0]['file']
 
         print ("File: %s" % file)
-
-        # No Album
-        if file == None:
-            f = open(ALBUM_PATH, "rb")
-            return io.BytesIO(f.read())
 
         # Load album.jpg from folder
         try:

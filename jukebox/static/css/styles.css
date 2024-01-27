@@ -47,12 +47,11 @@ body {
 }
 body {
 	background: var(--body-bg);
+	margin:0;
+  overflow:hidden;
 }
 
 /* Main Nav */
-body.desktop {
-	padding-top: 78px;
-}
 #header {
 	height: 78px;
 	background: var(--navbar-bg) !important;

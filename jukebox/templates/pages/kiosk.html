@@ -4,7 +4,47 @@
 {% endblock %}
 
 {% block content %}
-<div id="fullscreen" class="h-100">
-{% include "desktop/views/kiosk.html" %}
+<div style="padding: 0 40px;">
+<table>
+	<tr>
+		<td>
+			<img class="img-album img-fluid mb-5" style="width: 500px; margin: 50px auto" />
+			<h1 class="text-light player-title" style="font-size: 32px"></h1>
+			<h3 class="text-secondary player-artist"></h3>
+			<div class="seek" style="margin: 0 auto; text-align: left;">
+				<input type="range" class="player-seek" style="width: 100%;" onchange="playerSeek(this)" />
+				<small class="player-duration" style="float:right">0:00</small>
+				<small class="player-elapsed">0:00</small>
+			</div>
+			<div class="player-controls text-center">
+				<button class="btn" onclick="playerRepeat()" style="font-size:30px;">
+					<i class="bi bi-repeat player-btn-repeat"></i>
+					<i class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
+				</button>
+				<button class="btn px-4" onclick="playerPrevTrack()" style="font-size:60px;">
+					<i class="bi bi-skip-start-fill"></i>
+				</button>
+				<button class="btn px-4" onclick="playerPlayToggle()" style="font-size:80px;">
+					<i class="bi bi-play-circle-fill player-btn-play"></i>
+					<i class="bi bi-pause-circle-fill player-btn-pause hidden"></i>
+				</button>
+				<button class="btn px-4" onclick="playerNextTrack()" style="font-size:60px;">
+					<i class="bi bi-skip-end-fill"></i>
+				</button>
+				<button class="player-btn-shuffle btn" onclick="playerShuffle()" style="font-size:30px;">
+					<i class="bi bi-shuffle player-btn-shuffle"></i>
+				</button>	
+			</div>
+		</td>	
+	</tr>
+	<tr>
+		<td style="text-align: left;">
+			<hr />
+			<h3 class="text-light my-5"><i class="bi bi-file-music me-2"></i> Next Up</h3>
+			<div id="queue-simple">
+			</div>
+		</td>
+	</tr>
+</table>
 </div>
 {% endblock %}
