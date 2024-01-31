@@ -113,6 +113,13 @@ def playlist_play_album():
     resp = JukeboxPlayer.playlist_play_album(album)
     return jsonify(resp)
 
+@api.route("/album/play/")
+def playlist_play_album_track():
+    album = request.args.get('album')
+    track = request.args.get('track')
+    resp = JukeboxPlayer.playlist_play_album_track(album, track)
+    return jsonify(resp)
+
 @api.route("/playlist/findadd/<tag>/<what>")
 def playlist_playlist_findadd(tag, what):
     resp = JukeboxPlayer.findadd(tag, what)

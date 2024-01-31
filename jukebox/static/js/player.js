@@ -148,6 +148,9 @@ function playArtist(a){
 function queueSong(file){
      $.getJSON('/api/playlist/add/?file='+file, function(){});
 }
+function playAlbumTrack(album, index){
+     $.getJSON('/api/album/play/?album='+album+'&track='+index, function(){});
+}
 function playPlaylist(p){
     $.getJSON('/api/playlist/load/?playlist='+p, function(){});
 }

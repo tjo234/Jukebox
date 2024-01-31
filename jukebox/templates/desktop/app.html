@@ -8,13 +8,15 @@
 <div class="container-fluid h-100">
 	<div class="row h-100">
 		<div class="col-md-3 col-lg-2 border-dark border-right p-0 bg-dark">
+
+			<!-- FULLSCREEN SIDEBAR NAV -->
 			<ul id="sidebar" class="nav nav-pills flex-column h-100">
 				<li class="nav-item">
 					<h5>Library</h5>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/#browse">
-						<i class="bi bi-folder-fill"></i>
+						<i class="bi bi-folder2"></i>
 						Browse
 					</a>
 				</li>
@@ -28,6 +30,18 @@
 					<a class="nav-link" href="/#albums">
 						<i class="bi bi-disc"></i>
 						Albums
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/#live">
+						<i class="bi bi-lightning"></i>
+						Live Shows
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/#favorites">
+						<i class="bi bi-heart"></i>
+						Favorites
 					</a>
 				</li>
 				<li class="nav-item">
@@ -64,42 +78,10 @@
 		</div>
 		<div id="views" class="col px-4 py-2 h-100" style="overflow-y: auto;">	
 
-			<!-- Dynamic Views -->
+			<!-- DYNAMIC VIEW CONTAINER -->
 			<div id="view-container" style="display: none;"></div>
-
-			<div id="view-home" style="display: none;">
-				{% include "desktop/views/home.html" %}
-			</div>
-
-			
 
 		</div>
 	</div>
-</div>
-
-<div class="modal fade" id="modalConnection" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Connect To Jukebox</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<h3>Let's get some music playing!</h3>
-        <!-- <ol>
-        	<li>Plug in your Jukebox</li>
-        	<li>Give it 1-2 minutes to boot up</li>
-        	<li>Enter the connection details below</li>
-        	<li>Click CONNECT</li>
-        </ol> -->
-        <label for="txtConnectionId" class="form-label">Server Address</label>
-        <input id="txtConnectionId" type="text" class="form-control-lg my-2 w-100" value="jukebox.local" />
-      </div>
-      <div class="modal-footer">
-      	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      	<button type="button" class="btn btn-primary">Connect to Jukebox</button>
-      </div>
-    </div>
-  </div>
 </div>
 {% endblock %}

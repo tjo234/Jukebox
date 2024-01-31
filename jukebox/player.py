@@ -369,6 +369,11 @@ class JukeboxPlayer():
         mpd.play()
 
     @staticmethod
+    def album(album):
+        mpd = get_mpd()
+        return mpd.find("album", album)
+
+    @staticmethod
     def playlist_play_album(album):
         mpd = get_mpd()
         mpd.clear()
@@ -377,6 +382,16 @@ class JukeboxPlayer():
         mpd.single(0)
         mpd.random(0)
         mpd.play()
+
+    @staticmethod
+    def playlist_play_album_track(album, track):
+        mpd = get_mpd()
+        mpd.clear()
+        mpd.findadd("album", album)
+        mpd.repeat(1)
+        mpd.single(0)
+        mpd.random(0)
+        mpd.play(track)
 
     @staticmethod
     def playlist_play_artist(artist):
