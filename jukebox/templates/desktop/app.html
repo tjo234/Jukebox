@@ -32,7 +32,7 @@
 						Albums
 					</a>
 				</li>
-				<li class="nav-item">
+				<!-- <li class="nav-item">
 					<a class="nav-link" href="/#live">
 						<i class="bi bi-lightning"></i>
 						Live Shows
@@ -43,19 +43,19 @@
 						<i class="bi bi-heart"></i>
 						Favorites
 					</a>
-				</li>
+				</li> -->
 				<li class="nav-item">
 					<h5>Playlists</h5>
 				</li>
 				{% for p in playlists %}
 				<li class="nav-item">
 					<div class="nav-link">
-						<button class="btn btn-sm text-secondary" onclick="playPlaylist('{{ p.playlist }}')" style="float: right;">
+						<button class="btn btn-sm text-secondary" onclick="playPlaylist('{{ p.playlist|urlencode }}')" style="float: right;">
 							<i class="bi bi-play-circle"></i>
 						</button>
-						<a class="no-link text-secondary" href="/#playlist/{{ p.playlist }}" style="display:inline-block; min-width: 165px;">
+						<a class="no-link text-secondary" href="/#playlist?playlist={{ p.playlist }}" style="display:inline-block; min-width: 165px;">
 							<i class="bi bi-file-earmark-music"></i>
-							{{ p.playlist }}
+							{{ p.playlist|urlencode }}
 						</a>
 					</div>
 				</li>

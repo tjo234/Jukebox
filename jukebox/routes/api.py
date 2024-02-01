@@ -88,7 +88,8 @@ def playlist_playlist_by_id(playlist_id):
 @api.route('/playlist')
 def playlist_default():
     resp = JukeboxPlayer.playlist()
-    return jsonify(resp)   
+    return jsonify(resp)
+
 
 @api.route('/playlists')
 def playlist_list_playlists():
@@ -99,6 +100,13 @@ def playlist_list_playlists():
 def playlist_load_playlist():
     playlist = request.args.get('playlist')
     resp = JukeboxPlayer.load(playlist=playlist)
+    return jsonify(resp)  
+
+@api.route('/playlist/track/')
+def playlist_load_playlist_track():
+    playlist = request.args.get('playlist')
+    track = request.args.get('track')
+    resp = JukeboxPlayer.playlist_track(playlist, track)
     return jsonify(resp)   
 
 @api.route("/playlist/queue/artist/")

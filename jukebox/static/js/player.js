@@ -148,11 +148,14 @@ function playArtist(a){
 function queueSong(file){
      $.getJSON('/api/playlist/add/?file='+file, function(){});
 }
-function playAlbumTrack(album, index){
-     $.getJSON('/api/album/play/?album='+album+'&track='+index, function(){});
+function playAlbumTrack(album, track){
+     $.getJSON('/api/album/play/?album='+album+'&track='+track, function(){});
 }
 function playPlaylist(p){
     $.getJSON('/api/playlist/load/?playlist='+p, function(){});
+}
+function playPlaylistTrack(p,track){
+    $.getJSON('/api/playlist/track/?playlist='+p+'&track='+track, function(){});
 }
 function playerFindAdd(tag, what){
     $.getJSON(`/api/playlist/findadd/${tag}/${what}`, function(){

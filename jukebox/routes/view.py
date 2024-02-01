@@ -102,7 +102,15 @@ def render_desktop_view(route):
 
         if route == "artists":
             obj['artists'] = JukeboxPlayer.artists()
-            
+
+        if route == "artists":
+            obj['artists'] = JukeboxPlayer.artists()
+
+        if route == "playlist":
+            playlist = request.args.get('playlist', None)
+            obj['playlist'] = playlist
+            obj['playlist_tracks'] = JukeboxPlayer.playlistinfo(playlist)
+
     except MPDServerNotFoundException:
         pass
        

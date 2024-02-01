@@ -336,6 +336,10 @@ class JukeboxPlayer():
         return get_mpd().listplaylists()
 
     @staticmethod
+    def playlistinfo(playlist):
+        return get_mpd().listplaylistinfo(playlist)
+
+    @staticmethod
     def load(playlist):
         print('Loading playlist: %s' % playlist)
         mpd = get_mpd()
@@ -345,6 +349,17 @@ class JukeboxPlayer():
         mpd.single(0)
         mpd.random(0)
         mpd.play()
+
+    @staticmethod
+    def playlist_track(playlist,track):
+        print('Loading playlist: %s' % playlist)
+        mpd = get_mpd()
+        mpd.clear()
+        mpd.load(playlist)
+        mpd.repeat(1)
+        mpd.single(0)
+        mpd.random(0)
+        mpd.play(track)
 
     @staticmethod
     def playid(song_id):

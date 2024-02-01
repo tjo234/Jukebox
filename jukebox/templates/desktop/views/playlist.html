@@ -1,0 +1,29 @@
+{% if playlist %}
+<h1 class="py-3 px-2 text-light">
+	{{ playlist }}
+	<a role="button" class="text-light ms-2" onclick="playPlaylist('{{ playlist|urlencode }}')">
+		<i class="bi bi-play-circle"></i>
+	</a>
+</h1>
+<hr />
+{% for a in playlist_tracks %}
+<div class="row row-track text-light">
+	<div class="col-1 text-center">	
+		<button class="btn pos text-light">{{ loop.index }}</button>
+		<button class="btn play no-link" role="button" onclick="playPlaylistTrack('{{ playlist|urlencode }}', {{ loop.index0 }})">
+			<i class="bi bi-play-fill"></i>
+		</button>
+	</div>
+	<div class="col">
+		<h6 role="button" class="m-0" onclick="playPlaylistTrack('{{ playlist|urlencode }}', {{ loop.index0 }})">{{ a.title }}</h6>	
+		<small class="text-secondary">{{ a.artist }}</small>
+	</div>
+	<div class="col-1"><span class="btn text-light">{{ a.duration|duration }}</span></div>
+	<div class="col-1">
+		<button title="Add To Queue" class="btn text-light" onclick="queueSong('{{ a.file|urlencode }}')">
+			<i class="bi bi-plus-circle"></i>
+		</button>
+	</div>
+</div>
+{% endfor %}
+{% endif %}
