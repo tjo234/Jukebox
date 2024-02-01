@@ -56,22 +56,7 @@
 	</div>
 	<div class="offcanvas-body">
 		<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-			<li class="navbar-header mt-4 mb-2 text-secondary">
-				<h6>
-					STATUS
-				</h6>
-			</li>
-			<li class="nav-item mb-3">
-				<a role="button" onclick="changeServer()" class="btn btn-dark" style="background: #111;">
-					{% if player %}
-					<i class="bi bi-check-circle text-success me-2" title="ONLINE"></i>
-					{% else %}
-					<i class="bi bi-x-circle text-secondary me-2" title="OFFLINE"></i>
-					{% endif %}
-					{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}
-				</a>
-			</li>
-			<li class="navbar-header mt-4 mb-2 text-secondary">
+			<li class="navbar-header mt-2 mb-2 text-secondary">
 				<h6>
 					LIBRARY
 				</h6>

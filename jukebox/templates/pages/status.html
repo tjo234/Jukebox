@@ -3,19 +3,3 @@
 {% block content %}
 <div id="status"></div>
 {% endblock %}
-
-{% block footer_script %}
-<script type="text/javascript">
-$(function(){
-    refreshStatus();
-    initPlayer(refreshStatus);
-});
-function refreshStatus(){
-    if ($('#status')[0]) {
-    	$.get('/view/status', function(data){
-            $('#status').html(data);
-        });
-    }
-}
-</script>
-{% endblock %}

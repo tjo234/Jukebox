@@ -5,15 +5,7 @@
 
 -------------------------------------------------------------------------------
 */
-
-
-
-
-// Page Load
 $(function() {
-
-   // $('[data-bs-toggle="tooltip"]').tooltip();
-
     loadView();
     initPlayer(onPlayerChanged);
 });
@@ -22,15 +14,6 @@ $(function() {
 addEventListener("hashchange", (event) => {  
     loadView();
 });
-
-
-function changeServer(){
-    var addr = prompt('Enter a server address (e.g. jukebox.local or 192.168.1.101)')
-    if (addr != null){
-        document.cookie = `JUKEBOX_ADDR=${addr}`;
-        window.location.reload()
-    }
-}
 
 function loadView(){
     var DEFAULT_ROUTE = 'home'
@@ -137,9 +120,15 @@ function onPlayerChanged(change){
         });
     }
 
-     if ($('#queue-simple')[0]) {
+    if ($('#queue-simple')[0]) {
         $.get('/view/queue-simple', function(data){
             $('#queue-simple').html(data);
+        });
+    }
+
+    if ($('#status')[0]) {
+        $.get('/view/status', function(data){
+            $('#status').html(data);
         });
     }
 
