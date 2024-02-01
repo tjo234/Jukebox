@@ -47,6 +47,9 @@ def cache_album_cover(album_name, skip_existing=True):
     # Get path
     img_path = ALBUM_CACHE_PATH + "%s.jpg" % urllib.parse.quote_plus(album_name)
 
+    if not os.path.exists(ALBUM_CACHE_PATH):
+        os.mkdir(ALBUM_CACHE_PATH)
+
     # Check if image exists
     if os.path.exists(img_path) and skip_existing == True:
         return 
