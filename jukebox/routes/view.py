@@ -106,6 +106,9 @@ def render_desktop_view(route):
         if route == "artists":
             obj['artists'] = JukeboxPlayer.artists()
 
+        if route == "playlists":
+            obj['playlists'] = JukeboxPlayer.playlists()
+            
         if route == "playlist":
             playlist = request.args.get('playlist', None)
             obj['playlist'] = playlist

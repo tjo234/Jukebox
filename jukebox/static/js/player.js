@@ -127,8 +127,16 @@ function playerShuffle() {
 }
 function saveQueueAsPlaylist(){
     var name = prompt('Save Playlist As:');
-    if (name == '') return;
-    $.getJSON('/api/playlist/save/?playlist='+name, function(){});
+    if (name == '') {
+        alert('Please enter a name!')
+        return null;
+    }
+    $.getJSON('/api/playlist/save/?playlist='+name, function(){
+        $.get('/view/desktop/playlists', function(data){
+            $('#playlists-nav').html(data);
+        });
+        window.location.href = '#playlist?playlist=' + name;
+    });
 }
 function clearPlaylist(){
     $.getJSON('/api/playlist/clear/', function(){});

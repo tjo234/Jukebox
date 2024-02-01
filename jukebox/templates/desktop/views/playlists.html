@@ -1,0 +1,13 @@
+{% for p in playlists %}
+<li class="nav-item">
+	<div class="nav-link">
+		<button class="btn btn-sm text-secondary" onclick="playPlaylist('{{ p.playlist|urlencode }}')" style="float: right;">
+			<i class="bi bi-play-circle"></i>
+		</button>
+		<a class="no-link text-secondary" href="/#playlist?playlist={{ p.playlist }}" style="display:inline-block; min-width: 165px;">
+			<i class="bi bi-file-earmark-music"></i>
+			{{ p.playlist|urlencode }}
+		</a>
+	</div>
+</li>
+{% endfor %}
