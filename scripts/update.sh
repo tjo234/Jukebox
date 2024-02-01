@@ -31,5 +31,10 @@ source .env/bin/activate
 echo -e "\n\n***************\n\nJUKEBOX - Install dependencies...\n\n"
 pip install -r requirements.txt
 
+# Create cache folder for albums
+mkdir /var/www/Jukebox/jukebox/static/img/albums
+chmod 777 /var/www/Jukebox/jukebox/static/img/albums 
+
 # Exit SuperUser Mode
 exit
+
