@@ -132,7 +132,7 @@ function saveQueueAsPlaylist(){
         return null;
     }
     $.getJSON('/api/playlist/save/?playlist='+name, function(){
-        $.get('/view/desktop/playlists', function(data){
+        $.get('/view/playlists', function(data){
             $('#playlists-nav').html(data);
         });
         window.location.href = '#playlist?playlist=' + name;

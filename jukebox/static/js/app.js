@@ -48,24 +48,6 @@ function loadView(){
     // Hide all
     $('#views > div').hide();
 
-    // Check for static route
-    // if ($('#view-' + route)[0]){
-    //     console.log('Static route:', route)
-    //     $('#view-' + route).fadeIn();
-    // } else if ($('body').hasClass('mobile')) {
-    //     console.log('Dynamic mobile route:', route)
-    //     $.get('/view/mobile/'+ route + '?' + qs, function(data){
-    //         console.log('Route loaded', route)
-    //         $('#view-container').html(data).fadeIn();
-    //     });
-    // } else {
-    //     console.log('Dynamic route:', route)
-    //     $.get('/view/desktop/'+ route + '?' + qs, function(data){
-    //         console.log('Route loaded', route)
-    //         $('#view-container').html(data).fadeIn();
-    //     });
-    // }
-
     $.get('/view/'+ route + '?' + qs, function(data){
         $('#view-container').html(data).fadeIn();
     });

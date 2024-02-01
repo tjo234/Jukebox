@@ -12,7 +12,7 @@ $(function(){
 });
 function refreshStatus(){
     if ($('#status')[0]) {
-    	$.get('/view/desktop/status', function(data){
+    	$.get('/view/status', function(data){
             $('#status').html(data);
         });
     }
