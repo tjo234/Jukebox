@@ -1,5 +1,5 @@
 <div id="queue">
-{% if playlist and playlist|length > 0 %}
+{% if queue and queue|length > 0 %}
 
 	{% if player.currentsong %}
 	<div class="row text-secondary mb-5 mt-4">
@@ -44,7 +44,7 @@
 	{% endif %}
 
 	
-	{% for p in playlist %}
+	{% for p in queue %}
 	{% if player.status.state == 'stop' or player.status.random|int == 1 or ('song' in player.status) and (player.status.song|int == player.status.playlistlength|int-1 or p.pos|int > player.status.song|int) %}
 	<div class="row text-secondary row-track">
 

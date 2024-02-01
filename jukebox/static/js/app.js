@@ -150,13 +150,13 @@ function onPlayerChanged(change){
 
     // Refresh Queue 
     if ($('#playlist-queue')[0]) {
-        $.get('/view/desktop/queue', function(data){
+        $.get('/view/queue', function(data){
             $('#playlist-queue').html(data);
         });
     }
 
      if ($('#queue-simple')[0]) {
-        $.get('/view/desktop/queue-simple', function(data){
+        $.get('/view/queue-simple', function(data){
             $('#queue-simple').html(data);
         });
     }

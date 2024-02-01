@@ -30,6 +30,7 @@ def render_page(route):
         obj['player'] = JukeboxPlayer.status()
         obj['outputs'] = JukeboxPlayer.outputs()
         obj['playlists'] = JukeboxPlayer.playlists()
+        obj['queue'] = JukeboxPlayer.playlist()
     except MPDServerNotFoundException as ex:
         print(ex)
         pass
@@ -85,7 +86,7 @@ def render_desktop_view(route):
             obj['browse'] = JukeboxPlayer.browse(path)
 
         if route in ["queue", "queue-simple"]:
-            obj['playlist'] = JukeboxPlayer.playlist()
+            obj['queue'] = JukeboxPlayer.playlist()
 
         if route == "albums":
             album = request.args.get('album', None)
