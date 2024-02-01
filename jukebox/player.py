@@ -187,9 +187,12 @@ class JukeboxPlayer():
         return get_mpd().list('genre')
 
     @staticmethod
-    def albums():
+    def albums(artist=None):
         mpd = get_mpd()
-        albums = mpd.list('album', 'group', 'albumartist')[1:]
+        if artist:
+            albums = [x for x in mpd.list('album', 'group', 'albumartist') if x['albumartist'] == artist]
+        else:
+            albums = mpd.list('album', 'group', 'albumartist')[1:]
         return albums
 
     @staticmethod

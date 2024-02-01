@@ -1,3 +1,15 @@
+{% if artist %}
+<h1 class="pt-5 pb-2 px-4 text-light">{{ artist }}</h1>
+<h5 class="px-2">
+	<button class="btn text-secondary" onclick="playArtist('{{ artist|urlencode }}')" title="Play Artist">
+		<i class="bi bi-play-circle"></i>
+	</button>
+	<small class="text-secondary">{{ albums|length }} Albums</small>
+</h5>
+<hr />
+
+{% endif %}
+
 {% if albums %}
 <div class="row">	
 	{% for a in albums %}
@@ -22,17 +34,16 @@
 		<img src="/static/img/albums/{{ album|quoteplus|urlencode }}.jpg" class="img-thumbnail" />
 	</div>
 	<div class="col-9 ps-5 text-secondary">
-		<h1 class="pt-5 pb-2 text-light">{{ album }}</h1>
+		<h1 class="mt-5 pt-3 pb-3 text-light">{{ album }}</h1>
 		<h5>
 			<a role="button" onclick="playAlbum('{{ album|urlencode }}')">
 				<i class="bi bi-play-circle-fill"></i>
 			</a>&nbsp;
-			<a class="no-link text-secondary" href="/#artists?artist={{ album_tracks[0].albumartist|urlencode }}">{{ album_tracks[0].albumartist }}</a>
+			<a class="no-link text-secondary" href="/#albums?artist={{ album_tracks[0].albumartist|urlencode }}">{{ album_tracks[0].albumartist }}</a>
 			&nbsp;&bull;&nbsp; 
 			{{ album_tracks|length }} tracks &nbsp;&bull;&nbsp; 
 			{{ album_tracks[0].genre }}
-		</h5>
-		
+		</h5>	
 	</div>
 </div>
 <hr />
