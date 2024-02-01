@@ -11,8 +11,8 @@ from socket import gaierror
 
 from .utils import *
 
-ALBUM_CACHE_PATH = "jukebox/static/img/albums/"
-ALBUM_PATH = "jukebox/static/img/album.jpg"
+ALBUM_CACHE_PATH = "static/img/albums/"
+ALBUM_PATH = "static/img/album.jpg"
 
 JUKEBOX_DEFAULT_ADDR = "jukebox.local"
 JUKEBOX_DEFAULT_PORT = 6600
@@ -45,10 +45,14 @@ def cache_album_cover(album_name, skip_existing=True):
         return
 
     # Get path
-    img_path = ALBUM_CACHE_PATH + "%s.jpg" % urllib.parse.quote_plus(album_name)
+    dirname = os.path.dirname(__file__)
+    cache_path = os.path.join(dirname, ALBUM_CACHE_PATH)
+    img_path = cache_path + "%s.jpg" % urllib.parse.quote_plus(album_name)
 
-    if not os.path.exists(ALBUM_CACHE_PATH):
-        os.mkdir(ALBUM_CACHE_PATH)
+    print(img_path)
+
+    if not os.path.exists(cache_path):
+        os.mkdir(cache_path)
 
     # Check if image exists
     if os.path.exists(img_path) and skip_existing == True:
@@ -77,7 +81,8 @@ def cache_album_cover(album_name, skip_existing=True):
         print("No image found for: %s" % album_name)
 
         # Load default image
-        with open(ALBUM_PATH, "rb") as f:
+
+        with open(os.path.join(dirname, ALBUM_PATH), "rb") as f:
             img_bytes = f.read()
 
     # Write album to cache folder
