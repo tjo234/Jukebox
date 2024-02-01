@@ -1,6 +1,6 @@
 {% for p in playlist %}
 {% if player.status.state == 'stop' or player.status.random|int == 1 or ('song' in player.status) and (player.status.song|int == player.status.playlistlength|int-1 or p.pos|int > player.status.song|int) %}
-<div class="row text-secondary mb-2 py-1 row-play-pos">
+<div class="row text-secondary row-track">
 
 	<div class="col-1 col-play-pos text-center">
 		{% if p.pos == player.status.song %}
@@ -13,10 +13,8 @@
 		{% endif %}
 	</div>
 	<div class="col">
-		<a class="no-link" role="button" onclick="playlistSongId({{ p.id }})">
-			<span class="text-light">{{ p.title }}</span><br />
-			<small style="font-size: 11px;">{{ p.artist }}</small>
-		</a>
+		<h6 class="text-light m-0" onclick="playlistSongId({{ p.id }})">{{ p.title }}</h6>
+		<a class="no-link" href="/#artists?artist={{ p.albumartist|urlencode }}"><small>{{ p.artist }}</small></a>
 	</div>
 	<div class="col-4 col-right">
 		<button class="btn btn-sm text-light"><i class="bi bi-list"></i></button>

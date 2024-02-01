@@ -14,15 +14,6 @@ def user_on_mobile():
         return True
     return False
 
-def get_template_values():
-    return {
-        "genres": JukeboxPlayer.genres(),
-        "player": JukeboxPlayer.status(),
-        "playlist": JukeboxPlayer.playlist(),
-        "playlists": JukeboxPlayer.playlists(),
-        "outputs": JukeboxPlayer.outputs(),
-    }
-
 # Root Static Handler (favicon)
 @view.route('/favicon.ico')
 def static_from_root():
@@ -34,16 +25,13 @@ def static_from_root():
 def render_page(route):
     resp = None
     obj = {}
-
-
-    # Load Server Status
     try:
-        obj = get_template_values() 
-        if route == "index":   
-            obj['home'] = JukeboxPlayer.albums_home()
-            obj['artists'] = JukeboxPlayer.artists()
-            obj['albums'] = JukeboxPlayer.albums()
-    except MPDServerNotFoundException:
+        obj['genres'] = JukeboxPlayer.genres()
+        obj['player'] = JukeboxPlayer.status()
+        obj['outputs'] = JukeboxPlayer.outputs()
+        obj['playlists'] = JukeboxPlayer.playlists()
+    except MPDServerNotFoundException as ex:
+        print(ex)
         pass
 
     # Append Route and Cookies
@@ -85,20 +73,31 @@ def render_desktop_view(route):
     try:
         obj['player'] = JukeboxPlayer.status()
         obj['stats'] = JukeboxPlayer.stats()
+
+        if route == "home":
+            obj['home'] = JukeboxPlayer.albums()[:6]
+            obj['playlists'] = JukeboxPlayer.playlists()
+
         if route == "browse":
             path = request.args.get('path', '')
             obj['path'] = path
             obj['parent'] = path.rsplit('/')[0] if '/' in path else ''
             obj['browse'] = JukeboxPlayer.browse(path)
+
         if route in ["queue", "queue-simple"]:
             obj['playlist'] = JukeboxPlayer.playlist()
+
         if route == "albums":
             album = request.args.get('album', None)
+            
             if album:
                 obj['album'] = album
-                obj['album_tracks'] = JukeboxPlayer.album(album)
+                album_tracks = JukeboxPlayer.album(album)
+                print(album_tracks[0])
+                obj['album_tracks'] = album_tracks
             else:
                 obj['albums'] = JukeboxPlayer.albums()
+
         if route == "artists":
             obj['artists'] = JukeboxPlayer.artists()
     except MPDServerNotFoundException:

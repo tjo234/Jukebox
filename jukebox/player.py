@@ -28,9 +28,8 @@ def get_connection():
     try:    
         mpd.connect(addr, port)
         g._mpd = mpd
-    except:
-        s = "Could not locate the server at %s:%s" % (addr,port)
-        raise MPDServerNotFoundException(s)
+    except Exception as ex:
+        raise MPDServerNotFoundException(ex)
     return g._mpd
 
 def get_mpd():
@@ -38,7 +37,6 @@ def get_mpd():
     if not mpd:    
        mpd = get_connection()
     return mpd
-
 
 def cache_album_cover(album_name, skip_existing=True):
     

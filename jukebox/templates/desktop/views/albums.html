@@ -10,9 +10,6 @@
 			<h6 class="p-0 m-0" style="font-size:0.9rem;">{{ a.album|truncate(36, True) }}</h6>
 			<small class="text-secondary" style="font-size:0.8rem;">{{ a.albumartist|truncate(32, True) }}</small>
 		</a>
-		<!-- <a  class="btn text-secondary" role="button" onclick="playAlbum('{{ a.album }}')" style="height: 2rem; line-height: 2rem;">
-			<i class="bi bi-add-circle"></i>
-		</a> -->
 	</div>
 	{% endif %}
 	{% endfor %}
@@ -25,35 +22,36 @@
 		<img src="/static/img/albums/{{ album|quoteplus|urlencode }}.jpg" class="img-thumbnail" />
 	</div>
 	<div class="col-9 ps-5 text-secondary">
-		<h1 class="display-1 pt-4 pb-2 text-light">{{ album }}</h1>
+		<h1 class="pt-5 pb-2 text-light">{{ album }}</h1>
 		<h5>
 			<a role="button" onclick="playAlbum('{{ album|urlencode }}')">
 				<i class="bi bi-play-circle-fill"></i>
 			</a>&nbsp;
-			{{ album_tracks[0].albumartist }} &nbsp;&bull;&nbsp; 
+			<a class="no-link text-secondary" href="/#artists?artist={{ album_tracks[0].albumartist|urlencode }}">{{ album_tracks[0].albumartist }}</a>
+			&nbsp;&bull;&nbsp; 
 			{{ album_tracks|length }} tracks &nbsp;&bull;&nbsp; 
-			{{ album_tracks[0].originaldate[:4] }}
+			{{ album_tracks[0].genre }}
 		</h5>
 		
 	</div>
 </div>
 <hr />
 {% for a in album_tracks %}
-<div class="row text-light mb-3">
-	<div class="col-1">
-		<span class="pos" style="width: 20px;">{{ loop.index }}</span>
-		<a class="play no-link" role="button" onclick="playAlbumTrack('{{ album|urlencode }}', {{ loop.index0 }})">
+<div class="row row-track text-light">
+	<div class="col-1 text-center">	
+		<button class="btn pos text-light">{{ loop.index }}</button>
+		<button class="btn play no-link" role="button" onclick="playAlbumTrack('{{ album|urlencode }}', {{ loop.index0 }})">
 			<i class="bi bi-play-fill"></i>
-		</a>
+		</button>
 	</div>
 	<div class="col">
-		<h5 class="m-0">{{ a.title }}</h5>
+		<h6 role="button" class="m-0" onclick="playAlbumTrack('{{ album|urlencode }}', {{ loop.index0 }})">{{ a.title }}</h6>	
 		<small class="text-secondary">{{ a.artist }}</small>
 	</div>
-	<div class="col">{{ a.duration|duration }}</div>
-	<div class="col">
+	<div class="col-1"><span class="btn text-light">{{ a.duration|duration }}</span></div>
+	<div class="col-1">
 		<button title="Add To Queue" class="btn text-light" onclick="queueSong('{{ a.file|urlencode }}')">
-			<i class="bi bi-music-note-list"></i>
+			<i class="bi bi-plus-circle"></i>
 		</button>
 	</div>
 </div>

@@ -24,18 +24,26 @@
 }
 
 /* QUEUE */
-.row-play-pos:hover {
-	background: #333;
-	transition: all 0.3s ease-in;
+.row-track:hover {
+	background: #222;
+/*	transition: all 0.3s ease-in;*/
 }
-.row-play-pos .play {
+.row-track > div {
+	padding: 7px 0;
+}
+.row-track .play,
+.row-track .favorite {
 	display: none;	
 }
-.row-play-pos:hover .play {
-	display: block;
+.row-track:hover .play,
+.row-track:hover .favorite  {
+	display: inline-block;
 }
-.row-play-pos:hover .pos {
+.row-track:hover .pos {
 	display: none;
+}
+.row-track small {
+	font-size: 11px;
 }
 
 

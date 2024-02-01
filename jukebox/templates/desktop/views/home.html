@@ -1,20 +1,20 @@
-{% if player %}
-<div style="background: #0F0C16;" class="text-center">
+{% if home %}
+<div style="background: #0F0C16; margin: 15px 0 0" class="text-center">
 	<img src="/static/img/wide.png" style="height: 200px;" />
 </div>
 <hr />
-<h4 class="mt-4 mb-2">Recently Added</h4>
+<h4 class="mt-4 mb-2 text-secondary">Recently Added</h4>
 <div class="row">
 	{% for a in home %}
 	<div class="col-2 mb-4">
-		<a role="button" onclick="playAlbum('{{ a.album }}')">
-			<img src="{{ a.image }}" alt="{{ a.album }}" class="img-fluid" />
+		<a role="button" onclick="playAlbum('{{ a.album|urlencode }}')">
+			<img src="/static/img/albums/{{ a.album|quoteplus|urlencode }}.jpg" class="img-fluid" />
 		</a>
 	</div>
 	{% endfor %} 
 </div>
 
-<h4 class="mt-4 mb-2">Playlists</h4>
+<h4 class="mt-4 mb-2 text-secondary">Playlists</h4>
 <div class="row">
 	{% for p in playlists %}
 	<div class="col-2 mb-4">
