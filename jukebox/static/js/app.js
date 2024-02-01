@@ -6,7 +6,7 @@
 -------------------------------------------------------------------------------
 */
 
-const DEFAULT_ROUTE = 'home';
+
 
 
 // Page Load
@@ -33,6 +33,10 @@ function changeServer(){
 }
 
 function loadView(){
+    var DEFAULT_ROUTE = 'home'
+    if ($('body').hasClass('mobile')) {
+        DEFAULT_ROUTE = 'mobile';
+    }
     const route = window.location.hash ? window.location.hash.split('?')[0].slice(1) : DEFAULT_ROUTE;
     const qs = window.location.hash ? window.location.hash.split('?')[1] : '';
     console.log('loadView', route)
@@ -45,22 +49,26 @@ function loadView(){
     $('#views > div').hide();
 
     // Check for static route
-    if ($('#view-' + route)[0]){
-        console.log('Static route:', route)
-        $('#view-' + route).fadeIn();
-    } else if ($('body').hasClass('mobile')) {
-        console.log('Dynamic mobile route:', route)
-        $.get('/view/mobile/'+ route + '?' + qs, function(data){
-            console.log('Route loaded', route)
-            $('#view-container').html(data).fadeIn();
-        });
-    } else {
-        console.log('Dynamic route:', route)
-        $.get('/view/desktop/'+ route + '?' + qs, function(data){
-            console.log('Route loaded', route)
-            $('#view-container').html(data).fadeIn();
-        });
-    }
+    // if ($('#view-' + route)[0]){
+    //     console.log('Static route:', route)
+    //     $('#view-' + route).fadeIn();
+    // } else if ($('body').hasClass('mobile')) {
+    //     console.log('Dynamic mobile route:', route)
+    //     $.get('/view/mobile/'+ route + '?' + qs, function(data){
+    //         console.log('Route loaded', route)
+    //         $('#view-container').html(data).fadeIn();
+    //     });
+    // } else {
+    //     console.log('Dynamic route:', route)
+    //     $.get('/view/desktop/'+ route + '?' + qs, function(data){
+    //         console.log('Route loaded', route)
+    //         $('#view-container').html(data).fadeIn();
+    //     });
+    // }
+
+    $.get('/view/'+ route + '?' + qs, function(data){
+        $('#view-container').html(data).fadeIn();
+    });
 }
 
 function onPlayerChanged(change){

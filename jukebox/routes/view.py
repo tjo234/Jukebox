@@ -43,12 +43,12 @@ def render_page(route):
     # Mobile App
     if route == "index" and user_on_mobile():
         obj['device'] = "mobile"  
-        resp = render_template('mobile/app.html', **obj) 
+        resp = render_template('pages/mobile.html', **obj) 
 
     # Desktop App
     elif route == "index":   
         obj['device'] = "desktop"  
-        resp = render_template('desktop/app.html', **obj) 
+        resp = render_template('pages/desktop.html', **obj) 
 
     # Static Pages
     else:
@@ -64,7 +64,7 @@ def render_page(route):
     return resp
 
 # Partial View Handler
-@view.route('/view/desktop/<route>')
+@view.route('/view/<route>')
 def render_desktop_view(route):
     obj = {} 
     obj['route'] = route
@@ -103,12 +103,15 @@ def render_desktop_view(route):
         if route == "artists":
             obj['artists'] = JukeboxPlayer.artists()
 
+        if route == "radio":
+            obj['genres'] = JukeboxPlayer.genres()
+
         if route == "artists":
             obj['artists'] = JukeboxPlayer.artists()
 
         if route == "playlists":
             obj['playlists'] = JukeboxPlayer.playlists()
-            
+
         if route == "playlist":
             playlist = request.args.get('playlist', None)
             obj['playlist'] = playlist
@@ -117,20 +120,4 @@ def render_desktop_view(route):
     except MPDServerNotFoundException:
         pass
        
-    return render_template('desktop/views/%s.html' % route, **obj) 
-
-# Partial View Handler
-@view.route('/view/mobile/<route>')
-def render_mobile_view(route):
-    obj = {} 
-    obj['route'] = route
-    obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
-    obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
-    obj['player'] = JukeboxPlayer.status()
-    
-    if route == "radio":
-        obj['genres'] = JukeboxPlayer.genres()
-    elif route in ["queue"]:
-        obj['playlist'] = JukeboxPlayer.playlist()
-    
-    return render_template('mobile/views/%s.html' % route, **obj)   
+    return render_template('views/%s.html' % route, **obj) 

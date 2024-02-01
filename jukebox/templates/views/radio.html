@@ -1,5 +1,6 @@
 <div id="genres" class="py-3 px-2">
 	{% for g in genres %}
+	{% if g.genre != '' %}
 	<div class="card genre mb-2 card-bg-{{loop.index % 10}}">
 		<div class="card-body">
 			<h5 class="card-title">{{ g.genre }}</h5>
@@ -8,6 +9,7 @@
 			</a>
 		</div>
 	</div>
+	{% endif %}
 	{% endfor %}
 </div>
 <br /><br /><br />
