@@ -19,7 +19,7 @@ echo -e "\n\n***************\n\nJUKEBOX - Backup Jukebox application folder...\n
 
 rm -R /var/www/JukeboxBackup
 mkdir /var/www/JukeboxBackup
-cp -R /var/www/Jukebox/ /var/www/JukeboxBackup
+cp -R /var/www/Jukebox /var/www/JukeboxBackup
 rm -R /var/www/Jukebox
 
 # Download latest application code
