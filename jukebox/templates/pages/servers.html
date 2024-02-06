@@ -73,7 +73,7 @@ function serverHtml(host, status) {
 	return `
 	<div class="text-secondary mt-5">
 		<img class="me-5" src="http://${host}/api/cover/${status.currentsong.id}" style="float:left; height: 200px; width: 200px;" />
-		<h1 class="pt-5 text-light">${status.currentsong.title}</h1>
+		<h2 class="pt-5 text-light">${status.currentsong.title}</h2>
 		<h3>${status.currentsong.artist}</h3>
 	</div>`;
 }

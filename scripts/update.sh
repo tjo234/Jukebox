@@ -39,7 +39,7 @@ pip install -r requirements.txt
 # Create cache folder for albums
 mkdir /var/www/Jukebox/jukebox/static/img/albums
 chmod 777 /var/www/Jukebox/jukebox/static/img/albums 
-cp /var/www/JukeboxBackup/jukebox/static/img/albums/ /var/www/Jukebox/jukebox/static/img/albums
+cp -R /var/www/JukeboxBackup/jukebox/static/img/albums /var/www/Jukebox/jukebox/static/img/albums
 
 # Exit SuperUser Mode
 exit
