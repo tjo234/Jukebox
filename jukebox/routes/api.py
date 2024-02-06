@@ -1,13 +1,28 @@
 #!/usr/bin/env
-from flask import Blueprint, jsonify, send_file, request
+from flask import Blueprint, jsonify, send_file, request, make_response
 
 from ..player import JukeboxPlayer
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
-@api.route("/status")
+@api.route("/status", methods=['GET','OPTIONS'])
 def api_status():
-    return "OK"
+    if request.method == "OPTIONS":
+        return allow_cors_options()
+    else:
+        return corsify(JukeboxPlayer.status());
+
+def allow_cors_options():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
+
+def corsify(data):
+    response = make_response(jsonify(data))
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
     
 # Player API
 @api.route("/player/status")

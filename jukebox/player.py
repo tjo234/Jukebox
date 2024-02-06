@@ -14,7 +14,7 @@ from .utils import *
 ALBUM_CACHE_PATH = "static/img/albums/"
 ALBUM_PATH = "static/img/album.jpg"
 
-JUKEBOX_DEFAULT_ADDR = "jukebox.local"
+JUKEBOX_DEFAULT_ADDR = "localhost"
 JUKEBOX_DEFAULT_PORT = 6600
 
 class MPDServerNotFoundException(Exception):
@@ -159,8 +159,9 @@ class JukeboxPlayer():
             pass
 
         # Default Album
-        f = open(ALBUM_PATH, "rb")
-        return io.BytesIO(f.read())
+        dirname = os.path.dirname(__file__)
+        with open(os.path.join(dirname, ALBUM_PATH), "rb") as f:
+            return io.BytesIO(f.read())
 
     @staticmethod
     def cache_album_covers(skip_existing=True):

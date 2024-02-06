@@ -95,27 +95,28 @@
 					Kiosk Mode
 				</a>
 			</li>
+
 			<!-- <li class="nav-item">
 				<a class="nav-link" aria-current="page" href="/">Reset to Factory Settings</a>
 			</li> -->
 		</ul>
-		<div style="position: fixed; bottom: 10px">
+		<div style="position: fixed; bottom: 10px" role="button" onclick="changeServer()">
 			{% if not player %}
 			<div class="text-warning">
-				<i class="bi bi-database-check me-2"></i>
-				MPD server not connected.
+				<i class="bi bi-database-check me-2" title="MPD Server not found"></i>
+				<strong>{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}</strong>
 			</div>
 			{% elif player and player.version[2:]|float < 23.5 %}
 			<div class="text-warning">
-				<i class="bi bi-database-fill-exclamation me-1"></i>
-				<strong>MPD server is out of date.</strong>
+				<i class="bi bi-database-fill-exclamation me-1" title="MPD Server is out of date"></i>
+				<strong>{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}</strong>
 				<br/>
 				<small>Please install MPD version 0.23.5 or higher.</small>
 			</div>
 			{% elif player %}
 			<div class="text-secondary">
-				<i class="bi bi-database-check me-2"></i>
-				MPD v{{ player.version }}
+				<i class="bi bi-database-check me-2 text-success" title="MPD v{{ player.version }}"></i>
+				<strong>{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}</strong>
 			</div>
 			{% endif %}
 		</div>

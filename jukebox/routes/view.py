@@ -25,6 +25,8 @@ def static_from_root():
 def render_page(route):
     resp = None
     obj = {}
+    obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
+    obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
     try:
         obj['genres'] = JukeboxPlayer.genres()
         obj['player'] = JukeboxPlayer.status()
@@ -38,8 +40,6 @@ def render_page(route):
     # Append Route and Cookies
     obj['route'] = route  
     obj['now'] = int(time.time() * 1000)
-    obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
-    obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
 
     # Mobile App
     if route == "index" and user_on_mobile():
@@ -59,9 +59,9 @@ def render_page(route):
             resp = render_template('pages/404.html', **obj) 
 
     # Set Cookie
-    resp = make_response(resp) 
-    resp.set_cookie('JUKEBOX_ADDR', JukeboxPlayer.addr())
-    resp.set_cookie('JUKEBOX_PORT', str(JukeboxPlayer.port()))
+    # resp = make_response(resp) 
+    # resp.set_cookie('JUKEBOX_ADDR', JukeboxPlayer.addr())
+    # resp.set_cookie('JUKEBOX_PORT', str(JukeboxPlayer.port()))
     return resp
 
 # Partial View Handler
