@@ -42,5 +42,8 @@ mkdir /var/www/Jukebox/jukebox/static/img/albums
 chmod 777 /var/www/Jukebox/jukebox/static/img/albums 
 cp -R /var/www/JukeboxBackup/jukebox/static/img/albums/* /var/www/Jukebox/jukebox/static/img/albums/
 
+# Reload Web Server
+systemctl reload apache2
+
 # Exit SuperUser Mode
 exit
