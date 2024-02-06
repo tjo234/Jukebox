@@ -10,12 +10,17 @@ You should be able to run it multiple times without any issue.
 -------------------------------------------------------------------------------
 \n\n"""
 
+CURRENT_TIME=$(date+"%x %r %Z")
+
 # Change to root
 sudo -i
 
 # Delete/replace application folder
 echo -e "\n\n***************\n\nJUKEBOX - Delete/create Jukebox application folder...\n\n"
-rm -R /var/www/Jukebox
+
+mv /var/www/Jukebox /var/www/Jukebox.$CURRENT_TIME
+
+#rm -R /var/www/Jukebox
 
 # Download latest application code
 echo -e "\n\n***************\n\nJUKEBOX - Downloading code from GitHub...\n\n"
@@ -34,6 +39,7 @@ pip install -r requirements.txt
 # Create cache folder for albums
 mkdir /var/www/Jukebox/jukebox/static/img/albums
 chmod 777 /var/www/Jukebox/jukebox/static/img/albums 
+cp /var/www/Jukebox.$CURRENT_TIME/jukebox/static/img/albums/ /var/www/Jukebox/jukebox/static/img/albums
 
 # Exit SuperUser Mode
 exit
