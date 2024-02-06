@@ -8,6 +8,7 @@ This will install the latest version of jukebox and its dependencies.
 You should be able to run it multiple times without any issue. 
 
 -------------------------------------------------------------------------------
+
 \n\n"""
 
 # Change to root
