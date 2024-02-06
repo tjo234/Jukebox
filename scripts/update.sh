@@ -20,7 +20,7 @@ rm -R /var/www/JukeboxBackup
 
 echo -e "\n\n***************\n\nJUKEBOX - Backup Jukebox application...\n\n"
 mkdir /var/www/JukeboxBackup
-cp -R /var/www/Jukebox/. /var/www/JukeboxBackup
+cp -R /var/www/Jukebox/ /var/www/JukeboxBackup/
 rm -R /var/www/Jukebox
 
 # Download latest application code
@@ -40,7 +40,7 @@ pip install -r requirements.txt
 # Create cache folder for albums
 mkdir /var/www/Jukebox/jukebox/static/img/albums
 chmod 777 /var/www/Jukebox/jukebox/static/img/albums 
-cp -R /var/www/JukeboxBackup/jukebox/static/img/albums/. /var/www/Jukebox/jukebox/static/img/albums
+cp -R /var/www/JukeboxBackup/jukebox/static/img/albums/ /var/www/Jukebox/jukebox/static/img/albums/
 
 # Exit SuperUser Mode
 exit
