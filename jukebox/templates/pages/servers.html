@@ -51,13 +51,14 @@ function updateServerStatus() {
 function renderServerPlaceholder(i){
 	return `
 		<div id="server-${i}" class="col-6 mt-5">
-			<div class="card text-bg-dark" style="height:22rem;">
+			<div class="card" style="height:22rem; background: #111">
 			  <div class="card-body">
 			  		<span class="spinner-border spinner-border-md" role="status" style="float:right"></span>
 			   	<h5 class="card-title">
 			      	<i class="bi bi-dash-circle-dotted text-light me-2"></i>
 			    		<a class="no-link" href="http://${SERVERS[i]}">${SERVERS[i]}</a>
 			    	</h5> 
+			    	<hr class="text-secondary" />
 			    	<div class="server-online">
 			    	</div>
 			    	<div class="server-offline text-center text-secondary" style="display:none">
@@ -71,7 +72,7 @@ function renderServerPlaceholder(i){
 }
 function serverHtml(host, status) {
 	return `
-	<div class="text-secondary mt-5">
+	<div class="text-secondary mt-4">
 		<img class="me-5" src="http://${host}/api/cover/${status.currentsong.id}" style="float:left; height: 200px; width: 200px;" />
 		<h2 class="pt-5 text-light">${status.currentsong.title}</h2>
 		<h3>${status.currentsong.artist}</h3>
