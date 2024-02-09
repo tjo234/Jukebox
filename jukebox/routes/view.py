@@ -82,7 +82,7 @@ def render_desktop_view(route):
         if route == "browse":
             path = request.args.get('path', '')
             obj['path'] = path
-            obj['parent'] = path.rsplit('/')[0] if '/' in path else ''
+            obj['parent'] = ("/".join(path.rsplit("/")[:-1])) if '/' in path else ''
             obj['browse'] = JukeboxPlayer.browse(path)
 
         if route in ["queue", "queue-simple"]:

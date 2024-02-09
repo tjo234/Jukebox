@@ -45,6 +45,9 @@ function playerWaitForChange(callback) {
 }
 function refreshPlayerStatus(evt, callback){
     $.getJSON('/api/player/status', function(data){
+        if (data.status.error) {
+            showError(data.status.error)
+        }
         window.JUKEBOX = data;
     })
     .fail(function() { 
@@ -55,7 +58,9 @@ function refreshPlayerStatus(evt, callback){
         callback(evt);
     });
 }
-
+function showError(err){
+    alert(err);
+}
 
 /* 
 -------------------------------------------------------------------------------
