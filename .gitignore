@@ -2,6 +2,7 @@
 *.pyc
 *.db
 *.sublime-workspace
+env/*
 .env/*
 __pycache__/*
 jukebox/static/img/albums/*
