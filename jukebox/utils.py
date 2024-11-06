@@ -32,7 +32,7 @@ def mpd_audio_hz(s):
         return hz + ' kHz'
 
 def mpd_audio_bits(s):
-        '''Converts MPD audio string "441000:24:2" to "44.1 kHz | 24 bit"'''
+        '''Converts MPD audio string "441000:24:2" to "24 bit"'''
         audio = s.split(':')
         return audio[1] + ' bit'
         

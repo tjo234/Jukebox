@@ -1,6 +1,6 @@
 #!/usr/bin/env
 import time
-from flask import Blueprint, render_template, make_response, send_from_directory, request, g, current_app
+from flask import Blueprint, render_template, make_response, send_from_directory, request, current_app
 from ..player import JukeboxPlayer, MPDServerNotFoundException
 
 view = Blueprint('view', __name__)
@@ -19,7 +19,14 @@ def user_on_mobile():
 def static_from_root():
     return send_from_directory(current_app.static_folder, request.path[1:])
 
-# Page Handler (favicon)
+# Connect To Server
+@view.route('/connect')
+def render_connect():
+    obj = {}
+    resp = render_template('pages/servers.html', **obj) 
+    return resp
+
+# Page Handler
 @view.route('/', defaults={'route': 'index'})
 @view.route('/<route>')
 def render_page(route):

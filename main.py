@@ -2,6 +2,7 @@ import os
 from jukebox import create_app
 
 app = create_app()
+app.secret_key = "tM^5^ooYLczLV&Ng"
 
  # Start the web server
 if __name__ == "__main__":

@@ -4,7 +4,6 @@ import os
 import base64
 import socket
 import urllib
-
 from mpd import MPDClient, CommandError
 from flask import g, request
 from socket import gaierror
@@ -26,6 +25,7 @@ def get_connection():
     addr = JukeboxPlayer.addr()
     port = JukeboxPlayer.port()
     try:    
+        mpd.timeout = 1
         mpd.connect(addr, port)
         g._mpd = mpd
     except Exception as ex:

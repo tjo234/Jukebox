@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from flask import Flask
 
 from .routes import api_routes, view_routes
-#from. config import ProductionConfig, DevelopmentConfig, TestingConfig
 from .utils import duration_to_time, mpd_audio_str
 
 def create_app():
@@ -12,18 +11,6 @@ def create_app():
     app = Flask(__name__)
     app.register_blueprint(api_routes)
     app.register_blueprint(view_routes)
-
-    # # Load Configuration
-    # if app.testing:
-    #     app.config.from_object(TestingConfig())
-    # if app.debug:
-    #     app.config.from_object(DevelopmentConfig())
-    # else:
-    #     app.config.from_object(ProductionConfig())
-
-    # @app.teardown_appcontext
-    # def close_connection(exception):
-    #     Database.close()
     
     # JINJA Template Filters
     @app.template_filter('dt')
