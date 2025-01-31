@@ -106,7 +106,7 @@
 				<i class="bi bi-database-check me-2" title="MPD Server not found"></i>
 				<strong>{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}</strong>
 			</div>
-			{% elif player and player.version[2:]|float < 23.5 %}
+			{% elif player and player.mpd_version[2:]|float < 23.5 %}
 			<div class="text-warning">
 				<i class="bi bi-database-fill-exclamation me-1" title="MPD Server is out of date"></i>
 				<strong>{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}</strong>
@@ -115,7 +115,7 @@
 			</div>
 			{% elif player %}
 			<div class="text-secondary">
-				<i class="bi bi-database-check me-2 text-success" title="MPD v{{ player.version }}"></i>
+				<i class="bi bi-database-check me-2 text-success" title="MPD v{{ player.mpd_version }}"></i>
 				<strong>{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}</strong>
 			</div>
 			{% endif %}
