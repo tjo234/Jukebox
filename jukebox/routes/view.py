@@ -44,6 +44,8 @@ def render_page(route):
         obj['queue'] = JukeboxPlayer.playlist()
     except MPDServerNotFoundException as ex:
         print(ex)
+    except Exception as ex:
+        print(ex)
         pass
 
     # Append Route and Cookies
@@ -68,9 +70,9 @@ def render_page(route):
             resp = render_template('pages/404.html', **obj) 
 
     # Set Cookie
-    # resp = make_response(resp) 
-    # resp.set_cookie('JUKEBOX_ADDR', JukeboxPlayer.addr())
-    # resp.set_cookie('JUKEBOX_PORT', str(JukeboxPlayer.port()))
+    resp = make_response(resp) 
+    resp.set_cookie('JUKEBOX_ADDR', JukeboxPlayer.addr())
+    resp.set_cookie('JUKEBOX_PORT', str(JukeboxPlayer.port()))
     return resp
 
 # Partial View Handler
