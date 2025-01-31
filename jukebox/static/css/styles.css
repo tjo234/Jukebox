@@ -354,3 +354,28 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+/*
+-------------------------------------------------------------------------------
+
+
+** KIOSK MODE / RESPONSIVE QUERIES **
+
+
+Resolutions:
+- Jukebox Kiosk = 600 x 1600 / Portrait
+- Jukebox Tablet = 800x480 / Landscape
+- Jukebox Desktop = 1920 x 1280 / Landscape
+
+
+-------------------------------------------------------------------------------
+*/
+
+/* JUKEBOX 1.0 */
+@media (min-width: 576px) { ... }
+
+/* JUKEBOX TABLET */
+@media (min-width: 768px) { ... }
+
+/* JUKEBOX DESKTOP */
+@media (min-width: 992px) { ... }

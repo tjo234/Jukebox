@@ -33,6 +33,7 @@ cd /var/www/Jukebox
 python3 -m venv .env
 source .env/bin/activate
 
+
 # Install dependencies into VirtualEnv
 echo -e "\n\n***************\n\nJUKEBOX - Install dependencies...\n\n"
 pip install -r requirements.txt
