@@ -9,6 +9,7 @@ from flask import g, request
 from socket import gaierror
 
 from .utils import *
+from .__version__ import JUKEBOX_VERSION
 
 ALBUM_CACHE_PATH = "static/img/albums/"
 ALBUM_PATH = "static/img/album.jpg"
@@ -106,7 +107,8 @@ class JukeboxPlayer():
         return {
             "status": status,
             "currentsong": mpd.currentsong(),
-            "version": mpd.mpd_version
+            "mpd_version": mpd.mpd_version,
+            "jukebox_version": str(JUKEBOX_VERSION)
         }   
 
     @staticmethod

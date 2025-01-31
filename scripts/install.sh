@@ -80,8 +80,8 @@ apt -y install mpd/bullseye-backports
 
 # Run MPD server on-demand
 echo -e "\n\n***************\n\nJUKEBOX - Running MPD Server...\n\n"
-systemctl enable mpd.service
-systemctl start mpd.service
+systemctl enable mpd.socket
+systemctl start mpd.socket
 
 # Back to SuperUser
 sudo -i

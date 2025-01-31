@@ -2,6 +2,7 @@
 import time
 from flask import Blueprint, render_template, make_response, send_from_directory, request, current_app
 from ..player import JukeboxPlayer, MPDServerNotFoundException
+from ..__version__ import JUKEBOX_VERSION
 
 view = Blueprint('view', __name__)
 
@@ -34,6 +35,7 @@ def render_page(route):
     obj = {}
     obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
     obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
+    obj['JUKEBOX_VERSION'] = JUKEBOX_VERSION
     try:
         obj['genres'] = JukeboxPlayer.genres()
         obj['player'] = JukeboxPlayer.status()
