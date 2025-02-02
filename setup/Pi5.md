@@ -17,6 +17,4 @@ Type=Application
 Exec=chromium --kiosk http://localhost/fullscreen
 ```
 
-Replace mouespad with the command of your choice.
-
-4. Logout and login or reboot
+4. Reboot
