@@ -1,0 +1,174 @@
+{% extends "__master.html" %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<div id="view-container" class="px-4">
+	</div>
+</div>
+
+<!-- FOOTER NAV -->	
+<nav id="footer" class="navbar fixed-bottom">
+	<div class="container-fluid p-0">
+
+		<!-- MINI PLAYER -->
+		<div id="player" class="player p-0">
+			<input id="trackid" type="hidden" />
+			<div class="row">
+				<div class="col-2">
+					<button id="player-btn" class="btn btn-lg" onclick="playerPlayToggle()" style="font-size:28px;">
+						<i class="bi bi-play-circle-fill player-btn-play"></i>
+						<i class="bi bi-pause-circle-fill player-btn-pause hidden"></i>
+					</button>
+				</div>
+				<div class="col">
+					<a class="marquee" role="button" data-bs-toggle="modal" data-bs-target="#player-full">
+						<span class="player-title"></span>
+						<span class="player-artist"></span>
+					</a>
+				</div>
+				<div class="col-2">
+					<button class="btn btn-lg" data-bs-toggle="modal" data-bs-target="#player-cast-full">
+						<i class="bi-speaker-fill"></i>
+					</button>
+
+				</div>
+			</div>
+		</div>
+
+		<!-- FOOTER NAV -->
+		<ul class="nav nav-pills nav-justified d-md-none" style="width: 100%;">
+			<li class="nav-item">
+				<a class="nav-link" href="/#mobile">
+					<i class="bi bi-house-fill"></i> 
+					<span>Home</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/#radio">
+					<i class="bi bi-broadcast-pin"></i> 
+					<span>Radio</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/#search">
+					<i class="bi bi-search"></i>
+					<span>Search</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="/#queue">
+					<i class="bi bi-collection-play-fill"></i>
+					<span>Queue</span>
+				</a>
+			</li>
+		</ul>
+
+	</div>
+</nav>
+
+<!-- FULL SCREEN SETTINGS -->
+<div id="player-cast-full" class="modal modal-full fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="btn btn-xl me-1" data-bs-dismiss="modal" aria-label="Close">
+					<i class="bi bi-chevron-down"></i>
+				</button>
+				<h5 class="text-secondary">
+					Playback Settings
+				</h5>
+			</div>
+			<div class="modal-body">			
+				<div id="cast" class="pt-5">
+					<h4 class="text-secondary">Audio Outputs</h4>
+					{% if 'outputs' in player %}
+					{% for o in player.outputs %}
+					<div class="row my-4">
+						<div class="col pt-2">
+							<label class="switch">
+								<input type="checkbox" id="output-{{ o.outputid }}" 
+								{% if o.outputenabled|int == 1 %}checked{% endif %}
+								onchange="toggleOutput({{ o.outputid }})" />
+								<span class="slider round"></span>
+							</label>
+						</div>
+						<div class="col-9">
+							<h5 class="text-light switch-label">{{ o.outputname }}</h5>
+							<small>{{ o.plugin|upper }}</small>
+						</div>
+					</div>
+					{% endfor %}
+					{% endif %}
+
+					
+					<h4 class="text-secondary">Volume</h4>
+					{% if 'status' in player %}
+					{% if 'volume' in player.status %}
+					<button class="btn btn-lg" onclick="playerMuteToggle()" style="font-size:18px;">
+						<i class="bi bi-volume-up-fill player-btn-volume"></i>
+						<i class="bi bi-volume-mute-fill player-btn-mute" style="display: none;"></i>
+						<i class="bi bi-volume-mute-fill player-btn-fixed" style="display: none;"></i>
+					</button>
+					{% else %}
+					Volume is controlled by the AV receiver.
+					{% endif %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- FULL SCREEN PLAYER -->
+<div id="player-full" class="modal modal-fullscreen fade" tabindex="-1">
+	<div class="modal-dialog" style="max-width: 100%!important; --bs-modal-margin:0; height: 100%;">
+		<div class="modal-content px-4" style="background: #0F0C16;">
+			<div class="modal-body">
+				<table style="width: 100%; height: 100%;">
+					<tr>
+						<td>
+							<div class="now-playing">
+								<img data-bs-dismiss="modal" class="img-album img-thumbnail mb-4" />
+
+							</div>
+						</td>
+						<td>
+							<h2 class="player-title text-white">...	
+							</h2>
+							<h4 class="text-secondary player-artist mb-4">...
+							</h4>
+							<div class="seek">
+								<input type="range" class="player-seek" style="width: 100%;" onchange="playerSeek()" />
+								<small class="player-duration" style="float:right">0:00</small>
+								<small class="player-elapsed">0:00</small>
+							</div>
+							<div class="player">
+								<button class="btn btn-lg" onclick="playerRepeat()">
+									<i class="bi bi-repeat player-btn-repeat"></i>
+									<i class="bi bi-repeat-1 player-btn-repeat-1 hidden"></i>
+								</button>
+								<button class="btn btn-xl px-3" onclick="playerPrevTrack()">
+									<i class="bi bi-skip-start-fill"></i>
+								</button>
+								<button class="btn btn-xxl px-3" onclick="playerPlayToggle()" style="font-size:28px;">
+									<i class="bi bi-play-circle-fill player-btn-play hidden"></i>
+									<i class="bi bi-pause-circle-fill player-btn-pause"></i>
+								</button>
+								<button class="btn btn-xl px-3" onclick="playerNextTrack()">
+									<i class="bi bi-skip-end-fill"></i>
+								</button>
+								<button class="btn btn-lg" onclick="playerShuffle()">
+									<i class="bi bi-shuffle player-btn-shuffle"></i>
+								</button>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

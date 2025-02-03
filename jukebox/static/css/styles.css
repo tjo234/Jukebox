@@ -371,25 +371,20 @@ Resolutions:
 -------------------------------------------------------------------------------
 */
 
-#fullscreen img {
-	width: 150px;
-}
+
+.img-album { width: 150px; }
 
 /* JUKEBOX 1.0 */
-@media (min-width: 576px) { ... }
+@media (min-width: 576px) { 
+	.img-album { width: 250px; }
+}
 
 /* JUKEBOX TABLET */
 @media (min-width: 768px) { 
-
-
-
+	.img-album { width: 300px; }
 }
 
 /* JUKEBOX DESKTOP */
 @media (min-width: 992px) { 
-
-#fullscreen img {
-	width: 400px;
-}
-
+	.img-album { max-width: 500px; }
  }
