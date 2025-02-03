@@ -9,7 +9,7 @@
 
 {% block footer_script %}
 <script type="text/javascript">
-const SERVERS = ["jukebox-tablet.local", "jukebox.local", "jukebox-hifi.local", "jukebox-office.local"];
+const SERVERS = ["jukebox-den.local", "jukebox.local", "jukebox-bathtub.local", "jukebox-office.local"];
 $(function() {
    renderServers();
 });
@@ -23,7 +23,7 @@ function renderServers(){
 	updateServerStatus();
 	setInterval(function(){
    	updateServerStatus();
-   }, 1000*60);
+   }, 1000*5);
 }
 
 function updateServerStatus() {
