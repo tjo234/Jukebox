@@ -2,75 +2,92 @@
 <div class="container-fluid">
 	<div class="row mt-4">
 		<div class="col-4 px-4">
-			<h3 class="text-secondary">Jukebox</h3>
+			<h3 class="text-secondary"><i class="bi bi-database-fill me-1"></i> Server</h3>
 			<table class="table table-dark">
 				<tr>
 					<td>
-						<i class="bi bi-server me-2"></i> Server
+						Server Address
 					</td>
 					<td style="width: 50%;">
-						{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}
+						<strong>{{ JUKEBOX_ADDR }}:{{ JUKEBOX_PORT }}</strong>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<i class="bi bi-file-music-fill me-2"></i> Version
+						Server Version
 					</td>
-					<td style="width: 50%;">{{ player.jukebox_version }}</td>
+					<td style="width: 50%;">
+						<strong> 
+							<i class="bi bi-database-fill me-2"></i>
+						{{ JUKEBOX_VERSION }}</strong>
+					</td>
+				</tr>
+				<tr>
+					<td>MPD Version</td>
+					<td style="width: 50%;">
+						{% if player and player.mpd_version[2:]|float < 23.5 %}
+						<div class="text-warning">
+							<i class="bi bi-database-fill-exclamation me-1" title="MPD Server is out of date"></i>
+							<strong>{{ player.mpd_version }}</strong>
+							<br/>
+							<small>Install MPD 0.23.5 or higher.</small>
+						</div>
+						{% elif player %}
+						<div class="text-white">
+							<i class="bi bi-check-circle-fill me-2 text-success" title="MPD v{{ player.mpd_version }}"></i>
+							<strong class="me-3">{{ player.mpd_version }}</strong>
+							<small class="text-secondary">Current version</small>
+						</div>
+						{% endif %}
+					</td>
 				</tr>
 			</table>
-			<h3 class="text-secondary">MPD Library</h3>
+			<h3 class="text-secondary"><i class="bi bi-file-music-fill me-1"></i> Library</h3>
 			<table class="table table-dark">
 				<tr>
-					<td><i class="bi bi-mic-fill me-2"></i> Artists</td>
+					<td>Artists</td>
 					<td style="width: 50%;">{{ '{:,}'.format(stats.artists|int) }}</td>
 				</tr>
 				<tr>
-					<td><i class="bi bi-vinyl-fill me-2"></i> Albums</td>
+					<td>Albums</td>
 					<td style="width: 50%;">{{ '{:,}'.format(stats.albums|int) }}</td>
 				</tr>
 				<tr>
-					<td><i class="bi bi-file-music-fill me-2"></i> Songs</td>
+					<td>Songs</td>
 					<td style="width: 50%;">{{ '{:,}'.format(stats.songs|int) }}</td>
 				</tr>
-			</table>
-			<h3 class="text-secondary">MPD Server</h3>
-			<table class="table table-dark">
 				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> Last Update</td>
+					<td>Last Update</td>
 					<td style="width: 50%;">{{ stats.db_update|dt }}</td>
 				</tr>
 				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> DB Playtime</td>
+					<td>DB Playtime</td>
 					<td style="width: 50%;">{{ stats.db_playtime|seconds }}</td>
 				</tr>
 				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> Playtime</td>
+					<td>Playtime</td>
 					<td style="width: 50%;">{{ stats.playtime|seconds }}</td>
 				</tr>
 				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> Uptime</td>
+					<td>Uptime</td>
 					<td style="width: 50%;">{{ stats.uptime|seconds }}</td>
 				</tr>
-				<tr>
-					<td><i class="bi bi-database-fill me-2"></i> MPD Version</td>
-					<td style="width: 50%;">{{ player.mpd_version }}</td>
-				</tr>
+				
 			</table>
-			<h3 class="text-secondary">Playback Rate</h3>
+			<h3 class="text-secondary"><i class="bi bi-play-circle-fill me-1"></i> Playback Rate</h3>
 			<table class="table table-dark">
 				<tr>
-					<td><i class="bi bi-speaker-fill me-2"></i> Sample Rate</td>
+					<td>Sample Rate</td>
 					<td style="width: 50%;">{{ player.status.audio|audio if player.status.audio else "N/A" }}</td>
 				</tr>
 				<tr>
-					<td><i class="bi bi-speaker-fill me-2"></i> Bitrate</td>
+					<td>Bitrate</td>
 					<td style="width: 50%;">{{ player.status.bitrate if player.status.audio else "0" }} kpbs</td>
 				</tr>
 			</table>
 		</div>
 		<div class="col">
-			<h3 class="text-secondary">MPD Status</h3>
+			<h3 class="text-secondary"> <i class="bi bi-music-player-fill me-1"></i> MPD Status</h3>
 			<table class="table table-dark table-sm">
 				{% for v in player.status|sort %}
 				<tr>

@@ -82,6 +82,7 @@ def render_desktop_view(route):
     obj['route'] = route
     obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
     obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
+    obj['JUKEBOX_VERSION'] = JUKEBOX_VERSION
     try:
         obj['player'] = JukeboxPlayer.status()
         obj['stats'] = JukeboxPlayer.stats()
