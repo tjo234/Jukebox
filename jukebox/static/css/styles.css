@@ -372,7 +372,7 @@ Resolutions:
 */
 
 #fullscreen img {
-	max-width: 260px;
+	width: 150px;
 }
 
 /* JUKEBOX 1.0 */
@@ -389,7 +389,7 @@ Resolutions:
 @media (min-width: 992px) { 
 
 #fullscreen img {
-	max-width: none;
+	width: 400px;
 }
 
  }
