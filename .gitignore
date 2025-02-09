@@ -6,3 +6,4 @@ env/*
 .env/*
 __pycache__/*
 jukebox/static/img/albums/*
+servers.json
