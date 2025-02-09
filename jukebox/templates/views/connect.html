@@ -1,0 +1,29 @@
+{% if SERVERS %}
+{% for s in SERVERS.discovered %}
+<div id="server-${i}" class="col-6 mt-5">
+	<div class="card" style="height:22rem; background: #111">
+		<div class="card-body">
+			<h5 class="card-title">
+				<i class="bi bi-database-check text-success text-light me-2"></i>
+				<a class="no-link" href="javascript:;" onclick="changeServer('{{ s }}')">{{ s }}</a>
+			</h5> 
+			<hr class="text-secondary" />
+			<div class="server-online">
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}
+</div>
+{% else %}
+<div class="text-center">
+	<br /><br /><br />
+	<br /><br /><br />
+	<br /><br /><br />
+	<br /><br /><br />
+	<br /><br /><br />
+	<br /><br /><br />
+	<h1><i class="bi bi-database-fill-x"></i></h1>
+	<h3>Connect to Jukebox</h3>
+</div>
+{% endif %}

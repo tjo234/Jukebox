@@ -3,7 +3,7 @@ import time
 from flask import Blueprint, render_template, make_response, send_from_directory, request, current_app
 from ..player import JukeboxPlayer, MPDServerNotFoundException
 from ..__version__ import JUKEBOX_VERSION
-
+from ..servers import load_servers
 view = Blueprint('view', __name__)
 
 def user_on_mobile():
@@ -19,13 +19,6 @@ def user_on_mobile():
 @view.route('/favicon.ico')
 def static_from_root():
     return send_from_directory(current_app.static_folder, request.path[1:])
-
-# Connect To Server
-@view.route('/connect')
-def render_connect():
-    obj = {}
-    resp = render_template('pages/servers.html', **obj) 
-    return resp
 
 # Page Handler
 @view.route('/', defaults={'route': 'index'})
@@ -70,9 +63,19 @@ def render_page(route):
             resp = render_template('pages/404.html', **obj) 
 
     # Set Cookie
-    resp = make_response(resp) 
-    resp.set_cookie('JUKEBOX_ADDR', JukeboxPlayer.addr())
-    resp.set_cookie('JUKEBOX_PORT', str(JukeboxPlayer.port()))
+    # resp = make_response(resp) 
+    # resp.set_cookie('JUKEBOX_ADDR', JukeboxPlayer.addr())
+    # resp.set_cookie('JUKEBOX_PORT', str(JukeboxPlayer.port()))
+    return resp
+
+@view.route('/view/connect')
+def render_view_connect():
+    obj = {}
+    obj['SERVERS'] = load_servers()
+    obj['JUKEBOX_ADDR'] = JukeboxPlayer.addr()
+    obj['JUKEBOX_PORT'] = JukeboxPlayer.port()
+    obj['JUKEBOX_VERSION'] = JUKEBOX_VERSION
+    resp = render_template('views/connect.html', **obj)
     return resp
 
 # Partial View Handler
